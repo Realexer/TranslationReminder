@@ -6,9 +6,9 @@
 var localStorageIndex = "words";
 var localStorageIndex4M = "meanings";
 var currentSelection = null;
-var highlightedClass = "your_meaning_";
-var hintClassName = "your_meaning_hint_";
-var _YM_newWordFormID = "_YM_newWordFormID";
+var highlightedClass = "translation_reminder_";
+var hintClassName = "translation_reminder_hint_";
+var _YM_newWordFormID = "_translation_reminder_new_word_form";
 var textNodes = new Array();
 var textNodesValues = new Array();
 
