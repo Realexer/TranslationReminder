@@ -274,11 +274,6 @@ function removeHighLights(word)
 }
 
 
-
-
-
-
-
 /**                     ****
  **                     ***
  ***  SELECTION METHODS **
@@ -373,8 +368,6 @@ function insertButton()
    return document.getElementById('insertButton');
 }
 
-
-
 function insertBalloon()
 {
    if (!oNewNode)
@@ -466,8 +459,6 @@ function translateWithBing()
    }
 }
 
-
-
 /**   ************   **
  ***              *****
  **   HINT MEHOTDS   **
@@ -515,7 +506,6 @@ function showHint(event)
       //opera.extension.postMessage({action:"delete", word:curTarget.firstChild.nodeValue});
       //deleteWord(curTarget.firstChild.nodeValue);
    };
-
 }
 
 function deleteHint(event)
@@ -572,7 +562,8 @@ function showWordsTable()
       //wordsHandler.style.top = "0px";
 
       document.getElementById("_words_handler").appendChild(wordsHandler);
-   } else 
+   }
+   else 
    {
       if (perhapsDiv.style.display == "none") 
       {
@@ -593,7 +584,6 @@ function reloadWordsTable()
 {
    var wordsTable = document.getElementById("your_meaning_words_");
 
-
    if (wordsTable != undefined)
    {
       document.getElementById("_loading_view").style.display = "block";
@@ -603,7 +593,6 @@ function reloadWordsTable()
 
 function reloadTableCallback(words)
 {
-
    var wordsTable = document.getElementById("your_meaning_words_");
 
    if (wordsTable.hasChildNodes())
