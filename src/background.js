@@ -4,7 +4,7 @@ window.addEventListener("load", function() {
    var UIItemProperties = {
       disabled: false, 
       title: "Personal Dictionary", 
-      icon: "icon_18.png", 
+      icon: "icons/icon_18.png", 
       onclick: function(event) {
          
       },

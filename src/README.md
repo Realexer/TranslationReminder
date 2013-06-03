@@ -1,4 +1,0 @@
-TranslationReminder
-===================
-
-Translation Reminder

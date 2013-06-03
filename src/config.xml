@@ -2,10 +2,10 @@
 <widget xmlns="http://www.w3.org/ns/widgets" id="translation-reminder" version="0.1 Beta">   
    <name>Translation Reminder</name>
    <name xml:lang="ru">Напоминалка Перевода</name>
-   <icon src="icon.png"/>
+   <icon src="icons/icon.png"/>
    <access origin="http://inegata.ru/" subdomains="true"/>
-   <license>Copyright 2012 Realexer. All rights reserved.</license>
-   <author href="http://vk.com/realexer" email="unrealvsrealer@gmail.com">Realexer</author>
+   <license href="https://www.facebook.com/realexer">Copyright 2012 Realexer. All rights reserved.</license>
+   <author href="https://www.facebook.com/realexer" email="unrealvsrealer@gmail.com">Realexer</author>
    <description xml:lang="en">Easy extension that should help you remember new words.</description>
    <description xml:lang="ru">Простое расширение, которое поможет Вам запомнить новые слова.</description>
 </widget>
