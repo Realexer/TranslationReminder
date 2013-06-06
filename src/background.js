@@ -1,10 +1,14 @@
+var webClient = new WebClient();
+var db = new DB();
+
 window.addEventListener("load", function() 
 {   
    var UIItemProperties = {
       disabled: false, 
       title: "Personal Dictionary", 
       icon: "icons/icon_18.png", 
-      onclick: function(event) {
+      onclick: function(event) 
+      {
          
       },
       popup: {
@@ -13,61 +17,54 @@ window.addEventListener("load", function()
       }
    };
    
-   setInterval(function()
-   {
-      getWords(null, null, null, true);
-   }, 100*60*60);
 
    var toolBarButton = null;
    toolBarButton = opera.contexts.toolbar.createItem(UIItemProperties);
    
    opera.contexts.toolbar.addItem(toolBarButton);   
    
-   
    opera.extension.onconnect = function(event) 
    {
       event.source.postMessage({message:"loaded", data:"true"}); 
-   }
+   };
    
 }, false);
 
 
-
 opera.extension.onmessage = function (event) 
 {
-
    switch(event.data.action) 
    {
       case "get":
-         getWords(event.data.backMessage, event);
+         db.GetWords(event.data.backMessage, event);
          break;
       
       case "write":
-         writeWord(event.data.word, event.data.meaning, event);
+         db.WriteWord(event.data.word, event.data.meaning, event);
          break;
          
       case "delete":
-         deleteWordFromStorage(event.data.word, event);
+         db.DeleteWord(event.data.word, event);
          break;
          
       case "prepare_synchronize":
-         synchronizeWithServer(event);
+         webClient.synchronize(event);
          break;
         
       case "synchronize":
-         sendDataToWeb(event);
+         webClient.send(event);
          break;
          
       case "login":
-         loginViaWeb(event.data.userId, event);
+         webClient.login(event.data.userId, event);
          break;
          
       case "createAcc":
-         createAccViaWeb(event.data.userId, event);
+         webClient.createAccount(event.data.userId, event);
          break;
          
       case "get_username":
-         event.source.postMessage({message:event.data.backMessage, data:getUserID()}); 
+         event.source.postMessage({message:event.data.backMessage, data:db.GetUserID()}); 
          break;
    }
 };

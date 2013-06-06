@@ -24,6 +24,22 @@ if(String.trim === undefined)
    };
 }
 
+if (Element && !Element.prototype.getElementsByClassName)
+{
+   Element.prototype.getElementsByClassName = function(className)
+   {
+      return this.querySelectorAll('.' + className);
+   };
+}
+
+if (!document.getElementsByClassName)
+{
+   document.getElementsByClassName = function(className)
+   {
+      return document.querySelectorAll('.' + className);
+   };
+}
+
 // This source code is free for use in the public domain.
 // NO WARRANTY EXPRESSED OR IMPLIED. USE AT YOUR OWN RISK.
 

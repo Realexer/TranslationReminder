@@ -39,7 +39,7 @@ var WebClient = function()
 	 xmlhttp.open(params.type, params.url + "?" + sendData, false);
 	 xmlhttp.send(null);
       }
-   };
+   }
 
 
    function objectToHttpParam(dataObject, _key)
@@ -81,9 +81,9 @@ var WebClient = function()
       opera.postError("Web Request Post Data:" + retStr);
 
       return retStr;
-   };
+   }
 
-   this.Synchronize = function(event)
+   this.synchronize = function(event)
    {
       this.GetWords(null, event, "_syncronize");
    };
@@ -146,46 +146,47 @@ var WebClient = function()
 			    }
 		 }
       });
-   }
-};
+   };
 
-this.send = function(data, caller)
-{
-   opera.postError("Web Request Data:" + data.data);
-   ajax({
-      type: "POST",
-      url: "http://lf.inegata.ru/YM/UpdateWords",
-      callback: function(data)
-      {
-	 opera.postError("Web Response Data:" + data);
-	 var updatedData = jsonParse(data);
-	 if (updatedData.ret_code)
+
+   this.send = function(data, caller)
+   {
+      opera.postError("Web Request Data:" + data.data);
+      ajax({
+	 type: "POST",
+	 url: "http://lf.inegata.ru/YM/UpdateWords",
+	 callback: function(data)
 	 {
-	    var updatedWords = updatedData.data;
-	    opera.postError("Words:", updatedWords);
-
-	    deleteAllWordsFromStorage(null);
-
-	    for (var i = 0; i < updatedWords.length; i++)
+	    opera.postError("Web Response Data:" + data);
+	    var updatedData = jsonParse(data);
+	    if (updatedData.ret_code)
 	    {
-	       var curWord = updatedWords[i];
-	       writeWord(curWord.word, curWord.meaning, null, curWord.date);
-	    }
+	       var updatedWords = updatedData.data;
+	       opera.postError("Words:", updatedWords);
 
-	    if (caller)
-	    {
-	       caller.postMessage({message: "synchronized"});
-	    }
+	       deleteAllWordsFromStorage(null);
 
-	 }
-      },
-      data:
-	      {
-		 data:
-			 {
-			    userName: getUserID(),
-			    words: data.words
-			 }
-	      }
-   });
-}
+	       for (var i = 0; i < updatedWords.length; i++)
+	       {
+		  var curWord = updatedWords[i];
+		  writeWord(curWord.word, curWord.meaning, null, curWord.date);
+	       }
+
+	       if (caller)
+	       {
+		  caller.postMessage({message: "synchronized"});
+	       }
+
+	    }
+	 },
+	 data:
+		 {
+		    data:
+			    {
+			       userName: getUserID(),
+			       words: data.words
+			    }
+		 }
+      });
+   };
+};

@@ -3,7 +3,7 @@ var DB = function()
    function getDb()
    {
       opera.postError("Windows is: " + window);
-      var db = window.openDatabase('YMDB', '1.0', 'Your meaning database', 2 * 1024 * 1024);
+      var db = window.openDatabase('YMDB', '1.0', 'Translation Reminder', 2 * 1024 * 1024);
       db.transaction(function(tx) {
 	 tx.executeSql('CREATE TABLE IF NOT EXISTS words (word, meaning, toDelete, toEdit, userName, date)', null, null,
 		 function(tx, error)
@@ -24,9 +24,12 @@ var DB = function()
    this.GetUserID = function()
    {
       var userId;
-      try {
+      try 
+      {
 	 userId = localStorage.getItem("userId");
-      } catch (ex) {
+      }
+      catch (ex) 
+      {
 	 opera.postError("User ID Access error: " + ex.toString());
       }
 
@@ -94,9 +97,11 @@ var DB = function()
       db.transaction(function(tx)
       {
 
-	 if (date == undefined || date == null) {
+	 if (date === undefined || date === null) 
+	 {
 	    date = new Date().getTime();
 	 }
+	 
 	 date = parseInt(date);
 	 tx.executeSql('INSERT INTO words (word, meaning, toDelete, toEdit, userName, date) ' +
 		 'VALUES (?, ?, 0, 0, ?, ?)', [word.toLowerCase(), meaning, userName, date],
