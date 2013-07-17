@@ -11,8 +11,8 @@ switch (message)
     case "loaded":
 	window.addEventListener("DOMContentLoaded", function()
 	{
-	document.onmouseup = selectWord;
-	refreshPage();
+		document.onmouseup = frontend.SelectWord;
+		frontend.RefreshPage();
 	}, false);
 	break;
 
@@ -21,11 +21,11 @@ switch (message)
 	break;
 
     case  "writed":
-	frontend.refreshPage();
+	frontend.RefreshPage();
 	break;
 
     case  "readed_on_page":
-	frontend.refreshCallback((data));
+	frontend.RefreshCallback((data));
 	break;
 
     case  "readed_on_table":
@@ -33,8 +33,8 @@ switch (message)
 	break;
 
     case  "deleted":
-	frontend.removeHighLights(data);
-	frontend.refreshPage();
+	frontend.RemoveHighLights(data);
+	frontend.RefreshPage();
 	break;
 
     case "begin_synchronize":
@@ -42,13 +42,13 @@ switch (message)
 	break;
 
     case "synchronized":
-	frontend.dataSynchronized(data);
-	frontend.refreshPage();
+	frontend.DataSynchronized(data);
+	frontend.RefreshPage();
 	break;
 
     case "logined":
-	frontend.backToMain();
-	frontend.synchonizeData();
+	frontend.BackToMain();
+	frontend.SynchonizeData();
 	break;
 
     case "login_failed":
@@ -57,8 +57,8 @@ switch (message)
 	break;
 
     case "acc_created":
-	frontend.backToMain();
-	frontend.synchonizeData();
+	frontend.BackToMain();
+	frontend.SynchonizeData();
 	break;
 
     case "acc_created_failed":
@@ -67,11 +67,11 @@ switch (message)
 	break;
 
     case "show_username":
-	showUserName(data);
-	frontend.break;
+    frontend.ShowUserName(data);
+    break;
 
     case "paste_username":
-	frontend.pasteUserName(data);
+	frontend.PasteUserName(data);
 	break;
 }
 };
@@ -80,9 +80,9 @@ switch (message)
 // on load function for testing out of widget
 /*window.addEventListener("DOMContentLoaded", function()
 {
-   document.onmouseup = selectWord;
+   document.onmouseup = SelectWord;
    //document.body.onclick = showWordsTable();
-   refreshPage();
+   RefreshPage();
 
    var displayer = document.createElement("div");
    displayer.appendChild(document.createTextNode("SHOW"));

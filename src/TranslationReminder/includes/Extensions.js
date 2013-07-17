@@ -1,14 +1,8 @@
-String.prototype.fullTrim = function ()
-{
-	return String.apply(String.apply(this, "\n"), "\r");
-};
-
-
-if (String.trim === undefined)
+if (String.trim == undefined)
 {
 	String.prototype.trim = function (symbol)
 	{
-		if (symbol === undefined)
+		if (symbol == undefined)
 		{
 			symbol = ' ';
 		}
@@ -17,16 +11,23 @@ if (String.trim === undefined)
 		var l = 0;
 		var r = s.length - 1;
 
-		while (l < s.length && s[l] === symbol) { l++; }
-		while (r > l && s[r] === symbol) { r -= 1; }
+		while (l < s.length && s[l] == symbol) { l++; }
+		while (r > l && s[r] == symbol) { r -= 1; }
 
 		return s.substring(l, r + 1);
 	};
 }
 
-if (Element && !Element.prototype.getElementsByClassName)
+String.prototype.fullTrim = function ()
 {
-	Element.prototype.getElementsByClassName = function (className)
+	String.prototype.trim.call(this, "\r");
+	String.prototype.trim.call(this, "\n");
+	return this;
+};
+
+if (window.Element != undefined && !window.Element.getElementsByClassName)
+{
+	window.Element.prototype.getElementsByClassName = function (className)
 	{
 		return this.querySelectorAll('.' + className);
 	};

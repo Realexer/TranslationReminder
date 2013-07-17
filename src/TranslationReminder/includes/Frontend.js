@@ -14,14 +14,14 @@ var Frontend = function ()
 	var oNewNode;
 
 
-	this.refreshPage = function ()
+	this.RefreshPage = function ()
 	{
 		this.findTexts(document.body);
 
 		opera.extension.postMessage({ action: "get", backMessage: "readed_on_page" });
 	};
 
-	this.refreshCallback = function (words)
+	this.RefreshCallback = function (words)
 	{
 		this.globalWords = words;
 
@@ -48,7 +48,7 @@ var Frontend = function ()
 			// if text node
 			if (childNode.nodeType === 3)
 			{
-				var nodeValue = fullTrim(childNode.nodeValue);
+				var nodeValue = childNode.nodeValue.fullTrim();
 				if (nodeValue !== undefined && nodeValue.length > 0)
 				{
 					// add to array
@@ -149,7 +149,7 @@ var Frontend = function ()
 		}
 	};
 
-	this.removeHighLights = function (word)
+	this.RemoveHighLights = function (word)
 	{
 		var highlightedElms = getElementsByClassName(document.body, "a", this.highlightedClass);
 
@@ -171,7 +171,7 @@ var Frontend = function ()
 	};
 
 
-	this.selectWord = function (event)
+	this.SelectWord = function (event)
 	{
 		if (event.target.id === "insertButton"
 	      || event.target.id === "insertButtonValue"
@@ -318,7 +318,7 @@ var Frontend = function ()
 				opera.extension.postMessage({ action: "write", word: this.currentSelection, meaning: meaning });
 				this.writeWord(currentSelection, meaning, function ()
 				{
-					refreshPage();
+					RefreshPage();
 				});
 			}
 		}
@@ -543,14 +543,14 @@ var Frontend = function ()
 	};
 
 
-	this.synchonizeData = function ()
+	this.SynchonizeData = function ()
 	{
 		document.getElementById("_loading_view").style.display = "block";
 		opera.extension.postMessage({ action: "prepare_synchronize" });
 	};
 
 
-	this.dataSynchronized = function (data)
+	this.DataSynchronized = function (data)
 	{
 		// TODO:
 	};
@@ -570,7 +570,7 @@ var Frontend = function ()
 		opera.extension.postMessage({ action: "createAcc", userId: userName });
 	};
 
-	this.backToMain = function ()
+	this.BackToMain = function ()
 	{
 		var accMenuDiv = document.getElementById("_account_menu_elem");
 		var mainDiv = document.getElementById("_main_elem");
@@ -621,7 +621,7 @@ var Frontend = function ()
 		opera.extension.postMessage({ action: "get_username", backMessage: "paste_username" });
 	};
 
-	this.showUserName = function (userName)
+	this.ShowUserName = function (userName)
 	{
 		this.userName = userName;
 
@@ -641,7 +641,7 @@ var Frontend = function ()
 		document.getElementById("_username_elem").innerHTML = userName;
 	};
 
-	this.pasteUserName = function (userName)
+	this.PasteUserName = function (userName)
 	{
 		// update UI
 		if (userName === null)

@@ -4,9 +4,12 @@
 	<title></title>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<link rel="stylesheet" type="text/css" href="css/base.css" />
-	<script type='text/javascript' src='includes/test.js'></script>
+	<script type='text/javascript' src='includes/Extensions.js'></script>
+	<script type='text/javascript' src='includes/Helper.js'></script>
+	<script type='text/javascript' src='includes/Frontend.js'></script>
+	<script type='text/javascript' src='includes/foreground.js'></script>
 </head>
-<body onload="showWordsTable();">
+<body onload="frontend.showWordsTable();">
 	<div class="__cover_view _loading_view" id="_loading_view">
 		<div class="__cover _loading_cover"></div>
 		<div class="__cover_message _loading_info">
@@ -29,7 +32,7 @@
 				&nbsp;<img alt="Change User ID" src="imgs/edit.png" onclick="editUserID();" />
 			</div>
 			<div class="_control_button _synch_button">
-				<img alt="Synchronize Data With Remote Server" src="imgs/synch.png" onclick="synchonizeData();" />
+				<img alt="Synchronize Data With Remote Server" src="imgs/synch.png" onclick=" SynchonizeData();" />
 			</div>
 		</div>
 		<div class="words_handler" id="_words_handler">
@@ -44,7 +47,7 @@
 	<div class="_account_menu" style="display: none;" id="_account_menu_elem">
 		<div class="_menu">
 			<div class="_control_button _back_button">
-				<img alt="Back To Main" src="imgs/back.png" onclick="backToMain();" />
+				<img alt="Back To Main" src="imgs/back.png" onclick=" BackToMain();" />
 			</div>
 		</div>
 		<div style="clear: both;">

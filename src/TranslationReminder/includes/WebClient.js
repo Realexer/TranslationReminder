@@ -15,7 +15,7 @@ var WebClient = function ()
 			xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
 		}
 
-		xmlhttp.onreadystatechange = function()
+		xmlhttp.onreadystatechange = function ()
 		{
 			if (xmlhttp.readyState == 4 && xmlhttp.status == 200)
 			{
@@ -85,9 +85,9 @@ var WebClient = function ()
 		return retStr;
 	}
 
-	this.synchronize = function (event)
+	this.synchronize = function (data)
 	{
-		this.GetWords(null, event, "_syncronize");
+		this.send(data);
 	};
 
 	this.createAccount = function (userId, caller)

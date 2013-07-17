@@ -41,6 +41,7 @@
   <ItemGroup>
     <Content Include="background.js" />
     <Content Include="config.xml" />
+    <Content Include="css\base.css" />
     <Content Include="icons\bing_icon.png" />
     <Content Include="icons\icon.png" />
     <Content Include="icons\icon_18.png" />

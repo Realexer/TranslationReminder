@@ -35,7 +35,6 @@ opera.extension.onmessage = function (event)
 	{
 		case "get":
 			db.GetWords(event.data.backMessage, event);
-			webClient.synchronize();
 			break;
 
 		case "write":
@@ -51,6 +50,10 @@ opera.extension.onmessage = function (event)
 
 		case "prepare_synchronize":
 			webClient.synchronize(event);
+			break;
+
+		case "begin_synchronize":
+			webClient.synchronize(event.data);
 			break;
 
 		case "synchronize":

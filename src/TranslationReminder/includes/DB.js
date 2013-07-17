@@ -74,7 +74,8 @@ var DB = function ()
 				if (callback)
 				{
 					event.source.postMessage({ message: "begin_synchronize", words: callbackArray });
-				} else
+				}
+				else
 				{
 					event.source.postMessage({ message: backMessage, data: callbackArray });
 				}
@@ -98,7 +99,7 @@ var DB = function ()
 			return false;
 		}
 
-		word = fullTrim(word);
+		word = word.fullTrim();
 		opera.postError("Write data: " + word + meaning + event);
 		var db = getDb();
 		db.transaction(function (tx)
@@ -134,7 +135,7 @@ var DB = function ()
 		if (!userName)
 			return false;
 
-		word = fullTrim(word);
+		word = word.fullTrim();
 		var db = getDb();
 		db.transaction(function (tx)
 		{
