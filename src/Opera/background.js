@@ -49,15 +49,15 @@ opera.extension.onmessage = function (event)
 			break;
 
 		case "prepare_synchronize":
-			webClient.synchronize(event);
+			webClient.GetAllWords(event);
 			break;
 
 		case "begin_synchronize":
-			webClient.synchronize(event.data);
+			webClient.GetAllWords(event.data);
 			break;
 
 		case "synchronize":
-			webClient.send(event);
+			webClient.sync(event);
 			break;
 
 		case "login":

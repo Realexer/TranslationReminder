@@ -1,4 +1,4 @@
-var webClient = new WebClient();
+/*var webClient = new WebClient();
 var db = new DB();
 var toolBarButton = null;
 
@@ -72,4 +72,12 @@ opera.extension.onmessage = function (event)
 			event.source.postMessage({ message: event.data.backMessage, data: db.GetUserID() });
 			break;
 	}
-};
+};*/
+
+chrome.extension.onMessage.addListener(function (message, sender, callback)
+{
+	console.log(message);
+	console.log(sender);
+	console.log(callback);
+	callback("Hellow world");
+});

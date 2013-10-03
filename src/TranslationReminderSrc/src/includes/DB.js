@@ -2,20 +2,19 @@ var DB = function ()
 {
 	function getDb()
 	{
-		opera.postError("Windows is: " + window);
 		var db = window.openDatabase('YMDB', '1.0', 'Translation Reminder', 2 * 1024 * 1024);
+		
 		db.transaction(function (tx)
 		{
 			tx.executeSql('CREATE TABLE IF NOT EXISTS words (word, meaning, toDelete, toEdit, userName, date)', null, null,
-			 function (tx, error)
-			 {
-		 		opera.postError("Error: " + error);
-			 });
+			function (tx, error)
+			{
+				// TODO: Report error
+			});
 		});
 
 		return db;
 	};
-
 
 	this.SaveUserID = function (userId)
 	{
@@ -24,85 +23,65 @@ var DB = function ()
 
 	this.GetUserID = function ()
 	{
-		var userId = null;
 		try
 		{
-			userId = localStorage.getItem("userId");
+			return localStorage.getItem("userId");
 		}
 		catch (ex)
 		{
-			opera.postError("User ID Access error: " + ex.toString());
+			// TODO: Report error
 		}
 
-		return userId;
 	};
 
 
-	this.GetWords = function (backMessage, event, callback)
+	this.GetWords = function (callback)
 	{
-		// TODO: call synchronize explicitly
 		var userName = this.GetUserID();
 		if (!userName)
 			return false;
 
-		var db = getDb();
-		opera.postError("DB: " + db);
-		db.transaction(function (tx)
+		getDb().transaction(function (tx)
 		{
-			opera.postError("TX: " + tx);
-			var toDelete = "toDelete = 0";
-			if (callback)
-			{
-				toDelete = "1";
-			}
-			tx.executeSql('SELECT * FROM words WHERE userName =? AND ' + toDelete + " ORDER BY date DESC", [userName],
+			tx.executeSql("SELECT * FROM words WHERE userName =? ORDER BY date DESC", [userName],
 			function (tx, results)
 			{
-				opera.postError("Result length: " + results.rows.length);
 				var callbackArray = new Array();
 				for (var i = 0; i < results.rows.length; i++)
 				{
-					callbackArray.push
-						({
+					callbackArray.push({
 						word: results.rows.item(i).word,
 						meaning: results.rows.item(i).meaning,
 						toDelete: results.rows.item(i).toDelete,
 						toEdit: results.rows.item(i).toEdit,
 						date: results.rows.item(i).date
-						});
+					});
 				}
+
 				if (callback)
 				{
-					event.source.postMessage({ message: "begin_synchronize", words: callbackArray });
-				}
-				else
-				{
-					event.source.postMessage({ message: backMessage, data: callbackArray });
+					callback();
 				}
 			},
-			 function (tx, error)
-			 {
-		 		opera.postError("Get error: " + error);
-			 });
+			function (tx, error)
+			{
+				// TODO: Report error
+			});
 
 			return true;
 		});
 	};
 
 
-	this.WriteWord = function (word, meaning, event, date)
+	this.WriteWord = function (word, meaning, date, callback)
 	{
 		var userName = this.GetUserID();
 		if (!userName)
 		{
-			event.source.postMessage({ message: "no_user" });
 			return false;
 		}
 
-		word = word.fullTrim();
-		opera.postError("Write data: " + word + meaning + event);
-		var db = getDb();
-		db.transaction(function (tx)
+		getDb().transaction(function (tx)
 		{
 			if (date === undefined || date === null)
 			{
@@ -110,18 +89,21 @@ var DB = function ()
 			}
 
 			date = parseInt(date);
+
+			word = word.fullTrim();
 			tx.executeSql('INSERT INTO words (word, meaning, toDelete, toEdit, userName, date) ' +
-			'VALUES (?, ?, 0, 0, ?, ?)', [word.toLowerCase(), meaning, userName, date],
+							'VALUES (?, ?, 0, 0, ?, ?)', [word.toLowerCase(), meaning, userName, date],
+
 			function (tx, results)
 			{
-				if (event)
+				if (callback)
 				{
-					event.source.postMessage({ message: "writed" });
+					callback();
 				}
 			},
 			function (tx, error)
 			{
-				opera.postError("Write error: " + error);
+				// TODO: Report error
 			});
 		});
 
@@ -129,48 +111,47 @@ var DB = function ()
 	};
 
 
-	this.DeleteWord = function (word, event)
+	this.DeleteWord = function (word, callback)
 	{
 		var userName = this.GetUserID();
 		if (!userName)
 			return false;
 
-		word = word.fullTrim();
-		var db = getDb();
-		db.transaction(function (tx)
+
+		getDb().transaction(function (tx)
 		{
+			word = word.fullTrim();
 			tx.executeSql('UPDATE words SET toDelete=1 WHERE (word)=? AND (userName)=?', [word.toString().toLowerCase(), userName],
 			function (tx, results)
 			{
-				if (event)
+				if (callback)
 				{
-					event.source.postMessage({ message: "deleted", data: word });
+					callback();
 				}
 			},
 			function (tx, error)
 			{
-				opera.postError("Delete error: " + error);
+				// TODO: Report error
 			});
 		});
 
 		return true;
 	};
 
-	this.DeleteAllWords = function (event)
+	this.DeleteAllWords = function (callback)
 	{
 		var userName = this.GetUserID();
 		if (!userName)
 			return false;
 
-		var db = getDb();
-		db.transaction(function (tx)
+		getDb().transaction(function (tx)
 		{
 			tx.executeSql('DELETE FROM words WHERE (userName) = ?', [userName],
 			function (tx, results)
 			{
-				if (event)
+				if (callback)
 				{
-					event.source.postMessage({ message: "deleted", data: word });
+					callback();
 				}
 			},
 			function (tx, error)

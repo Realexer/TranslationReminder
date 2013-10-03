@@ -63,7 +63,8 @@ var WebClient = function ()
 					if (typeof tmpValue === 'string')
 					{
 						retStr += encodeURIComponent(key) + "[]=" + encodeURIComponent(tmpValue) + "&";
-					} else
+					}
+					else
 					{
 						retStr += objectToHttpParam(tmpValue, key + "[" + i + "]");
 					}
@@ -80,115 +81,83 @@ var WebClient = function ()
 			}
 		}
 
-		opera.postError("Web Request Post Data:" + retStr);
-
 		return retStr;
 	}
 
-	this.synchronize = function (data)
-	{
-		this.send(data);
-	};
 
-	this.createAccount = function (userId, caller)
+	this.createAccount = function (userId, callback)
 	{
-		opera.postError("Web create acc with:" + userId);
 		ajax({
 			type: "POST",
 			url: "http://lf.inegata.ru/YM/AddUser",
 			callback: function (data)
 			{
-				opera.postError("Web Response Create Acc Data:" + data);
-
 				if (data == "1")
 				{
-					saveUserID(userId);
-					caller.postMessage({ message: "acc_created" });
+					callback(true);
 				}
 				else
 				{
-					caller.postMessage({ message: "acc_created_failed" });
+					callback(false);
 				}
 			},
-			data:
-					{
-						data:
-							{
-								userName: userId
-							}
-					}
+			data: {
+				data: {
+					userName: userId
+				}
+			}
 		});
 	};
 
-	this.login = function (userId, caller)
+	this.login = function (userId, callback)
 	{
-		opera.postError("Web login with:" + userId);
 		ajax({
 			type: "POST",
 			url: "http://lf.inegata.ru/YM/CheckUser",
 			callback: function (data)
 			{
-				opera.postError("Web Response Login Data:" + data);
-
 				if (data == "1")
 				{
-					saveUserID(userId);
-					caller.postMessage({ message: "logined" });
+					callback(true);
 				}
 				else
 				{
-					caller.postMessage({ message: "login_failed" });
+					callback(false);
 				}
 			},
-			data:
-					{
-						data:
-							{
-								userName: userId
-							}
-					}
+			data: {
+				data: {
+					userName: userId
+				}
+			}
 		});
 	};
 
 
-	this.send = function (data, caller)
+	this.GetAllWords = function (userId, data, callback)
 	{
-		opera.postError("Web Request Data:" + data.data);
 		ajax({
 			type: "POST",
 			url: "http://lf.inegata.ru/YM/UpdateWords",
 			callback: function (data)
 			{
-				opera.postError("Web Response Data:" + data);
-				var updatedData = jsonParse(data);
-				if (updatedData.ret_code)
+				data = jsonParse(data);
+				if (data.ret_code)
 				{
-					var updatedWords = updatedData.data;
-					opera.postError("Words:", updatedWords);
+					var userWords = data.data;
 
-					deleteAllWordsFromStorage(null);
-
-					for (var i = 0; i < updatedWords.length; i++)
+					if (callback)
 					{
-						var curWord = updatedWords[i];
-						writeWord(curWord.word, curWord.meaning, null, curWord.date);
+						callback(userWords);
 					}
-
-					if (caller)
-					{
-						caller.postMessage({ message: "synchronized" });
-					}
-
 				}
 			},
-			data:
-					{
-						data:
-							{
-								userName: getUserID(),
-								words: data.words
-							}
-					}
+			data: {
+				data: {
+					userName: userId,
+					words: data.words
+				}
+			}
 		});
 	};
 };

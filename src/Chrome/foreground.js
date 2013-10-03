@@ -1,6 +1,21 @@
-var frontend = new Frontend();
+/*chrome.extension.onMessage.addListener(function (message, sender, callback)
+{
+	console.log(message);
+	console.log(sender);
+	console.log(callback);
+});*/
 
-opera.extension.onmessage = function(event) 
+window.onload = function ()
+{
+	chrome.extension.sendMessage(null, "Hellow", function (response)
+	{
+		console.log(response);
+	});
+};
+
+/*var frontend = new Frontend();*/
+
+/*opera.extension.onmessage = function(event) 
 {
 // Get content of incoming message.
 var message = event.data.message;
@@ -74,7 +89,8 @@ switch (message)
 	frontend.PasteUserName(data);
 	break;
 }
-};
+};*/
+
 
 
 // on load function for testing out of widget
