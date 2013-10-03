@@ -19,8 +19,9 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>
+    </DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -39,40 +40,63 @@
   <ItemGroup>
     <Content Include="..\translationremindersrc\src\css\base.css">
       <Link>css\base.css</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="..\translationremindersrc\src\icons\bing_icon.png">
       <Link>img\bing_icon.png</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="..\translationremindersrc\src\icons\icon.png">
       <Link>img\icon.png</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="..\translationremindersrc\src\icons\icon_18.png">
       <Link>img\icon_18.png</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="..\translationremindersrc\src\includes\DB.js">
       <Link>scripts\DB.js</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="..\translationremindersrc\src\includes\Extensions.js">
       <Link>scripts\Extensions.js</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="..\translationremindersrc\src\includes\Frontend.js">
       <Link>scripts\Frontend.js</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="..\translationremindersrc\src\includes\Helper.js">
       <Link>scripts\Helper.js</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="..\translationremindersrc\src\includes\WebClient.js">
       <Link>scripts\WebClient.js</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="background.js" />
-    <Content Include="config.xml" />
-    <Content Include="foreground.js" />
-    <Content Include="index.html" />
-    <Content Include="popup.html" />
+    <Content Include="background.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="config.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="foreground.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="index.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="popup.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
-    <None Include="deploy\deploy.cmd" />
-    <None Include="deploy\deploy_x64.cmd" />
+    <None Include="deploy\deploy.cmd">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="deploy\deploy_x64.cmd">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

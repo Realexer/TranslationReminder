@@ -19,8 +19,9 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>
+    </DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -29,7 +30,8 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>
+    </DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -38,39 +40,39 @@
   </PropertyGroup>
   <ItemGroup>
     <Content Include="..\translationremindersrc\src\css\base.css">
-      <Link>Chrome\css\base.css</Link>
+      <Link>css\base.css</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="..\translationremindersrc\src\icons\bing_icon.png">
-      <Link>Chrome\img\bing_icon.png</Link>
+      <Link>img\bing_icon.png</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="..\translationremindersrc\src\icons\icon.png">
-      <Link>Chrome\img\icon.png</Link>
+      <Link>img\icon.png</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="..\translationremindersrc\src\icons\icon_18.png">
-      <Link>Chrome\img\icon_18.png</Link>
+      <Link>img\icon_18.png</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="..\translationremindersrc\src\includes\DB.js">
-      <Link>Chrome\scripts\DB.js</Link>
+      <Link>scripts\DB.js</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="..\translationremindersrc\src\includes\Extensions.js">
-      <Link>Chrome\scripts\Extensions.js</Link>
+      <Link>scripts\Extensions.js</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="..\translationremindersrc\src\includes\Frontend.js">
-      <Link>Chrome\scripts\Frontend.js</Link>
+      <Link>scripts\Frontend.js</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="..\translationremindersrc\src\includes\Helper.js">
-      <Link>Chrome\scripts\Helper.js</Link>
+      <Link>scripts\Helper.js</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="..\translationremindersrc\src\includes\WebClient.js">
-      <Link>Chrome\scripts\WebClient.js</Link>
+      <Link>scripts\WebClient.js</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="background.js">
@@ -87,6 +89,12 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <None Include="deploy\deploy.cmd">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="deploy\deploy_x64.cmd">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="manifest.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
