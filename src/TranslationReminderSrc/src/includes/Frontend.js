@@ -1,4 +1,4 @@
-var Frontend = function ()
+var Frontend = new function ()
 {
 	this.highlightedClass = "translation_reminder_";
 	this.hintClassName = "translation_reminder_hint_";
@@ -425,9 +425,9 @@ var Frontend = function ()
 
 	this.showWordsTable = function ()
 	{
-		var perhapsDiv = document.getElementById("your_meaning_words_handler");
+		var wordsView = document.getElementById("your_meaning_words_handler");
 
-		if (!perhapsDiv)
+		if (!wordsView)
 		{
 			var innerHtmlText = "<table id=\"your_meaning_words_\"></table>";
 			var wordsHandler = document.createElement("div");
@@ -439,22 +439,18 @@ var Frontend = function ()
 			wordsHandler.style.width = "315px";
 			wordsHandler.style.height = "250px";
 			wordsHandler.style.overflowY = "scroll";
-			//wordsHandler.style.position = "fixed";
-			//wordsHandler.style.zIndex = "233";
-			//wordsHandler.style.right = "0px";
-			//wordsHandler.style.top = "0px";
 
 			document.getElementById("_words_handler").appendChild(wordsHandler);
 		}
 		else
 		{
-			if (perhapsDiv.style.display == "none")
+			if (wordsView.style.display == "none")
 			{
-				perhapsDiv.style.display = "table";
+				wordsView.style.display = "table";
 			}
 			else
 			{
-				perhapsDiv.style.display = "none";
+				wordsView.style.display = "none";
 			}
 		}
 
@@ -470,7 +466,7 @@ var Frontend = function ()
 		if (wordsTable !== undefined)
 		{
 			document.getElementById("_loading_view").style.display = "block";
-			opera.extension.postMessage({ action: "get", backMessage: "readed_on_table" });
+			//opera.extension.postMessage({ action: "get", backMessage: "readed_on_table" });
 		}
 	};
 

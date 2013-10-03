@@ -56,7 +56,8 @@
   <ItemGroup>
     <Content Include="index.html" />
     <Content Include="popup.html" />
-    <Content Include="src\css\base.css" />
+    <Content Include="src\css\page-inject.css" />
+    <Content Include="src\css\popup.css" />
     <Content Include="src\icons\bing_icon.png" />
     <Content Include="src\icons\icon.png" />
     <Content Include="src\icons\icon_18.png" />

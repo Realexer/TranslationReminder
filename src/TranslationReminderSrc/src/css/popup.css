@@ -1,0 +1,104 @@
+body
+{
+	color: #405cb6;
+	font-family: Arial;
+	font-size: 0.8em;
+	width: 400px;
+	height: 400px;
+}
+
+.words-view
+{
+	/**/
+}
+
+
+/**
+   words table
+*/
+.words-handler
+{
+	background: #eef;
+	width: 290px;
+	float: left;
+	position: relative;
+}
+.words-handler table
+{
+	width: 100%;
+	border-collapse: collapse;
+	border: 1px solid;
+	border-color: #abbbd1;
+}
+.words-handler table td
+{
+	border: 1px solid #abbbd1;
+	padding: 3px;
+}
+.words-handler table .word_
+{
+	width: 40%;
+	color: #000;
+}
+.words-handler table .meaning
+{
+	width: 50%;
+	color: #048;
+	font-weight: bold;
+}
+.words_handler table .delete
+{
+	text-align: center;
+}
+
+
+/** COVER VIEWS **/
+.cover-view
+{
+	width: 100%;
+	height: 100%;
+	display: block;
+	background: none;
+	position: fixed;
+	left: 0;
+	right: 0;
+	z-index: 1;
+}
+.cover-view .blur
+{
+	width: 100%;
+	height: 100%;
+	background: #fff;
+	opacity: 0.9;
+}
+.cover-message
+{
+	position: absolute;
+	top: 40%;
+	width: 100%;
+	text-align: center;
+	text-transform: uppercase;
+	font-size: 1.2em;
+	z-index: 2;
+}
+.cover-message span
+{
+	color: #888;
+	font-weight: bold;
+	font-size: 0.8em;
+	letter-spacing: 0.3em;
+}
+.no-words-view
+{
+	text-align: center;
+	position: absolute;
+	left: 1px;
+	top: 1px;
+	z-index: 0;
+	color: #888;
+	font-weight: bold;
+	font-size: 0.8em;
+	letter-spacing: 0.3em;
+	background: none;
+	opacity: 1;
+}

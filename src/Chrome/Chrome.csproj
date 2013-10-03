@@ -39,8 +39,12 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
-    <Content Include="..\translationremindersrc\src\css\base.css">
-      <Link>css\base.css</Link>
+    <Content Include="..\TranslationReminderSrc\src\css\page-inject.css">
+      <Link>css\page-inject.css</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\TranslationReminderSrc\src\css\popup.css">
+      <Link>css\popup.css</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="..\translationremindersrc\src\icons\bing_icon.png">
