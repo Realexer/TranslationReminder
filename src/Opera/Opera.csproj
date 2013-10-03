@@ -1,0 +1,86 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{5C4BA68F-2D28-49E5-AB0E-AF165FF10077}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Opera</RootNamespace>
+    <AssemblyName>Opera</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="..\translationremindersrc\src\css\base.css">
+      <Link>css\base.css</Link>
+    </Content>
+    <Content Include="..\translationremindersrc\src\icons\bing_icon.png">
+      <Link>img\bing_icon.png</Link>
+    </Content>
+    <Content Include="..\translationremindersrc\src\icons\icon.png">
+      <Link>img\icon.png</Link>
+    </Content>
+    <Content Include="..\translationremindersrc\src\icons\icon_18.png">
+      <Link>img\icon_18.png</Link>
+    </Content>
+    <Content Include="..\translationremindersrc\src\includes\DB.js">
+      <Link>scripts\DB.js</Link>
+    </Content>
+    <Content Include="..\translationremindersrc\src\includes\Extensions.js">
+      <Link>scripts\Extensions.js</Link>
+    </Content>
+    <Content Include="..\translationremindersrc\src\includes\Frontend.js">
+      <Link>scripts\Frontend.js</Link>
+    </Content>
+    <Content Include="..\translationremindersrc\src\includes\Helper.js">
+      <Link>scripts\Helper.js</Link>
+    </Content>
+    <Content Include="..\translationremindersrc\src\includes\WebClient.js">
+      <Link>scripts\WebClient.js</Link>
+    </Content>
+    <Content Include="background.js" />
+    <Content Include="config.xml" />
+    <Content Include="foreground.js" />
+    <Content Include="index.html" />
+    <Content Include="popup.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="deploy\deploy.cmd" />
+    <None Include="deploy\deploy_x64.cmd" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

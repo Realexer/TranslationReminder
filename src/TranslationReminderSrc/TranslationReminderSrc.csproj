@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{EFAB5BE7-8B5C-4F95-A154-863627F05161}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <ProjectGuid>{8A315A0F-4ACC-494C-BD81-4394878470C6}</ProjectGuid>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>TranslationReminder</RootNamespace>
-    <AssemblyName>TranslationReminder</AssemblyName>
+    <RootNamespace>TranslationReminderSrc</RootNamespace>
+    <AssemblyName>TranslationReminderSrc</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
@@ -33,32 +33,24 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <ItemGroup>
-    <None Include="deploy\deploy.cmd" />
-    <None Include="deploy\deploy_x64.cmd" />
-    <None Include="obj\x86\Debug\DesignTimeResolveAssemblyReferencesInput.cache" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="background.js" />
-    <Content Include="config.xml" />
-    <Content Include="css\base.css" />
-    <Content Include="icons\bing_icon.png" />
-    <Content Include="icons\icon.png" />
-    <Content Include="icons\icon_18.png" />
-    <Content Include="imgs\back.png" />
-    <Content Include="imgs\edit.png" />
-    <Content Include="imgs\synch.png" />
-    <Content Include="includes\DB.js" />
-    <Content Include="includes\Extensions.js" />
-    <Content Include="includes\foreground.js" />
-    <Content Include="includes\Frontend.js" />
-    <Content Include="includes\Helper.js" />
-    <Content Include="includes\WebClient.js" />
     <Content Include="index.html" />
     <Content Include="popup.html" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="obj\x86\Debug\TempPE\" />
+    <Content Include="src\css\base.css" />
+    <Content Include="src\icons\bing_icon.png" />
+    <Content Include="src\icons\icon.png" />
+    <Content Include="src\icons\icon_18.png" />
+    <Content Include="src\imgs\back.png" />
+    <Content Include="src\imgs\edit.png" />
+    <Content Include="src\imgs\synch.png" />
+    <Content Include="src\includes\DB.js" />
+    <Content Include="src\includes\Extensions.js" />
+    <Content Include="src\includes\Frontend.js" />
+    <Content Include="src\includes\Helper.js" />
+    <Content Include="src\includes\WebClient.js" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
