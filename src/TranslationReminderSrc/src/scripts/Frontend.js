@@ -3,8 +3,10 @@ var Frontend = new function ()
 	this.highlightedClass = "translation_reminder_";
 	this.hintClassName = "translation_reminder_hint_";
 	this._YM_newWordFormID = "_translation_reminder_new_word_form";
+	this.classNames = {
+		wordsHandler: "your_meaning_words_handler"
+	};
 
-	this.userName = null;
 	this.currentSelection = null;
 
 	this.textNodes = new Array();
@@ -18,7 +20,7 @@ var Frontend = new function ()
 	{
 		this.findTexts(document.body);
 
-		opera.extension.postMessage({ action: "get", backMessage: "readed_on_page" });
+		// TODO opera.extension.postMessage({ action: "get", backMessage: "readed_on_page" });
 	};
 
 	this.RefreshCallback = function (words)
@@ -27,10 +29,10 @@ var Frontend = new function ()
 
 		for (var i = 0; i < this.textNodes.length; i++)
 		{
-			this.checkPageForAttentionWords(this.textNodes[i], this.textNodesValues[i]);
+			this.findWordsOnThePage(this.textNodes[i], this.textNodesValues[i]);
 		}
 
-		this.reloadWordsTable();
+		this.ReloadWordsTable();
 	};
 
 
@@ -40,7 +42,7 @@ var Frontend = new function ()
 		{
 			var childNode = node.childNodes[i];
 
-			if (childNode.id === "your_meaning_words_handler")
+			if (childNode.id === this.classNames.wordsHandler)
 				continue;
 			if (childNode.id === this._YM_newWordFormID)
 				continue;
@@ -54,7 +56,6 @@ var Frontend = new function ()
 					// add to array
 					this.textNodesValues.push(nodeValue);
 					this.textNodes.push(childNode);
-
 				}
 			}
 			else
@@ -65,7 +66,7 @@ var Frontend = new function ()
 	};
 
 
-	this.checkPageForAttentionWords = function (node, nodeTextOrigin)
+	this.findWordsOnThePage = function (node, nodeTextOrigin)
 	{
 		var nodeText = new String(nodeTextOrigin);
 
@@ -137,12 +138,12 @@ var Frontend = new function ()
 
 					if (leftPart.length > 0)
 					{
-						this.checkPageForAttentionWords(leftElement, leftPart);
+						this.findWordsOnThePage(leftElement, leftPart);
 					}
 
 					if (rightPart.length > 0)
 					{
-						this.checkPageForAttentionWords(rightElement, rightPart);
+						this.findWordsOnThePage(rightElement, rightPart);
 					}
 				}
 			}
@@ -194,7 +195,7 @@ var Frontend = new function ()
 
 		var selection = window.getSelection();
 		this.currentSelection = selection.toString();
-		this.insertBalloon();
+		this.createWordAddingForm();
 
 		if (this.currentSelection.length === 0)
 		{
@@ -211,27 +212,27 @@ var Frontend = new function ()
 
 		range.collapse(false);
 		var offset = range.getBoundingClientRect();
-		var probTop = offset.top - this.insertButton().clientHeight + window.pageYOffset;
+		var probTop = offset.top - this.WordAddingForm().clientHeight + window.pageYOffset;
 		var probLeft = offset.left;
 
 
 		if (probTop < 0)
 		{
-			this.insertButton().style.top = offset.bottom + window.pageYOffset + "px";
+			this.WordAddingForm().style.top = offset.bottom + window.pageYOffset + "px";
 		}
 		else
 		{
-			this.insertButton().style.top = probTop + "px";
+			this.WordAddingForm().style.top = probTop + "px";
 		}
 
-		if (parseInt(probLeft + parseInt(this.insertButton().clientWidth)) > parseInt(window.outerWidth))
+		if (parseInt(probLeft + parseInt(this.WordAddingForm().clientWidth)) > parseInt(window.outerWidth))
 		{
 			var scrollWidth = 20;
-			this.insertButton().style.left = (parseInt(window.outerWidth) - parseInt(this.insertButton().clientWidth)) - scrollWidth + "px";
+			this.WordAddingForm().style.left = (parseInt(window.outerWidth) - parseInt(this.WordAddingForm().clientWidth)) - scrollWidth + "px";
 		}
 		else
 		{
-			this.insertButton().style.left = probLeft + "px";
+			this.WordAddingForm().style.left = probLeft + "px";
 		}
 
 		document.getElementById("insertButtonValue").focus();
@@ -239,7 +240,7 @@ var Frontend = new function ()
 
 	this.showInsertButton = function ()
 	{
-		this.insertButton().style.display = "table";
+		this.WordAddingForm().style.display = "table";
 		var meaningInput = document.getElementById("insertButtonValue");
 		meaningInput.value = "";
 		var word = document.getElementById("current_selection");
@@ -248,20 +249,20 @@ var Frontend = new function ()
 
 	this.hideInsertButton = function ()
 	{
-		if (this.insertButton())
+		if (this.WordAddingForm())
 		{
-			this.insertButton().style.display = "none";
+			this.WordAddingForm().style.display = "none";
 			var word = document.getElementById("current_selection");
 			word.firstChild.nodeValue = "";
 		}
 	};
 
-	this.insertButton = function ()
+	this.WordAddingForm = function ()
 	{
 		return document.getElementById('insertButton');
 	};
 
-	this.insertBalloon = function ()
+	this.createWordAddingForm = function ()
 	{
 		if (!oNewNode)
 		{
@@ -285,19 +286,19 @@ var Frontend = new function ()
 		 " <td class=\"nwf_add_button\" id=\"insertButtonItem\"><div id=\"insertButtonSubItem\">+</div> </td></tr> </table></div>";
 		}
 
-		if (!this.insertButton())
+		if (!this.WordAddingForm())
 		{
 			oNewNode.id = this._YM_newWordFormID;
 			document.body.appendChild(oNewNode);
-			document.getElementById("insertButtonItem").onclick = insertButtonClick;
+			document.getElementById("insertButtonItem").onclick = AddWord;
 			document.getElementById("_tranlsate_with_bing").onclick = translateWithBing;
-			
+
 			var frntnd = this;
 			document.getElementById("insertButtonValue").onkeypress = function (event)
 			{
 				if (event.keyCode === 13) // enter pressed
 				{
-					frntnd.insertButtonClick();
+					frntnd.AddWord();
 				}
 			}
 
@@ -305,7 +306,7 @@ var Frontend = new function ()
 		}
 	};
 
-	this.insertButtonClick = function ()
+	this.AddWord = function ()
 	{
 		if (this.currentSelection.length > 0)
 		{
@@ -315,7 +316,7 @@ var Frontend = new function ()
 
 			if (meaning.fullTrim().length > 0)
 			{
-				opera.extension.postMessage({ action: "write", word: this.currentSelection, meaning: meaning });
+				// TODO: opera.extension.postMessage({ action: "write", word: this.currentSelection, meaning: meaning });
 				this.writeWord(currentSelection, meaning, function ()
 				{
 					RefreshPage();
@@ -388,7 +389,7 @@ var Frontend = new function ()
 		document.getElementById('deleteWordSpan').onclick = function ()
 		{
 			frntnd.deleteWord(curTarget.firstChild.nodeValue);
-			opera.extension.postMessage({ action: "delete", word: curTarget.firstChild.nodeValue });
+			// TODO: opera.extension.postMessage({ action: "delete", word: curTarget.firstChild.nodeValue });
 			deleteWord(curTarget.firstChild.nodeValue);
 		};
 	};
@@ -420,229 +421,7 @@ var Frontend = new function ()
 
 	this.deleteWord = function (word)
 	{
-		opera.extension.postMessage({ action: "delete", word: word });
+		// TODO: opera.extension.postMessage({ action: "delete", word: word });
 	};
 
-	this.showWordsTable = function ()
-	{
-		var wordsView = document.getElementById("your_meaning_words_handler");
-
-		if (!wordsView)
-		{
-			var innerHtmlText = "<table id=\"your_meaning_words_\"></table>";
-			var wordsHandler = document.createElement("div");
-			wordsHandler.innerHTML = innerHtmlText;
-
-			wordsHandler.id = "your_meaning_words_handler";
-			wordsHandler.style.background = "#fff";
-			wordsHandler.style.border = "1px solid #abbbd1";
-			wordsHandler.style.width = "315px";
-			wordsHandler.style.height = "250px";
-			wordsHandler.style.overflowY = "scroll";
-
-			document.getElementById("_words_handler").appendChild(wordsHandler);
-		}
-		else
-		{
-			if (wordsView.style.display == "none")
-			{
-				wordsView.style.display = "table";
-			}
-			else
-			{
-				wordsView.style.display = "none";
-			}
-		}
-
-		this.reloadWordsTable();
-
-		this.getUserNameToShow();
-	};
-
-	this.reloadWordsTable = function ()
-	{
-		var wordsTable = document.getElementById("your_meaning_words_");
-
-		if (wordsTable !== undefined)
-		{
-			document.getElementById("_loading_view").style.display = "block";
-			//opera.extension.postMessage({ action: "get", backMessage: "readed_on_table" });
-		}
-	};
-
-	this.reloadTableCallback = function (words)
-	{
-		var wordsTable = document.getElementById("your_meaning_words_");
-
-		if (wordsTable.hasChildNodes())
-		{
-			while (wordsTable.childNodes.length >= 1)
-			{
-				wordsTable.removeChild(wordsTable.firstChild);
-			}
-		}
-
-		if (words.length > 0)
-		{
-			document.getElementById("_no_words_view").style.display = "none";
-		}
-		else
-		{
-			document.getElementById("_no_words_view").style.display = "block";
-		}
-
-		for (var i = 0; i < words.length; i++)
-		{
-			var word = words[i].word;
-			var meaning = words[i].meaning;
-
-			if (word === 0)
-				continue;
-
-			var row = document.createElement("tr");
-
-			var cell1 = document.createElement("td");
-			var cell2 = document.createElement("td");
-			var cell3 = document.createElement("td");
-
-			cell1.className = "word_";
-			cell2.className = "meaning_";
-			cell3.className = "delete_";
-
-			cell1.appendChild(document.createTextNode(word));
-			cell2.appendChild(document.createTextNode(meaning));
-			cell3.appendChild(document.createTextNode("x"));
-			cell3.style.color = "red";
-			cell3.style.cursor = "pointer";
-
-			cell3.setAttribute("word", word);
-			cell3.addEventListener("click", deleteWordFromTable, false);
-
-			row.appendChild(cell1);
-			row.appendChild(cell2);
-			row.appendChild(cell3);
-
-			wordsTable.appendChild(row);
-		}
-
-		document.getElementById("_loading_view").style.display = "none";
-	};
-
-
-
-	this.deleteWordFromTable = function (event)
-	{
-		var cell = event.target;
-		var word = cell.getAttribute("word");
-
-		this.deleteWord(word);
-	};
-
-
-	this.SynchonizeData = function ()
-	{
-		document.getElementById("_loading_view").style.display = "block";
-		opera.extension.postMessage({ action: "prepare_synchronize" });
-	};
-
-
-	this.DataSynchronized = function (data)
-	{
-		// TODO:
-	};
-
-
-	this.login = function ()
-	{
-		var userName = document.getElementById("_exists_login").value;
-		document.getElementById("_loading_view").style.display = "block";
-		opera.extension.postMessage({ action: "login", userId: userName });
-	};
-
-	this.createAccout = function ()
-	{
-		document.getElementById("_loading_view").style.display = "block";
-		var userName = document.getElementById("_new_login").value;
-		opera.extension.postMessage({ action: "createAcc", userId: userName });
-	};
-
-	this.BackToMain = function ()
-	{
-		var accMenuDiv = document.getElementById("_account_menu_elem");
-		var mainDiv = document.getElementById("_main_elem");
-
-		mainDiv.style.display = "block";
-		accMenuDiv.style.display = "none";
-
-
-		this.getUserNameToShow();
-	};
-
-	this.editUserID = function ()
-	{
-		var accMenuDiv = document.getElementById("_account_menu_elem");
-		var mainDiv = document.getElementById("_main_elem");
-
-		mainDiv.style.display = "none";
-		document.getElementById("_no_user_view").style.display = "none";
-		document.getElementById("_loading_view").style.display = "none";
-		accMenuDiv.style.display = "block";
-		document.getElementById("_exists_login").focus();
-		document.getElementById("_exists_login").onkeypress = function (event)
-		{
-			if (event.keyCode === 13)
-			{
-				login();
-			}
-		};
-
-		document.getElementById("_new_login").onkeypress = function (event)
-		{
-			if (event.keyCode === 13)
-			{
-				createAccout();
-			}
-		};
-
-		this.getUserNameToPaste();
-	};
-
-	this.getUserNameToShow = function ()
-	{
-		opera.extension.postMessage({ action: "get_username", backMessage: "show_username" });
-	};
-
-	this.getUserNameToPaste = function ()
-	{
-		opera.extension.postMessage({ action: "get_username", backMessage: "paste_username" });
-	};
-
-	this.ShowUserName = function (userName)
-	{
-		this.userName = userName;
-
-		// update UI
-		if (userName === null)
-		{
-			document.getElementById("_loading_view").style.display = "none";
-			userName = "";
-			document.getElementById("_no_user_view").style.display = "block";
-			document.getElementById("_LOG_IN_BTN").focus();
-		}
-		else
-		{
-			document.getElementById("_no_user_view").style.display = "none";
-		}
-
-		document.getElementById("_username_elem").innerHTML = userName;
-	};
-
-	this.PasteUserName = function (userName)
-	{
-		// update UI
-		if (userName === null)
-			userName = "";
-
-		document.getElementById("_exists_login").setAttribute("value", userName);
-	};
 };

@@ -30,12 +30,22 @@ body
 	border: 1px solid;
 	border-color: #abbbd1;
 }
+
+.words-handler .words-list 
+{
+	background: #fff;
+	border: 1px solid #abbbd1;
+	width: 315px;
+	height: 250px;
+	overflow-y: scroll;
+}
+
 .words-handler table td
 {
 	border: 1px solid #abbbd1;
 	padding: 3px;
 }
-.words-handler table .word_
+.words-handler table .word
 {
 	width: 40%;
 	color: #000;

@@ -94,7 +94,7 @@ switch (message)
 
 
    document.body.appendChild(displayer);
-   displayer.onclick = showWordsTable;
+   displayer.onclick = ShowWordsTable;
 
 }, false);*/
 
