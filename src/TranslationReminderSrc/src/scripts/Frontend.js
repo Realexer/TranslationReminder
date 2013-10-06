@@ -1,9 +1,10 @@
-var Frontend = new function ()
+var Frontend = function ()
 {
-	this.highlightedClass = "translation_reminder_";
-	this.hintClassName = "translation_reminder_hint_";
-	this._YM_newWordFormID = "_translation_reminder_new_word_form";
-	this.classNames = {
+	this.classNames =
+	{
+		highlightedClass: "translation_reminder_",
+		hintClassName: "translation_reminder_hint_",
+		newWordFormID: "_translation_reminder_new_word_form",
 		wordsHandler: "your_meaning_words_handler"
 	};
 
@@ -18,7 +19,7 @@ var Frontend = new function ()
 
 	this.RefreshPage = function ()
 	{
-		this.findTexts(document.body);
+		this.FindTexts(document.body);
 
 		// TODO opera.extension.postMessage({ action: "get", backMessage: "readed_on_page" });
 	};
@@ -29,14 +30,14 @@ var Frontend = new function ()
 
 		for (var i = 0; i < this.textNodes.length; i++)
 		{
-			this.findWordsOnThePage(this.textNodes[i], this.textNodesValues[i]);
+			this.FindWordsOnThePage(this.textNodes[i], this.textNodesValues[i]);
 		}
 
 		this.ReloadWordsTable();
 	};
 
 
-	this.findTexts = function (node)
+	this.FindTexts = function (node)
 	{
 		for (var i = 0; i < node.childNodes.length; i++)
 		{
@@ -60,13 +61,13 @@ var Frontend = new function ()
 			}
 			else
 			{
-				this.findTexts(childNode);
+				this.FindTexts(childNode);
 			}
 		}
 	};
 
 
-	this.findWordsOnThePage = function (node, nodeTextOrigin)
+	this.FindWordsOnThePage = function (node, nodeTextOrigin)
 	{
 		var nodeText = new String(nodeTextOrigin);
 
@@ -117,7 +118,7 @@ var Frontend = new function ()
 					updatedElement.setAttribute("title", meaning);
 
 					updatedElement.setAttribute("class", this.highlightedClass);
-					updatedElement.addEventListener("click", showHint, true);
+					updatedElement.addEventListener("click", ShowHint, true);
 
 
 					updatedElement.style.backgroundColor = "#cef";
@@ -138,12 +139,12 @@ var Frontend = new function ()
 
 					if (leftPart.length > 0)
 					{
-						this.findWordsOnThePage(leftElement, leftPart);
+						this.FindWordsOnThePage(leftElement, leftPart);
 					}
 
 					if (rightPart.length > 0)
 					{
-						this.findWordsOnThePage(rightElement, rightPart);
+						this.FindWordsOnThePage(rightElement, rightPart);
 					}
 				}
 			}
@@ -172,7 +173,7 @@ var Frontend = new function ()
 	};
 
 
-	this.SelectWord = function (event)
+	this.SelectWord = function (event, frontend)
 	{
 		if (event.target.id === "insertButton"
 	      || event.target.id === "insertButtonValue"
@@ -187,7 +188,7 @@ var Frontend = new function ()
 
 		if (!event.ctrlKey)
 		{
-			this.hideInsertButton();
+			this.HideNewWordAddingForm();
 			this.currentSelection = null;
 			return;
 		}
@@ -195,17 +196,17 @@ var Frontend = new function ()
 
 		var selection = window.getSelection();
 		this.currentSelection = selection.toString();
-		this.createWordAddingForm();
+		this.CreateWordAddingForm();
 
 		if (this.currentSelection.length === 0)
 		{
-			this.hideInsertButton();
+			this.HideNewWordAddingForm();
 			this.currentSelection = null;
 			return;
 		}
 		else
 		{
-			this.showInsertButton();
+			this.ShowNewWordAddingForm();
 		}
 
 		var range = selection.getRangeAt(0);
@@ -238,7 +239,7 @@ var Frontend = new function ()
 		document.getElementById("insertButtonValue").focus();
 	};
 
-	this.showInsertButton = function ()
+	this.ShowNewWordAddingForm = function ()
 	{
 		this.WordAddingForm().style.display = "table";
 		var meaningInput = document.getElementById("insertButtonValue");
@@ -247,7 +248,7 @@ var Frontend = new function ()
 		word.firstChild.nodeValue = this.currentSelection;
 	};
 
-	this.hideInsertButton = function ()
+	this.HideNewWordAddingForm = function ()
 	{
 		if (this.WordAddingForm())
 		{
@@ -262,7 +263,7 @@ var Frontend = new function ()
 		return document.getElementById('insertButton');
 	};
 
-	this.createWordAddingForm = function ()
+	this.CreateWordAddingForm = function ()
 	{
 		if (!oNewNode)
 		{
@@ -290,19 +291,19 @@ var Frontend = new function ()
 		{
 			oNewNode.id = this._YM_newWordFormID;
 			document.body.appendChild(oNewNode);
-			document.getElementById("insertButtonItem").onclick = AddWord;
-			document.getElementById("_tranlsate_with_bing").onclick = translateWithBing;
+			document.getElementById("insertButtonItem").onclick = this.AddWord;
+			document.getElementById("_tranlsate_with_bing").onclick = this.TranslateWithBing;
 
-			var frntnd = this;
+			var frontendInstance = this;
 			document.getElementById("insertButtonValue").onkeypress = function (event)
 			{
 				if (event.keyCode === 13) // enter pressed
 				{
-					frntnd.AddWord();
+					frontendInstance.AddWord();
 				}
 			}
 
-			document.getElementById("insertButtonClose").onclick = hideInsertButton;
+			document.getElementById("insertButtonClose").onclick = this.HideNewWordAddingForm;
 		}
 	};
 
@@ -310,7 +311,7 @@ var Frontend = new function ()
 	{
 		if (this.currentSelection.length > 0)
 		{
-			this.hideInsertButton();
+			this.HideNewWordAddingForm();
 			var meaningInput = document.getElementById("insertButtonValue");
 			var meaning = meaningInput.value;
 
@@ -326,7 +327,7 @@ var Frontend = new function ()
 	};
 
 
-	this.translateWithBing = function ()
+	this.TranslateWithBing = function ()
 	{
 		if (this.currentSelection.length > 0)
 		{
@@ -350,7 +351,7 @@ var Frontend = new function ()
 	};
 
 
-	this.showHint = function (event)
+	this.ShowHint = function (event)
 	{
 		var curTarget = event.target;
 		if (curTarget.className !== this.highlightedClass)
@@ -382,19 +383,19 @@ var Frontend = new function ()
 
 		var frntnd = this;
 
-		hint.addEventListener("click", this.deleteHint, false);
-		document.getElementById('_ym_hint_table').addEventListener("click", this.deleteHint, false);
-		document.getElementsByTagName("body")[0].addEventListener("click", this.deleteHint, false);
+		hint.addEventListener("click", this.DeleteHint, false);
+		document.getElementById('_ym_hint_table').addEventListener("click", this.DeleteHint, false);
+		document.getElementsByTagName("body")[0].addEventListener("click", this.DeleteHint, false);
 
 		document.getElementById('deleteWordSpan').onclick = function ()
 		{
-			frntnd.deleteWord(curTarget.firstChild.nodeValue);
+			frntnd.DeleteWord(curTarget.firstChild.nodeValue);
 			// TODO: opera.extension.postMessage({ action: "delete", word: curTarget.firstChild.nodeValue });
-			deleteWord(curTarget.firstChild.nodeValue);
+			DeleteWord(curTarget.firstChild.nodeValue);
 		};
 	};
 
-	this.deleteHint = function (event)
+	this.DeleteHint = function (event)
 	{
 		if (event.target.className === this.highlightedClass)
 		{
@@ -419,7 +420,7 @@ var Frontend = new function ()
 	};
 
 
-	this.deleteWord = function (word)
+	this.DeleteWord = function (word)
 	{
 		// TODO: opera.extension.postMessage({ action: "delete", word: word });
 	};
