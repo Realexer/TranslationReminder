@@ -1,0 +1,110 @@
+.TR-NewWordForm_handler
+{
+	background: #fff;
+	z-index: 2147483647;
+	display: none;
+	position: absolute;
+	width: 250px;
+	border: 1px solid #aaf;
+	font-family: Arial;
+	font-size: 17px;
+	overflow: hidden;
+}
+.TR-NewWordForm_handler div
+{
+	display: block;
+}
+.TR-NewWordForm_handler *
+{
+	text-align: left;
+}
+.TR-NewWordForm_handler span, input
+{
+	display: inline;
+}
+.TR-NewWordForm_title
+{
+	background: #aaf;
+	font-weight: bold;
+	font-size: 0.8em;
+	color: #fff;
+	padding: 2px 0px;
+	padding-left: 0.2em;
+	text-transform: uppercase;
+}
+.TR-NewWordForm_handler table
+{
+	font-size: 0.8em;
+	width: 100%;
+	border-collapse: collapse;
+}
+.TR-NewWordForm_handler tr td
+{
+	width: auto;
+}
+
+.TR-NewWordForm_word_table
+{
+	height: 15px;
+	overflow: hidden;
+}
+.TR-NewWordForm_selected_word
+{
+	font-weight: bold;
+	padding: 3px 4px;
+}
+.TR-NewWordForm_close_button
+{
+	width: 25px;
+}
+.TR-NewWordForm_close_button
+{
+	text-align: center;
+	color: #c77;
+	float: right;
+	cursor: pointer;
+}
+.TR-NewWordForm_meaning_table
+{
+	font-size: 0.8em;
+	height: 25px;
+}
+.TR-NewWordForm_input
+{
+	padding-left: 4px;
+}
+.TR-NewWordForm_input input
+{
+	width: 87%;
+	border-bottom-color: rgb(170, 170, 170);
+	border-bottom-left-radius: 2px;
+	border-bottom-right-radius: 2px;
+	border-bottom-style: solid;
+	border-bottom-width: 1px;
+	border-left-color: rgb(170, 170, 170);
+	border-left-style: solid;
+	border-left-width: 1px;
+	border-right-color: rgb(170, 170, 170);
+	border-right-style: solid;
+	border-right-width: 1px;
+	border-top-color: rgb(170, 170, 170);
+	border-top-left-radius: 2px;
+	border-top-right-radius: 2px;
+	border-top-style: solid;
+	border-top-width: 1px;
+	box-sizing: border-box;
+}
+.TR-NewWordForm_add_button
+{
+	font-size: 1.2em;
+	width: 25px;
+	cursor: pointer;
+}
+.TR-NewWordForm_add_button div
+{
+	color: green;
+	text-align: center;
+	border: 1px solid #7a7;
+	width: 21px;
+	margin-bottom: 1px;
+}
