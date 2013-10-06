@@ -1,62 +1,63 @@
-﻿var Popup = new function ()
+﻿var Popup = function ()
 {
-	this.ShowWordsTable = function ()
+	var wordsTable = document.getElementById("words-list");
+	var loadingView = document.getElementById("loading-view");
+
+	this.ShowLoadingView = function (hide)
 	{
-		var wordsView = document.getElementById("words-list");
+		loadingView.style.display = "block";
+	},
 
-		with (wordsView.style)
-		{
-			display = display == "none" ? "table" : "none";
-		}
-
-		this.ReloadWordsTable();
+	this.HideLoadingView = function ()
+	{
+		loadingView.style.display = "none";
 	};
 
-	this.ReloadWordsTable = function ()
+	this.ShowUserWords = function ()
 	{
-		
-		document.getElementById("no-words-view").style.display = "block";	
-	};
+		var popup = this;
+		popup.ShowLoadingView();
 
-	this.reloadTableCallback = function (words)
-	{
-		var wordsTable = document.getElementById("your_meaning_words_");
+		var db = new DB();
 
-		for (var i = 0; i < words.length; i++)
+		db.GetWords(function (words)
 		{
-			var word = words[i].word;
-			var meaning = words[i].meaning;
+			for (var i = 0; i < words.length; i++)
+			{
+				var word = words[i].word;
+				var meaning = words[i].meaning;
 
-			if (word === 0)
-				continue;
+				if (word === 0)
+					continue;
 
-			var row = document.createElement("tr");
+				var row = document.createElement("tr");
 
-			var cell1 = document.createElement("td");
-			var cell2 = document.createElement("td");
-			var cell3 = document.createElement("td");
+				var cell1 = document.createElement("td");
+				var cell2 = document.createElement("td");
+				var cell3 = document.createElement("td");
 
-			cell1.className = "word";
-			cell2.className = "meaning";
-			cell3.className = "delete";
+				cell1.className = "word";
+				cell2.className = "meaning";
+				cell3.className = "delete";
 
-			cell1.appendChild(document.createTextNode(word));
-			cell2.appendChild(document.createTextNode(meaning));
-			cell3.appendChild(document.createTextNode("x"));
-			cell3.style.color = "red";
-			cell3.style.cursor = "pointer";
+				cell1.appendChild(document.createTextNode(word));
+				cell2.appendChild(document.createTextNode(meaning));
+				cell3.appendChild(document.createTextNode("x"));
+				cell3.style.color = "red";
+				cell3.style.cursor = "pointer";
 
-			cell3.setAttribute("word", word);
-			cell3.addEventListener("click", DeleteWordFromTable, false);
+				cell3.setAttribute("word", word);
+				cell3.addEventListener("click", DeleteWordFromTable, false);
 
-			row.appendChild(cell1);
-			row.appendChild(cell2);
-			row.appendChild(cell3);
+				row.appendChild(cell1);
+				row.appendChild(cell2);
+				row.appendChild(cell3);
 
-			wordsTable.appendChild(row);
-		}
+				wordsTable.appendChild(row);
+			}
 
-		document.getElementById("_loading_view").style.display = "none";
+			popup.HideLoadingView();
+		});
 	};
 
 
@@ -67,6 +68,12 @@
 		var word = cell.getAttribute("word");
 
 		// TODO: this.delteWord(word);
+		this.ShowUserWords();
 	};
+};
 
+window.onload = function ()
+{
+	var popup = new Popup();
+	popup.ShowUserWords();
 };

@@ -6,7 +6,7 @@ var DB = function ()
 		
 		db.transaction(function (tx)
 		{
-			tx.executeSql('CREATE TABLE IF NOT EXISTS words (word, meaning, toDelete, toEdit, userName, date)', null, null,
+			tx.executeSql('CREATE TABLE IF NOT EXISTS words (word, meaning, date)', null, null,
 			function (tx, error)
 			{
 				// TODO: Report error
@@ -16,74 +16,42 @@ var DB = function ()
 		return db;
 	};
 
-	this.SaveUserID = function (userId)
-	{
-		localStorage.setItem("userId", userId);
-	};
-
-	this.GetUserID = function ()
-	{
-		try
-		{
-			return localStorage.getItem("userId");
-		}
-		catch (ex)
-		{
-			// TODO: Report error
-		}
-
-	};
-
 
 	this.GetWords = function (callback)
 	{
-		var userName = this.GetUserID();
-		if (!userName)
-			return false;
-
 		getDb().transaction(function (tx)
 		{
-			tx.executeSql("SELECT * FROM words WHERE userName =? ORDER BY date DESC", [userName],
+			tx.executeSql("SELECT * FROM words ORDER BY date DESC", [],
 			function (tx, results)
 			{
-				var callbackArray = new Array();
+				var words = new Array();
 				for (var i = 0; i < results.rows.length; i++)
 				{
-					callbackArray.push({
+					words.push({
 						word: results.rows.item(i).word,
 						meaning: results.rows.item(i).meaning,
-						toDelete: results.rows.item(i).toDelete,
-						toEdit: results.rows.item(i).toEdit,
 						date: results.rows.item(i).date
 					});
 				}
 
 				if (callback)
 				{
-					callback();
+					callback(words);
 				}
 			},
 			function (tx, error)
 			{
 				// TODO: Report error
 			});
-
-			return true;
 		});
 	};
 
 
 	this.WriteWord = function (word, meaning, date, callback)
 	{
-		var userName = this.GetUserID();
-		if (!userName)
-		{
-			return false;
-		}
-
 		getDb().transaction(function (tx)
 		{
-			if (date === undefined || date === null)
+			if (date == null)
 			{
 				date = new Date().getTime();
 			}
@@ -91,8 +59,8 @@ var DB = function ()
 			date = parseInt(date);
 
 			word = word.fullTrim();
-			tx.executeSql('INSERT INTO words (word, meaning, toDelete, toEdit, userName, date) ' +
-							'VALUES (?, ?, 0, 0, ?, ?)', [word.toLowerCase(), meaning, userName, date],
+			tx.executeSql('INSERT INTO words (word, meaning, date) ' +
+							'VALUES (?, ?, ?)', [word.toLowerCase(), meaning, date],
 
 			function (tx, results)
 			{
@@ -106,22 +74,15 @@ var DB = function ()
 				// TODO: Report error
 			});
 		});
-
-		return true;
 	};
 
 
 	this.DeleteWord = function (word, callback)
 	{
-		var userName = this.GetUserID();
-		if (!userName)
-			return false;
-
-
 		getDb().transaction(function (tx)
 		{
 			word = word.fullTrim();
-			tx.executeSql('UPDATE words SET toDelete=1 WHERE (word)=? AND (userName)=?', [word.toString().toLowerCase(), userName],
+			tx.executeSql('DELETE FROM words WHERE (word)=?', [word.toString().toLowerCase()],
 			function (tx, results)
 			{
 				if (callback)
@@ -134,19 +95,13 @@ var DB = function ()
 				// TODO: Report error
 			});
 		});
-
-		return true;
 	};
 
 	this.DeleteAllWords = function (callback)
 	{
-		var userName = this.GetUserID();
-		if (!userName)
-			return false;
-
 		getDb().transaction(function (tx)
 		{
-			tx.executeSql('DELETE FROM words WHERE (userName) = ?', [userName],
+			tx.executeSql('DELETE FROM words', [],
 			function (tx, results)
 			{
 				if (callback)
@@ -159,7 +114,5 @@ var DB = function ()
 				opera.postError("Delete error: " + error);
 			});
 		});
-
-		return true;
 	};
 };

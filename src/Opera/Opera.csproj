@@ -58,23 +58,27 @@
       <Link>img\icon_18.png</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\translationremindersrc\src\includes\DB.js">
+    <Content Include="..\TranslationReminderSrc\src\scripts\DB.js">
       <Link>scripts\DB.js</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\translationremindersrc\src\includes\Extensions.js">
+    <Content Include="..\TranslationReminderSrc\src\scripts\Extensions.js">
       <Link>scripts\Extensions.js</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\translationremindersrc\src\includes\Frontend.js">
+    <Content Include="..\TranslationReminderSrc\src\scripts\Frontend.js">
       <Link>scripts\Frontend.js</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\translationremindersrc\src\includes\Helper.js">
+    <Content Include="..\TranslationReminderSrc\src\scripts\Helper.js">
       <Link>scripts\Helper.js</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\translationremindersrc\src\includes\WebClient.js">
+    <Content Include="..\TranslationReminderSrc\src\scripts\Popup.js">
+      <Link>scripts\Popup.js</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\TranslationReminderSrc\src\scripts\WebClient.js">
       <Link>scripts\WebClient.js</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

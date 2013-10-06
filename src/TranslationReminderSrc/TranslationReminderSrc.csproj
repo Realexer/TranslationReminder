@@ -64,11 +64,12 @@
     <Content Include="src\imgs\back.png" />
     <Content Include="src\imgs\edit.png" />
     <Content Include="src\imgs\synch.png" />
-    <Content Include="src\includes\DB.js" />
-    <Content Include="src\includes\Extensions.js" />
-    <Content Include="src\includes\Frontend.js" />
-    <Content Include="src\includes\Helper.js" />
-    <Content Include="src\includes\WebClient.js" />
+    <Content Include="src\scripts\DB.js" />
+    <Content Include="src\scripts\Extensions.js" />
+    <Content Include="src\scripts\Frontend.js" />
+    <Content Include="src\scripts\Helper.js" />
+    <Content Include="src\scripts\Popup.js" />
+    <Content Include="src\scripts\WebClient.js" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0,Profile=Client">
