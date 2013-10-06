@@ -22,6 +22,9 @@ var Frontend = function ()
 		this.FindTexts(document.body);
 
 		// TODO opera.extension.postMessage({ action: "get", backMessage: "readed_on_page" });
+		var db = new DB();
+		var frontendInstance = this;
+		db.GetWords(function (words) { frontendInstance.RefreshCallback(words); });
 	};
 
 	this.RefreshCallback = function (words)
@@ -45,8 +48,6 @@ var Frontend = function ()
 
 			if (childNode.id === this.classNames.wordsHandler)
 				continue;
-			if (childNode.id === this._YM_newWordFormID)
-				continue;
 
 			// if text node
 			if (childNode.nodeType === 3)
@@ -69,6 +70,7 @@ var Frontend = function ()
 
 	this.FindWordsOnThePage = function (node, nodeTextOrigin)
 	{
+		var frontendInstance = this;
 		var nodeText = new String(nodeTextOrigin);
 
 		for (var i = 0; i < this.globalWords.length; i++)
@@ -117,8 +119,8 @@ var Frontend = function ()
 
 					updatedElement.setAttribute("title", meaning);
 
-					updatedElement.setAttribute("class", this.highlightedClass);
-					updatedElement.addEventListener("click", ShowHint, true);
+					updatedElement.setAttribute("class", this.classNames.highlightedClass);
+					updatedElement.addEventListener("click", function(e) { frontendInstance.ShowHint(e) }, true);
 
 
 					updatedElement.style.backgroundColor = "#cef";
@@ -306,15 +308,15 @@ var Frontend = function ()
 
 			oNewNode.id = this._YM_newWordFormID;
 			document.body.appendChild(oNewNode);
-			document.getElementById("insertButtonItem").onclick = function () { frontendInstance.AddWord(frontendInstance); };
-			document.getElementById("_tranlsate_with_bing").onclick = function () { frontendInstance.TranslateWithBing(frontendInstance); };
+			document.getElementById("insertButtonItem").onclick = function () { frontendInstance.AddWord(); };
+			document.getElementById("_tranlsate_with_bing").onclick = function () { frontendInstance.TranslateWithBing(); };
 
 
 			document.getElementById("insertButtonValue").onkeypress = function (event)
 			{
 				if (event.keyCode === 13) // enter pressed
 				{
-					frontendInstance.AddWord(frontendInstance);
+					frontendInstance.AddWord();
 				}
 			}
 
@@ -322,53 +324,47 @@ var Frontend = function ()
 		}
 	};
 
-	this.AddWord = function (frontendInstance)
+	this.AddWord = function ()
 	{
-		with (frontendInstance)
+		if (this.currentSelection.length > 0)
 		{
-			if (this.currentSelection.length > 0)
-			{
-				this.HideNewWordAddingForm();
-				var meaningInput = document.getElementById("insertButtonValue");
-				var meaning = meaningInput.value;
+			this.HideNewWordAddingForm();
+			var meaningInput = document.getElementById("insertButtonValue");
+			var meaning = meaningInput.value;
 
-				if (meaning.fullTrim().length > 0)
+			if (meaning.fullTrim().length > 0)
+			{
+				// TODO: opera.extension.postMessage({ action: "write", word: this.currentSelection, meaning: meaning });
+				var db = new DB();
+				var frontendInstance = this;
+				db.WriteWord(this.currentSelection, meaning, null, function ()
 				{
-					// TODO: opera.extension.postMessage({ action: "write", word: this.currentSelection, meaning: meaning });
-					var db = new DB();
-					
-					db.WriteWord(currentSelection, meaning, null, function ()
-					{
-						frontendInstance.RefreshPage();
-					});
-				}
+					frontendInstance.RefreshPage();
+				});
 			}
 		}
 	};
 
 
-	this.TranslateWithBing = function (frontendInstance)
+	this.TranslateWithBing = function ()
 	{
-		with (frontendInstance) 
+		if (this.currentSelection.length > 0)
 		{
-			if (this.currentSelection.length > 0)
+			window.mycallback = function (response)
 			{
-				window.mycallback = function(response)
-				{
-					var meaningInput = document.getElementById("insertButtonValue");
-					meaningInput.value = response;
-				}
+				var meaningInput = document.getElementById("insertButtonValue");
+				meaningInput.value = response;
+			}
 
-				var s = document.createElement("script");
-				s.src = "http://api.microsofttranslator.com/V2/Ajax.svc/Translate?oncomplete=bingcallback&appId=8E54095330F0B7E7CB73527A50437E6110A64730&to=" + "ru" + "&text=" + this.currentSelection;
-				if (document.getElementsByTagName("head") && document.getElementsByTagName("head")[0])
-				{
-					document.getElementsByTagName("head")[0].appendChild(s);
-				}
-				else
-				{
-					document.appendChild(s);
-				}
+			var s = document.createElement("script");
+			s.src = "http://api.microsofttranslator.com/V2/Ajax.svc/Translate?oncomplete=bingcallback&appId=8E54095330F0B7E7CB73527A50437E6110A64730&to=" + "ru" + "&text=" + this.currentSelection;
+			if (document.getElementsByTagName("head") && document.getElementsByTagName("head")[0])
+			{
+				document.getElementsByTagName("head")[0].appendChild(s);
+			}
+			else
+			{
+				document.appendChild(s);
 			}
 		}
 	};
@@ -406,9 +402,9 @@ var Frontend = function ()
 
 		var frntnd = this;
 
-		hint.addEventListener("click", this.DeleteHint, false);
-		document.getElementById('_ym_hint_table').addEventListener("click", this.DeleteHint, false);
-		document.getElementsByTagName("body")[0].addEventListener("click", this.DeleteHint, false);
+		hint.addEventListener("click", function (e) { frntnd.this.DeleteHint(e); }, false);
+		document.getElementById('_ym_hint_table').addEventListener("click", function (e) { frntnd.DeleteHint(e); }, false);
+		document.getElementsByTagName("body")[0].addEventListener("click", function (e) { frntnd.DeleteHint(e); }, false);
 
 		document.getElementById('deleteWordSpan').onclick = function ()
 		{
