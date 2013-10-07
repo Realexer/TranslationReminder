@@ -21,22 +21,17 @@ var Frontend = function ()
 	{
 		this.FindTexts(document.body);
 
-		// TODO opera.extension.postMessage({ action: "get", backMessage: "readed_on_page" });
 		var db = new DB();
 		var frontendInstance = this;
-		db.GetWords(function (words) { frontendInstance.RefreshCallback(words); });
-	};
-
-	this.RefreshCallback = function (words)
-	{
-		this.globalWords = words;
-
-		for (var i = 0; i < this.textNodes.length; i++)
+		db.GetWords(function (words)
 		{
-			this.FindWordsOnThePage(this.textNodes[i], this.textNodesValues[i]);
-		}
+			frontendInstance.globalWords = words;
 
-		this.ReloadWordsTable();
+			for (var i = 0; i < frontendInstance.textNodes.length; i++)
+			{
+				frontendInstance.FindWordsOnThePage(frontendInstance.textNodes[i], frontendInstance.textNodesValues[i]);
+			}
+		});
 	};
 
 
@@ -49,8 +44,7 @@ var Frontend = function ()
 			if (childNode.id === this.classNames.wordsHandler)
 				continue;
 
-			// if text node
-			if (childNode.nodeType === 3)
+			if (childNode.nodeType === 3) // 3 - is text node
 			{
 				var nodeValue = childNode.nodeValue.fullTrim();
 				if (nodeValue !== undefined && nodeValue.length > 0)
@@ -120,7 +114,7 @@ var Frontend = function ()
 					updatedElement.setAttribute("title", meaning);
 
 					updatedElement.setAttribute("class", this.classNames.highlightedClass);
-					updatedElement.addEventListener("click", function(e) { frontendInstance.ShowHint(e) }, true);
+					updatedElement.addEventListener("click", function (e) { frontendInstance.ShowHint(e) }, true);
 
 
 					updatedElement.style.backgroundColor = "#cef";
@@ -175,7 +169,7 @@ var Frontend = function ()
 	};
 
 
-	this.SelectWord = function (event, frontend)
+	this.SelectWord = function (event)
 	{
 		if (event.target.id === "insertButton"
 	      || event.target.id === "insertButtonValue"
@@ -270,7 +264,7 @@ var Frontend = function ()
 		if (!oNewNode)
 		{
 			oNewNode = document.createElement("div");
-			var bingImageUrl = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAMAUExURQBt1A921hB21x9/2SB/2S+I3D+R3kCS30+a4VCb4WCk5HCt5/+mFf+8T//Me4C26o+/7JC/7J/I7qDJ77DS8v/Siv/YmP/dp//jtcDb9NDk99/s+f/oxP/u0+/1/P///wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAzKFFIAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAYdEVYdFNvZnR3YXJlAFBhaW50Lk5FVCB2My4zNqnn4iUAAACHSURBVChTjY/NEoIwDIQXKBaoWEXjXyX7/m9p0vEgntyZ5PBNdrsFfwQgbtCf4JnHGMf8cK9ZQrBVFc4VAM2xkGXpgKmCXrmKrNQeyA4Kb3vTlQq0DsjZwUzuPMgvxMHBL6rJMl4id3IAEjgB3aKk+iuRFnCqQY1Nm62Ht7ukaEpW6wO+v/sGO2ESLp22P5MAAAAASUVORK5CYII%3D";
+			//var bingImageUrl = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAMAUExURQBt1A921hB21x9/2SB/2S+I3D+R3kCS30+a4VCb4WCk5HCt5/+mFf+8T//Me4C26o+/7JC/7J/I7qDJ77DS8v/Siv/YmP/dp//jtcDb9NDk99/s+f/oxP/u0+/1/P///wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAzKFFIAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAYdEVYdFNvZnR3YXJlAFBhaW50Lk5FVCB2My4zNqnn4iUAAACHSURBVChTjY/NEoIwDIQXKBaoWEXjXyX7/m9p0vEgntyZ5PBNdrsFfwQgbtCf4JnHGMf8cK9ZQrBVFc4VAM2xkGXpgKmCXrmKrNQeyA4Kb3vTlQq0DsjZwUzuPMgvxMHBL6rJMl4id3IAEjgB3aKk+iuRFnCqQY1Nm62Ht7ukaEpW6wO+v/sGO2ESLp22P5MAAAAASUVORK5CYII%3D";
 			oNewNode.innerHTML =
 			 "<div class=\"TR-NewWordForm_handler\" id=\"insertButton\">"
 				+ "<div id='insertButtonTitleHandler' class=\"TR-NewWordForm_title\">"
@@ -282,9 +276,6 @@ var Frontend = function ()
 					+ "<tr>"
 						+ "<td class=\"TR-NewWordForm_selected_word\">"
 							+ "<div id=\"current_selection\">word</div>"
-						+ "</td>"
-						+ "<td width=\"20px\">"
-							+ "<img id=\"_tranlsate_with_bing\" src=\"" + bingImageUrl + "\" alt=\"Tranlate with bing\" />"
 						+ "</td>"
 					+ "</tr>"
 				+ "</table>"
@@ -309,8 +300,7 @@ var Frontend = function ()
 			oNewNode.id = this._YM_newWordFormID;
 			document.body.appendChild(oNewNode);
 			document.getElementById("insertButtonItem").onclick = function () { frontendInstance.AddWord(); };
-			document.getElementById("_tranlsate_with_bing").onclick = function () { frontendInstance.TranslateWithBing(); };
-
+			
 
 			document.getElementById("insertButtonValue").onkeypress = function (event)
 			{
@@ -341,30 +331,6 @@ var Frontend = function ()
 				{
 					frontendInstance.RefreshPage();
 				});
-			}
-		}
-	};
-
-
-	this.TranslateWithBing = function ()
-	{
-		if (this.currentSelection.length > 0)
-		{
-			window.mycallback = function (response)
-			{
-				var meaningInput = document.getElementById("insertButtonValue");
-				meaningInput.value = response;
-			}
-
-			var s = document.createElement("script");
-			s.src = "http://api.microsofttranslator.com/V2/Ajax.svc/Translate?oncomplete=bingcallback&appId=8E54095330F0B7E7CB73527A50437E6110A64730&to=" + "ru" + "&text=" + this.currentSelection;
-			if (document.getElementsByTagName("head") && document.getElementsByTagName("head")[0])
-			{
-				document.getElementsByTagName("head")[0].appendChild(s);
-			}
-			else
-			{
-				document.appendChild(s);
 			}
 		}
 	};
@@ -402,7 +368,7 @@ var Frontend = function ()
 
 		var frntnd = this;
 
-		hint.addEventListener("click", function (e) { frntnd.this.DeleteHint(e); }, false);
+		hint.addEventListener("click", function (e) { frntnd.DeleteHint(e); }, false);
 		document.getElementById('_ym_hint_table').addEventListener("click", function (e) { frntnd.DeleteHint(e); }, false);
 		document.getElementsByTagName("body")[0].addEventListener("click", function (e) { frntnd.DeleteHint(e); }, false);
 
