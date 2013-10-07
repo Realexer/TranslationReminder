@@ -12,7 +12,7 @@ switch (message)
 	window.addEventListener("DOMContentLoaded", function()
 	{
 		document.onmouseup = frontend.SelectWord;
-		frontend.RefreshPage();
+		frontend.ShowHightlights();
 	}, false);
 	break;
 
@@ -21,7 +21,7 @@ switch (message)
 	break;
 
     case  "writed":
-	frontend.RefreshPage();
+	frontend.ShowHightlights();
 	break;
 
     case  "readed_on_page":
@@ -34,7 +34,7 @@ switch (message)
 
     case  "deleted":
 	frontend.RemoveHighLights(data);
-	frontend.RefreshPage();
+	frontend.ShowHightlights();
 	break;
 
     case "begin_synchronize":
@@ -43,7 +43,7 @@ switch (message)
 
     case "synchronized":
 	frontend.DataSynchronized(data);
-	frontend.RefreshPage();
+	frontend.ShowHightlights();
 	break;
 
     case "logined":
@@ -82,7 +82,7 @@ switch (message)
 {
    document.onmouseup = SelectWord;
    //document.body.onclick = showWordsTable();
-   RefreshPage();
+   ShowHightlights();
 
    var displayer = document.createElement("div");
    displayer.appendChild(document.createTextNode("SHOW"));

@@ -17,7 +17,7 @@ var Frontend = function ()
 	var oNewNode;
 
 
-	this.RefreshPage = function ()
+	this.ShowHightlights = function ()
 	{
 		this.FindTexts(document.body);
 
@@ -264,7 +264,6 @@ var Frontend = function ()
 		if (!oNewNode)
 		{
 			oNewNode = document.createElement("div");
-			//var bingImageUrl = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAMAUExURQBt1A921hB21x9/2SB/2S+I3D+R3kCS30+a4VCb4WCk5HCt5/+mFf+8T//Me4C26o+/7JC/7J/I7qDJ77DS8v/Siv/YmP/dp//jtcDb9NDk99/s+f/oxP/u0+/1/P///wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAzKFFIAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAYdEVYdFNvZnR3YXJlAFBhaW50Lk5FVCB2My4zNqnn4iUAAACHSURBVChTjY/NEoIwDIQXKBaoWEXjXyX7/m9p0vEgntyZ5PBNdrsFfwQgbtCf4JnHGMf8cK9ZQrBVFc4VAM2xkGXpgKmCXrmKrNQeyA4Kb3vTlQq0DsjZwUzuPMgvxMHBL6rJMl4id3IAEjgB3aKk+iuRFnCqQY1Nm62Ht7ukaEpW6wO+v/sGO2ESLp22P5MAAAAASUVORK5CYII%3D";
 			oNewNode.innerHTML =
 			 "<div class=\"TR-NewWordForm_handler\" id=\"insertButton\">"
 				+ "<div id='insertButtonTitleHandler' class=\"TR-NewWordForm_title\">"
@@ -300,15 +299,15 @@ var Frontend = function ()
 			oNewNode.id = this._YM_newWordFormID;
 			document.body.appendChild(oNewNode);
 			document.getElementById("insertButtonItem").onclick = function () { frontendInstance.AddWord(); };
-			
 
-			document.getElementById("insertButtonValue").onkeypress = function (event)
+
+			document.getElementById("insertButtonValue").onkeypress = function(event)
 			{
 				if (event.keyCode === 13) // enter pressed
 				{
 					frontendInstance.AddWord();
 				}
-			}
+			};
 
 			document.getElementById("insertButtonClose").onclick = this.HideNewWordAddingForm;
 		}
@@ -324,12 +323,11 @@ var Frontend = function ()
 
 			if (meaning.fullTrim().length > 0)
 			{
-				// TODO: opera.extension.postMessage({ action: "write", word: this.currentSelection, meaning: meaning });
 				var db = new DB();
 				var frontendInstance = this;
 				db.WriteWord(this.currentSelection, meaning, null, function ()
 				{
-					frontendInstance.RefreshPage();
+					frontendInstance.ShowHightlights();
 				});
 			}
 		}
@@ -353,9 +351,7 @@ var Frontend = function ()
 
 		var hint = document.createElement("div");
 		hint.innerHTML = "<table id='_ym_hint_table' style='width: 100%;border-collapse:collapse; min-width: 100px; max-width: 300px; border: 1px solid rgb(170, 170, 255); background: #fff;'><tr><td> " + curTarget.getAttribute("title") + "</td><td width='0.8em;' style='color:red;vertical-aligment:top; cursor:pointer; text-align:center;'><span style='text-align:center;' id='deleteWordSpan'>x</span></td></tr></table>";
-		//hint.innerHTML = "" + curTarget.getAttribute("title") + " &nbsp; &nbsp; <span id='deleteWordSpan' onClick='//deleteWord(\"" + curTarget.firstChild.nodeValue + "\");'>X</span>";
 		hint.setAttribute("class", this.hintClassName);
-		//hint.style.display = "table";
 		hint.style.position = "absolute";
 		hint.style.bottom = "1.3em";
 		hint.style.right = "0em";
