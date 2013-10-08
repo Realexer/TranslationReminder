@@ -8,6 +8,20 @@ var Frontend = function ()
 		wordsHandler: "your_meaning_words_handler"
 	};
 
+	this.IDs =
+	{
+		newWordForm:
+		{
+			formHandler: "NewWordAddingForm", //""insertButton",
+			titleHandler: "TitleHandler", //"insertButtonTitleHandler",
+			title: "Title", //""insertButtonTitle",
+			closeButton: "CloseButton", //"insertButtonClose",
+			selectedText: "CurrentSelection", //" "current_selection",
+			translationInput: "Translation", //""insertButtonValue",
+			submitButton: "SubmitButton"//""insertButtonSubItem"
+		}
+	};
+
 	this.currentSelection = null;
 
 	this.textNodes = new Array();
@@ -15,6 +29,17 @@ var Frontend = function ()
 	this.globalWords = new Array();
 
 	var oNewNode;
+
+	
+	this.GetWordAddingForm = function () { return document.getElementById(this.IDs.newWordForm.formHandler); };
+
+	this.GetWordAddingFormCurrentSelection = function () { return document.getElementById(this.IDs.newWordForm.selectedText); };
+
+	this.GetWordAddingFormTranslationInput = function () { return document.getElementById(this.IDs.newWordForm.translationInput); };
+
+	this.GetWordAddingFormSubmitButton = function () { return document.getElementById(this.IDs.newWordForm.submitButton); };
+
+	this.GetWordAddingFormCloseButton = function () { return document.getElementById(this.IDs.newWordForm.closeButton); };
 
 
 	this.ShowHightlights = function ()
@@ -34,7 +59,6 @@ var Frontend = function ()
 		});
 	};
 
-
 	this.FindTexts = function (node)
 	{
 		for (var i = 0; i < node.childNodes.length; i++)
@@ -49,7 +73,6 @@ var Frontend = function ()
 				var nodeValue = childNode.nodeValue.fullTrim();
 				if (nodeValue !== undefined && nodeValue.length > 0)
 				{
-					// add to array
 					this.textNodesValues.push(nodeValue);
 					this.textNodes.push(childNode);
 				}
@@ -60,7 +83,6 @@ var Frontend = function ()
 			}
 		}
 	};
-
 
 	this.FindWordsOnThePage = function (node, nodeTextOrigin)
 	{
@@ -168,19 +190,18 @@ var Frontend = function ()
 		}
 	};
 
-
 	this.SelectWord = function (event)
 	{
-		if (event.target.id === "insertButton"
-	      || event.target.id === "insertButtonValue"
-	      || event.target.id === "insertButtonItem"
-	      || event.target.id === "current_selection"
-	      || event.target.id === "insertButtonTitle"
-	      || event.target.id === "insertButtonClose"
-	      || event.target.id === "insertButtonTitleHandler"
-	      || event.target.id === "insertButtonSubItem"
-	      || event.target.id === "_tranlsate_with_bing")
-			return;
+		//		if (event.target.id === "insertButton"
+		//	      || event.target.id === "insertButtonValue"
+		//	      || event.target.id === "insertButtonItem"
+		//	      || event.target.id === "current_selection"
+		//	      || event.target.id === "insertButtonTitle"
+		//	      || event.target.id === "insertButtonClose"
+		//	      || event.target.id === "insertButtonTitleHandler"
+		//	      || event.target.id === "insertButtonSubItem"
+		//	      || event.target.id === "_tranlsate_with_bing")
+		//			return;
 
 		if (!event.ctrlKey)
 		{
@@ -209,55 +230,49 @@ var Frontend = function ()
 
 		range.collapse(false);
 		var offsets = range.getClientRects();
-		var top = offsets[0].top - this.WordAddingForm().clientHeight + window.pageYOffset;
+		var top = offsets[0].top - this.GetWordAddingForm().clientHeight + window.pageYOffset;
 		var left = offsets[0].left;
 
 
 		if (top < 0)
 		{
-			this.WordAddingForm().style.top = offsets[0].bottom + window.pageYOffset + "px";
+			this.GetWordAddingForm().style.top = offsets[0].bottom + window.pageYOffset + "px";
 		}
 		else
 		{
-			this.WordAddingForm().style.top = top + "px";
+			this.GetWordAddingForm().style.top = top + "px";
 		}
 
-		if (parseInt(left + parseInt(this.WordAddingForm().clientWidth)) > parseInt(window.outerWidth))
+		if (parseInt(left + parseInt(this.GetWordAddingForm().clientWidth)) > parseInt(window.outerWidth))
 		{
 			var scrollWidth = 20;
-			this.WordAddingForm().style.left = (parseInt(window.outerWidth) - parseInt(this.WordAddingForm().clientWidth)) - scrollWidth + "px";
+			this.GetWordAddingForm().style.left = (parseInt(window.outerWidth) - parseInt(this.GetWordAddingForm().clientWidth)) - scrollWidth + "px";
 		}
 		else
 		{
-			this.WordAddingForm().style.left = left + "px";
+			this.GetWordAddingForm().style.left = left + "px";
 		}
 
-		document.getElementById("insertButtonValue").focus();
+		this.GetWordAddingFormTranslationInput().focus();
 	};
 
 	this.ShowNewWordAddingForm = function ()
 	{
-		this.WordAddingForm().style.display = "table";
-		var meaningInput = document.getElementById("insertButtonValue");
-		meaningInput.value = "";
-		var word = document.getElementById("current_selection");
-		word.firstChild.nodeValue = this.currentSelection;
+		this.GetWordAddingForm().style.display = "table";
+		this.GetWordAddingFormTranslationInput().value = "";
+
+		this.GetWordAddingFormCurrentSelection().firstChild.nodeValue = this.currentSelection;
 	};
 
 	this.HideNewWordAddingForm = function ()
 	{
-		if (this.WordAddingForm())
+		if (this.GetWordAddingForm())
 		{
-			this.WordAddingForm().style.display = "none";
-			var word = document.getElementById("current_selection");
-			word.firstChild.nodeValue = "";
+			this.GetWordAddingForm().style.display = "none";
+			this.GetWordAddingFormCurrentSelection().firstChild.nodeValue = "";
 		}
 	};
 
-	this.WordAddingForm = function ()
-	{
-		return document.getElementById('insertButton');
-	};
 
 	this.CreateWordAddingForm = function ()
 	{
@@ -265,51 +280,56 @@ var Frontend = function ()
 		{
 			oNewNode = document.createElement("div");
 			oNewNode.innerHTML =
-			 "<div class=\"TR-NewWordForm_handler\" id=\"insertButton\">"
-				+ "<div id='insertButtonTitleHandler' class=\"TR-NewWordForm_title\">"
-					+ "<div style='float:left' id='insertButtonTitle'>Remember</div>"
-					+ "<div class=\"TR-NewWordForm_close_button\" id=\"insertButtonClose\"> x</div>"
-					+ "<div style=\"clear:both\"></div> "
+			 "<div class='TR-NewWordForm_handler' id='" + this.IDs.newWordForm.formHandler + "'>"
+				+ "<div id='" + this.IDs.newWordForm.titleHandler + "' class='TR-NewWordForm_title'>"
+					+ "<div style='float:left' id='" + this.IDs.newWordForm.title + "'>Remember</div>"
+					+ "<div class='TR-NewWordForm_close_button' id='" + this.IDs.newWordForm.closeButton + "'> x</div>"
+					+ "<div style='clear:both'></div> "
 				+ "</div> "
-				+ "<table class=\"TR-NewWordForm_word_table\">"
+				+ "<table class='TR-NewWordForm_word_table'>"
 					+ "<tr>"
-						+ "<td class=\"TR-NewWordForm_selected_word\">"
-							+ "<div id=\"current_selection\">word</div>"
+						+ "<td class='TR-NewWordForm_selected_word'>"
+							+ "<div id='" + this.IDs.newWordForm.selectedText + "'>word</div>"
 						+ "</td>"
 					+ "</tr>"
 				+ "</table>"
-				+ "<table class=\"TR-NewWordForm_meaning_table\">"
+				+ "<table class='TR-NewWordForm_meaning_table'>"
 					+ "<tr> "
-						+ "<td class=\"TR-NewWordForm_input\">"
+						+ "<td class='TR-NewWordForm_input'>"
 							+ "<b style='color:rgb(39, 150, 65);'>AS</b>"
-							+ "<input value=\"\" type=\"text\" id=\"insertButtonValue\"/>"
+							+ "<input value='' type='text' id='" + this.IDs.newWordForm.translationInput + "'/>"
 						+ "</td>"
-						+ "<td class=\"TR-NewWordForm_add_button\" id=\"insertButtonItem\">"
-							+ "<div id=\"insertButtonSubItem\">+</div>"
+						+ "<td class='TR-NewWordForm_add_button'>"
+							+ "<div id='" + this.IDs.newWordForm.submitButton + "'>+</div>"
 						+ "</td>"
 					+ "</tr>"
 				+ "</table>"
 			+ "</div>";
 		}
 
-		if (!this.WordAddingForm())
+		if (!this.GetWordAddingForm())
 		{
 			var frontendInstance = this;
 
 			oNewNode.id = this._YM_newWordFormID;
 			document.body.appendChild(oNewNode);
-			document.getElementById("insertButtonItem").onclick = function () { frontendInstance.AddWord(); };
+			
+			this.GetWordAddingFormSubmitButton().onclick = function () { frontendInstance.AddWord(); };
 
-
-			document.getElementById("insertButtonValue").onkeypress = function(event)
+			this.GetWordAddingFormTranslationInput().onkeydown = function (event)
 			{
-				if (event.keyCode === 13) // enter pressed
+				if (event.keyCode === 13) // enter
 				{
 					frontendInstance.AddWord();
 				}
+
+				if (event.keyCode === 27) // escape
+				{
+					frontendInstance.HideNewWordAddingForm();
+				}
 			};
 
-			document.getElementById("insertButtonClose").onclick = this.HideNewWordAddingForm;
+			this.GetWordAddingFormCloseButton().onclick = function () { frontendInstance.HideNewWordAddingForm(); };
 		}
 	};
 
@@ -318,8 +338,8 @@ var Frontend = function ()
 		if (this.currentSelection.length > 0)
 		{
 			this.HideNewWordAddingForm();
-			var meaningInput = document.getElementById("insertButtonValue");
-			var meaning = meaningInput.value;
+			
+			var meaning = this.GetWordAddingFormTranslationInput().value;
 
 			if (meaning.fullTrim().length > 0)
 			{
