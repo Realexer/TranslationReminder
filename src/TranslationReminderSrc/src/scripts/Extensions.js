@@ -22,6 +22,7 @@ String.prototype.fullTrim = function ()
 {
 	String.prototype.trim.call(this, "\r");
 	String.prototype.trim.call(this, "\n");
+	String.prototype.trim.call(this, " ");
 	return this;
 };
 
