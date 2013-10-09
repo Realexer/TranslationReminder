@@ -30,7 +30,7 @@ var Frontend = function ()
 
 	var oNewNode;
 
-	
+
 	this.GetWordAddingForm = function () { return document.getElementById(this.IDs.newWordForm.formHandler); };
 
 	this.GetWordAddingFormCurrentSelection = function () { return document.getElementById(this.IDs.newWordForm.selectedText); };
@@ -192,16 +192,8 @@ var Frontend = function ()
 
 	this.SelectWord = function (event)
 	{
-		//		if (event.target.id === "insertButton"
-		//	      || event.target.id === "insertButtonValue"
-		//	      || event.target.id === "insertButtonItem"
-		//	      || event.target.id === "current_selection"
-		//	      || event.target.id === "insertButtonTitle"
-		//	      || event.target.id === "insertButtonClose"
-		//	      || event.target.id === "insertButtonTitleHandler"
-		//	      || event.target.id === "insertButtonSubItem"
-		//	      || event.target.id === "_tranlsate_with_bing")
-		//			return;
+		if (event.target.isHasInParents(this.GetWordAddingForm()))
+			return false;
 
 		if (!event.ctrlKey)
 		{
@@ -313,7 +305,7 @@ var Frontend = function ()
 
 			oNewNode.id = this._YM_newWordFormID;
 			document.body.appendChild(oNewNode);
-			
+
 			this.GetWordAddingFormSubmitButton().onclick = function () { frontendInstance.AddWord(); };
 
 			this.GetWordAddingFormTranslationInput().onkeydown = function (event)
@@ -338,7 +330,7 @@ var Frontend = function ()
 		if (this.currentSelection.length > 0)
 		{
 			this.HideNewWordAddingForm();
-			
+
 			var meaning = this.GetWordAddingFormTranslationInput().value;
 
 			if (meaning.fullTrim().length > 0)

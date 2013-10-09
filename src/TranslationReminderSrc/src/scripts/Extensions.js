@@ -32,6 +32,44 @@ if (window.Element != undefined && !window.Element.getElementsByClassName)
 	{
 		return this.querySelectorAll('.' + className);
 	};
+
+	function isHasInParents(childNode, parentNode) 
+	{
+		if (childNode.parentNode == parentNode)
+		{
+			return true;
+		}
+		else
+		{
+			if (childNode.parentNode)
+			{
+				return isHasInParents(childNode.parentNode, parentNode);
+			}
+			else
+			{
+				return false;
+			}
+		}
+	}
+
+	window.Element.prototype.isHasInParents = function (nodeOrId)
+	{
+		var node;
+		if (typeof nodeOrId == "string")
+		{
+			node = document.getElementById(nodeOrId);
+		}
+		else
+		{
+			node = nodeOrId;
+		}
+		
+		if (!node)
+		{
+			return false;
+		}
+		return isHasInParents(this, node);
+	};
 }
 
 if (!document.getElementsByClassName)
