@@ -118,5 +118,35 @@
 	background-color: #cef;
 	position: relative;
 }
-.TR-Hint {}
+.TR-Hint 
+{
+	position: absolute;
+	bottom: 1.3em;
+	right: 0em;
+	font-size: 1em;
+	z-index: 100;
+}
+.TR-Hint table 
+{
+	width: 100%;
+	border-collapse:collapse;
+	min-width: 100px;
+	max-width: 300px;
+	border: 1px solid rgb(170, 170, 255);
+	background: #fff;
+}
+.TR-Hint td.TR-Delete-Word
+{
+	width: 0.8em;
+	color:red;
+	vertical-aligment:top;
+	cursor:pointer;
+	text-align:center;
+}
+
+.TR-Hint td.TR-Delete-Word span
+{
+	text-align:center;
+}
+
 .TR-NewWordAddingForm {}

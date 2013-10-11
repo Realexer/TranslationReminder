@@ -3,9 +3,11 @@ var Frontend = function ()
 	this.classNames =
 	{
 		highlightedText: "TR-HighlightedText",
-		hintClassName: "TR-Hint",
 		newWordForm: {
-			
+			handler: "TR-NewWordForm_handler"
+		},
+		hint: {
+			handler: "TR-Hint"
 		}
 	};
 
@@ -13,17 +15,22 @@ var Frontend = function ()
 	{
 		newWordForm:
 		{
-			formHandler: "NewWordAddingForm", //""insertButton",
-			titleHandler: "TitleHandler", //"insertButtonTitleHandler",
-			title: "Title", //""insertButtonTitle",
-			closeButton: "CloseButton", //"insertButtonClose",
-			selectedText: "CurrentSelection", //" "current_selection",
-			translationInput: "Translation", //""insertButtonValue",
-			submitButton: "SubmitButton"//""insertButtonSubItem"
+			formHandler: "TR-NewWordAddingForm", //""insertButton",
+			titleHandler: "TR-TitleHandler", //"insertButtonTitleHandler",
+			title: "TR-Title", //""insertButtonTitle",
+			closeButton: "TR-CloseButton", //"insertButtonClose",
+			selectedText: "TR-CurrentSelection", //" "current_selection",
+			translationInput: "TR-Translation", //""insertButtonValue",
+			submitButton: "TR-SubmitButton"//""insertButtonSubItem"
+		},
+		hint: {
+			handler: "TR-Handler",
+			handlerTable: "TR-Handler-Table",
+			deleteWord: "TR-DeleteWord"
 		}
 	};
 
-	this.currentSelection = null;
+	this.selectedText = null;
 
 	this.textNodes = new Array();
 	this.globalWords = new Array();
@@ -54,7 +61,7 @@ var Frontend = function ()
 
 			for (var i = 0; i < frontendInstance.textNodes.length; i++)
 			{
-				frontendInstance.FindWordsInTextNodes(frontendInstance.textNodes[i]);
+				frontendInstance.HighlightTexts(frontendInstance.textNodes[i]);
 			}
 		});
 	};
@@ -80,7 +87,7 @@ var Frontend = function ()
 		}
 	};
 
-	this.FindWordsInTextNodes = function (node)
+	this.HighlightTexts = function (node)
 	{
 		var frontendInstance = this;
 		var nodeText = new String(node.nodeValue);
@@ -142,12 +149,12 @@ var Frontend = function ()
 
 					if (leftPartOfText.length > 0)
 					{
-						this.FindWordsInTextNodes(leftTextElement);
+						this.HighlightTexts(leftTextElement);
 					}
 
 					if (rightPartOfText.length > 0)
 					{
-						this.FindWordsInTextNodes(rightTextElement);
+						this.HighlightTexts(rightTextElement);
 					}
 				}
 			}
@@ -180,29 +187,30 @@ var Frontend = function ()
 
 	this.SelectWord = function (event)
 	{
-		if (event.target.isHasInParents(this.GetWordAddingForm()))
+		if (event.target.hasInParents(this.classNames.newWordForm.handler))
 			return false;
 
-		if (!event.ctrlKey && !event.shiftKey)
+		if (!event.ctrlKey)
 		{
 			this.HideNewWordAddingForm();
-			this.currentSelection = null;
+			this.selectedText = null;
 			return false;
 		}
 
-		this.currentSelection = window.getSelection().toString();
+		var selection = window.getSelection();
+		this.selectedText = selection.toString();
 
-		if (this.currentSelection.length === 0)
+		if (this.selectedText.length === 0)
 		{
 			this.HideNewWordAddingForm();
-			this.currentSelection = null;
+			this.selectedText = null;
 			return false;
 		}
 
 		this.CreateWordAddingForm();
 		this.ShowNewWordAddingForm();
-		
-		var range = this.currentSelection.getRangeAt(0);
+
+		var range = selection.getRangeAt(0);
 
 		range.collapse(false);
 		var offsets = range.getClientRects();
@@ -237,7 +245,7 @@ var Frontend = function ()
 		this.GetWordAddingForm().style.display = "table";
 		this.GetWordAddingFormTranslationInput().value = "";
 
-		this.GetWordAddingFormCurrentSelection().firstChild.nodeValue = this.currentSelection;
+		this.GetWordAddingFormCurrentSelection().firstChild.nodeValue = this.selectedText;
 	};
 
 	this.HideNewWordAddingForm = function ()
@@ -256,7 +264,7 @@ var Frontend = function ()
 		{
 			newWordAddingFormElement = document.createElement("div");
 			newWordAddingFormElement.innerHTML =
-			 "<div class='TR-NewWordForm_handler' id='" + this.IDs.newWordForm.formHandler + "'>"
+			 "<div class='" + this.classNames.newWordForm.handler + "' id='" + this.IDs.newWordForm.formHandler + "'>"
 				+ "<div id='" + this.IDs.newWordForm.titleHandler + "' class='TR-NewWordForm_title'>"
 					+ "<div style='float:left' id='" + this.IDs.newWordForm.title + "'>Remember</div>"
 					+ "<div class='TR-NewWordForm_close_button' id='" + this.IDs.newWordForm.closeButton + "'> x</div>"
@@ -311,7 +319,7 @@ var Frontend = function ()
 
 	this.AddWord = function ()
 	{
-		if (this.currentSelection.length > 0)
+		if (this.selectedText.length > 0)
 		{
 			this.HideNewWordAddingForm();
 
@@ -321,7 +329,7 @@ var Frontend = function ()
 			{
 				var db = new DB();
 				var frontendInstance = this;
-				db.WriteWord(this.currentSelection, meaning, null, function ()
+				db.WriteWord(this.selectedText, meaning, null, function ()
 				{
 					frontendInstance.ShowHightlights();
 				});
@@ -332,68 +340,58 @@ var Frontend = function ()
 
 	this.ShowHint = function (event)
 	{
-		var curTarget = event.target;
-		if (curTarget.className !== this.highlightedText)
-			return;
+		var highlightedText = event.target;
+		if (highlightedText.className !== this.classNames.highlightedText)
+			return false;
 
-		for (var i = 0; i < curTarget.childNodes.length; i++)
-		{
-			var child = curTarget.childNodes[i];
-			if (child.className === this.hintClassName)
-			{
-				return;
-			}
-		}
+		if (event.target.hasInChildren(this.classNames.hint.handler)) // hint already displaied
+			return false;
+
 
 		var hint = document.createElement("div");
-		hint.innerHTML = "<table id='_ym_hint_table' style='width: 100%;border-collapse:collapse; min-width: 100px; max-width: 300px; border: 1px solid rgb(170, 170, 255); background: #fff;'><tr><td> " + curTarget.getAttribute("title") + "</td><td width='0.8em;' style='color:red;vertical-aligment:top; cursor:pointer; text-align:center;'><span style='text-align:center;' id='deleteWordSpan'>x</span></td></tr></table>";
-		hint.setAttribute("class", this.hintClassName);
-		hint.style.position = "absolute";
-		hint.style.bottom = "1.3em";
-		hint.style.right = "0em";
-		hint.style.fontSize = "1em";
-		hint.style.zIndex = 100;
-		hint.id = "_ym_hint_div";
+		hint.innerHTML = "<table id='" + this.IDs.hint.handlerTable + "'>" +
+							"<tr>" +
+								"<td> " + highlightedText.getAttribute("title") + "</td>" +
+								"<td class='TR-Delete-Word'><span id='" + this.IDs.hint.deleteWord + "'>x</span>" +
+								"</td>" +
+							"</tr>" +
+						"</table>";
+
+		hint.setAttribute("class", this.classNames.hint.handler);
+		hint.id = this.IDs.hint.handler;
 
 
-		curTarget.appendChild(hint);
+		highlightedText.appendChild(hint);
 
 		var frntnd = this;
 
-		hint.addEventListener("click", function (e) { frntnd.DeleteHint(e); }, false);
-		document.getElementById('_ym_hint_table').addEventListener("click", function (e) { frntnd.DeleteHint(e); }, false);
-		document.getElementsByTagName("body")[0].addEventListener("click", function (e) { frntnd.DeleteHint(e); }, false);
+		hint.addEventListener("click", function (e) { frntnd.RemoveHints(e); }, false);
+		document.onclick = function (e) { frntnd.RemoveHints(e); return false; };
 
-		document.getElementById('deleteWordSpan').onclick = function ()
+		document.getElementById(this.IDs.hint.deleteWord).onclick = function ()
 		{
-			frntnd.DeleteWord(curTarget.firstChild.nodeValue);
+			frntnd.DeleteWord(highlightedText.firstChild.nodeValue);
 			// TODO: opera.extension.postMessage({ action: "delete", word: curTarget.firstChild.nodeValue });
-			DeleteWord(curTarget.firstChild.nodeValue);
+			DeleteWord(highlightedText.firstChild.nodeValue);
 		};
 	};
 
-	this.DeleteHint = function (event)
+	this.RemoveHints = function (event)
 	{
-		if (event.target.className === this.highlightedText)
-		{
-			return;
-		}
+		if (event.target.hasInParents(this.classNames.highlightedText))
+			return false;
 
-		var hintTarget = document.getElementById("_ym_hint_div");
+	};
 
-		if (hintTarget.className != this.hintClassName)
-		{
-			hintTarget = hintTarget.parentNode;
-			if (hintTarget.className != this.hintClassName)
-			{
-				return;
-			}
-		}
+	this.RemoveHints = function () 
+	{
+		var allHints = document.getElementsByClassName(this.classNames.hint.handler);
 
-		if (hintTarget)
+		for (var i = 0; i < allHints.length; i++)
 		{
-			hintTarget.parentNode.removeChild(hintTarget);
-		}
+			var hint = allHints[i];
+			hint.parentNode.removeChild(hint);
+		}		
 	};
 
 

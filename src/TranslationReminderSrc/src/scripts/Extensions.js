@@ -33,9 +33,9 @@ if (window.Element != undefined && !window.Element.getElementsByClassName)
 		return this.querySelectorAll('.' + className);
 	};
 
-	function isHasInParents(childNode, parentNode) 
+	function hasInParents(childNode, parentNodeClass)
 	{
-		if (childNode.parentNode == parentNode)
+		if (childNode.classList && childNode.classList.contains(parentNodeClass))
 		{
 			return true;
 		}
@@ -43,32 +43,38 @@ if (window.Element != undefined && !window.Element.getElementsByClassName)
 		{
 			if (childNode.parentNode)
 			{
-				return isHasInParents(childNode.parentNode, parentNode);
+				return hasInParents(childNode.parentNode, parentNodeClass);
 			}
-			else
+		}
+		
+		return false;
+	}
+
+	window.Element.prototype.hasInParents = function (nodeClassName)
+	{
+		return hasInParents(this, nodeClassName);
+	};
+
+	function hasInChildren(parentNode, nodeClassName)
+	{
+		for (var i = 0; i < parentNode.childNodes.length; i++)
+		{
+			var child = parentNode.childNodes[i];
+			if (child.classList && child.classList.contains(nodeClassName))
 			{
-				return false;
+				return true;
+			}
+
+			if (child.childNodes.length > 0) 
+			{
+				return hasInChildren(child, nodeClassName);
 			}
 		}
 	}
 
-	window.Element.prototype.isHasInParents = function (nodeOrId)
+	window.Element.prototype.hasInChildren = function (nodeClassName)
 	{
-		var node;
-		if (typeof nodeOrId == "string")
-		{
-			node = document.getElementById(nodeOrId);
-		}
-		else
-		{
-			node = nodeOrId;
-		}
-		
-		if (!node)
-		{
-			return false;
-		}
-		return isHasInParents(this, node);
+		return hasInChildren(this, nodeClassName);
 	};
 }
 
