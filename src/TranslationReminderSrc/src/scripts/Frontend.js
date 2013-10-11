@@ -2,10 +2,11 @@ var Frontend = function ()
 {
 	this.classNames =
 	{
-		highlightedClass: "translation_reminder_",
-		hintClassName: "translation_reminder_hint_",
-		newWordFormID: "_translation_reminder_new_word_form",
-		wordsHandler: "your_meaning_words_handler"
+		highlightedText: "TR-HighlightedText",
+		hintClassName: "TR-Hint",
+		newWordForm: {
+			
+		}
 	};
 
 	this.IDs =
@@ -25,10 +26,9 @@ var Frontend = function ()
 	this.currentSelection = null;
 
 	this.textNodes = new Array();
-	this.textNodesValues = new Array();
 	this.globalWords = new Array();
 
-	var oNewNode;
+	var newWordAddingFormElement;
 
 
 	this.GetWordAddingForm = function () { return document.getElementById(this.IDs.newWordForm.formHandler); };
@@ -54,7 +54,7 @@ var Frontend = function ()
 
 			for (var i = 0; i < frontendInstance.textNodes.length; i++)
 			{
-				frontendInstance.FindWordsOnThePage(frontendInstance.textNodes[i], frontendInstance.textNodesValues[i]);
+				frontendInstance.FindWordsInTextNodes(frontendInstance.textNodes[i]);
 			}
 		});
 	};
@@ -65,15 +65,11 @@ var Frontend = function ()
 		{
 			var childNode = node.childNodes[i];
 
-			if (childNode.id === this.classNames.wordsHandler)
-				continue;
-
 			if (childNode.nodeType === 3) // 3 - is text node
 			{
 				var nodeValue = childNode.nodeValue.fullTrim();
 				if (nodeValue !== undefined && nodeValue.length > 0)
 				{
-					this.textNodesValues.push(nodeValue);
 					this.textNodes.push(childNode);
 				}
 			}
@@ -84,107 +80,99 @@ var Frontend = function ()
 		}
 	};
 
-	this.FindWordsOnThePage = function (node, nodeTextOrigin)
+	this.FindWordsInTextNodes = function (node)
 	{
 		var frontendInstance = this;
-		var nodeText = new String(nodeTextOrigin);
+		var nodeText = new String(node.nodeValue);
 
 		for (var i = 0; i < this.globalWords.length; i++)
 		{
 			var word = this.globalWords[i].word;
 			var meaning = this.globalWords[i].meaning;
-			if (word.length > 0)
-			{
-				var pos = null;
-				try
-				{
-					pos = nodeText.toLowerCase().search(new RegExp(word.toLowerCase(), 'mg'));
-				}
-				catch (error)
-				{
-					continue;
-				}
 
+			try
+			{
+				var pos = nodeText.toLowerCase().search(new RegExp(word.toLowerCase(), 'mg'));
 				if (pos !== -1)
 				{
-					var leftPart = nodeText.substr(0, pos);
-					var rightPart = nodeText.substr(pos + word.length, nodeText.length);
-					var middlePart = nodeText.substr(pos, parseInt(word.length, 10));
+					var leftPartOfText = nodeText.substr(0, pos);
+					var rightPartOfText = nodeText.substr(pos + word.length, nodeText.length);
+					var matchedText = nodeText.substr(pos, word.length);
 
-					var leftElement = null, rightElement = null;
+					var leftTextElement = null,
+						rightTextElement = null;
 
-					if (leftPart.length === 0 && rightPart.length === 0)
+					if (leftPartOfText.length === 0 && rightPartOfText.length === 0)
 					{
 						if (node.parentNode)
 						{
-							if (node.parentNode.getAttribute("class") === this.highlightedClass)
+							if (node.parentNode.getAttribute("class") === this.classNames.highlightedText)
 							{
 								continue;
 							}
 						}
 					}
 
-					var newElement = document.createElement("span");
-					if (leftPart.length > 0)
+					var newTextElementToReplacePrevious = document.createElement("span");
+					if (leftPartOfText.length > 0)
 					{
-						leftElement = document.createTextNode(leftPart);
-						newElement.appendChild(leftElement);
+						leftTextElement = document.createTextNode(leftPartOfText);
+						newTextElementToReplacePrevious.appendChild(leftTextElement);
 					}
 
-					var updatedElement = document.createElement("a");
-
-					updatedElement.setAttribute("title", meaning);
-
-					updatedElement.setAttribute("class", this.classNames.highlightedClass);
-					updatedElement.addEventListener("click", function (e) { frontendInstance.ShowHint(e) }, true);
+					var hightlightedTextElement = document.createElement("a");
+					hightlightedTextElement.setAttribute("title", meaning);
+					hightlightedTextElement.setAttribute("class", this.classNames.highlightedText);
+					hightlightedTextElement.addEventListener("click", function (e) { frontendInstance.ShowHint(e); }, true);
 
 
-					updatedElement.style.backgroundColor = "#cef";
-					updatedElement.style.position = "relative";
-					updatedElement.appendChild(document.createTextNode(middlePart));
-					newElement.appendChild(updatedElement);
+					hightlightedTextElement.appendChild(document.createTextNode(matchedText));
+					newTextElementToReplacePrevious.appendChild(hightlightedTextElement);
 
-					if (rightPart.length > 0)
+					if (rightPartOfText.length > 0)
 					{
-						rightElement = document.createTextNode(rightPart);
-						newElement.appendChild(rightElement);
+						rightTextElement = document.createTextNode(rightPartOfText);
+						newTextElementToReplacePrevious.appendChild(rightTextElement);
 					}
 
 					if (node.parentNode)
 					{
-						node.parentNode.replaceChild(newElement, node);
+						node.parentNode.replaceChild(newTextElementToReplacePrevious, node);
 					}
 
-					if (leftPart.length > 0)
+					if (leftPartOfText.length > 0)
 					{
-						this.FindWordsOnThePage(leftElement, leftPart);
+						this.FindWordsInTextNodes(leftTextElement);
 					}
 
-					if (rightPart.length > 0)
+					if (rightPartOfText.length > 0)
 					{
-						this.FindWordsOnThePage(rightElement, rightPart);
+						this.FindWordsInTextNodes(rightTextElement);
 					}
 				}
+			}
+			catch (error)
+			{
+				console.log(error);
+				continue;
 			}
 		}
 	};
 
 	this.RemoveHighLights = function (word)
 	{
-		var highlightedElms = getElementsByClassName(document.body, "a", this.highlightedClass);
+		var highlightedElements = getElementsByClassName(document.body, "a", this.classNames.highlightedText);
 
-		for (var i = 0; i < highlightedElms.length; i++)
+		for (var i = 0; i < highlightedElements.length; i++)
 		{
-			var curElem = highlightedElms[i];
+			var highlightedElem = highlightedElements[i];
 
-			if (curElem.firstChild.nodeValue.toLowerCase() == word.toLowerCase())
+			if (highlightedElem.firstChild.nodeValue.toLowerCase() == word.toLowerCase())
 			{
-				var parentElem = curElem.parentNode;
-
-				if (parentElem != undefined)
+				if (highlightedElem.parentNode)
 				{
-					var textNode = document.createTextNode(curElem.firstChild.nodeValue);
-					parentElem.replaceChild(textNode, curElem);
+					var textNode = document.createTextNode(highlightedElem.firstChild.nodeValue);
+					highlightedElem.parentNode.replaceChild(textNode, highlightedElem);
 				}
 			}
 		}
@@ -195,30 +183,26 @@ var Frontend = function ()
 		if (event.target.isHasInParents(this.GetWordAddingForm()))
 			return false;
 
-		if (!event.ctrlKey)
+		if (!event.ctrlKey && !event.shiftKey)
 		{
 			this.HideNewWordAddingForm();
 			this.currentSelection = null;
-			return;
+			return false;
 		}
 
-
-		var selection = window.getSelection();
-		this.currentSelection = selection.toString();
-		this.CreateWordAddingForm();
+		this.currentSelection = window.getSelection().toString();
 
 		if (this.currentSelection.length === 0)
 		{
 			this.HideNewWordAddingForm();
 			this.currentSelection = null;
-			return;
-		}
-		else
-		{
-			this.ShowNewWordAddingForm();
+			return false;
 		}
 
-		var range = selection.getRangeAt(0);
+		this.CreateWordAddingForm();
+		this.ShowNewWordAddingForm();
+		
+		var range = this.currentSelection.getRangeAt(0);
 
 		range.collapse(false);
 		var offsets = range.getClientRects();
@@ -268,10 +252,10 @@ var Frontend = function ()
 
 	this.CreateWordAddingForm = function ()
 	{
-		if (!oNewNode)
+		if (!newWordAddingFormElement)
 		{
-			oNewNode = document.createElement("div");
-			oNewNode.innerHTML =
+			newWordAddingFormElement = document.createElement("div");
+			newWordAddingFormElement.innerHTML =
 			 "<div class='TR-NewWordForm_handler' id='" + this.IDs.newWordForm.formHandler + "'>"
 				+ "<div id='" + this.IDs.newWordForm.titleHandler + "' class='TR-NewWordForm_title'>"
 					+ "<div style='float:left' id='" + this.IDs.newWordForm.title + "'>Remember</div>"
@@ -303,8 +287,8 @@ var Frontend = function ()
 		{
 			var frontendInstance = this;
 
-			oNewNode.id = this._YM_newWordFormID;
-			document.body.appendChild(oNewNode);
+			newWordAddingFormElement.id = this._YM_newWordFormID;
+			document.body.appendChild(newWordAddingFormElement);
 
 			this.GetWordAddingFormSubmitButton().onclick = function () { frontendInstance.AddWord(); };
 
@@ -349,7 +333,7 @@ var Frontend = function ()
 	this.ShowHint = function (event)
 	{
 		var curTarget = event.target;
-		if (curTarget.className !== this.highlightedClass)
+		if (curTarget.className !== this.highlightedText)
 			return;
 
 		for (var i = 0; i < curTarget.childNodes.length; i++)
@@ -390,7 +374,7 @@ var Frontend = function ()
 
 	this.DeleteHint = function (event)
 	{
-		if (event.target.className === this.highlightedClass)
+		if (event.target.className === this.highlightedText)
 		{
 			return;
 		}

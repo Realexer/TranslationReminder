@@ -1,3 +1,4 @@
+/* BEGIN [NEW WORD ADDING FORM] */
 .TR-NewWordForm_handler
 {
 	background: #fff;
@@ -109,3 +110,13 @@
 	width: 21px;
 	margin-bottom: 1px;
 }
+
+/* END [NEW WORD ADDING FORM] */
+
+.TR-HighlightedText 
+{
+	background-color: #cef;
+	position: relative;
+}
+.TR-Hint {}
+.TR-NewWordAddingForm {}
