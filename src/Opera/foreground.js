@@ -11,7 +11,7 @@ switch (message)
     case "loaded":
 	window.addEventListener("DOMContentLoaded", function()
 	{
-		document.onmouseup = frontend.SelectWord;
+		document.onmouseup = frontend.SelectWordAction;
 		frontend.ShowHightlights();
 	}, false);
 	break;

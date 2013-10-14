@@ -13,13 +13,13 @@ window.onload = function ()
 	});
 
 	var frontend = new Frontend();
-	frontend.ShowHightlights();
+	frontend.Init();
 	
 	document.onmouseup = function (event)
 	{
 		with (frontend)
 		{
-			frontend.SelectWord(event);
+			frontend.SelectWordAction(event);
 		}
 	};
 };

@@ -48,10 +48,15 @@ var Frontend = function ()
 
 	this.GetWordAddingFormCloseButton = function () { return document.getElementById(this.IDs.newWordForm.closeButton); };
 
+	this.Init = function ()
+	{
+		this.FindTexts(document.body);
+		this.ShowHightlights();
+	};
+
 
 	this.ShowHightlights = function ()
 	{
-		this.FindTexts(document.body);
 
 		var db = new DB();
 		var frontendInstance = this;
@@ -127,14 +132,14 @@ var Frontend = function ()
 						newTextElementToReplacePrevious.appendChild(leftTextElement);
 					}
 
-					var hightlightedTextElement = document.createElement("a");
-					hightlightedTextElement.setAttribute("title", meaning);
-					hightlightedTextElement.setAttribute("class", this.classNames.highlightedText);
-					hightlightedTextElement.addEventListener("click", function (e) { frontendInstance.ShowHint(e); }, true);
+					var highlightedTextElement = document.createElement("a");
+					highlightedTextElement.setAttribute("title", meaning);
+					highlightedTextElement.setAttribute("class", this.classNames.highlightedText);
+					highlightedTextElement.addEventListener("click", function (e) { frontendInstance.ShowHintAction(e); }, true);
 
 
-					hightlightedTextElement.appendChild(document.createTextNode(matchedText));
-					newTextElementToReplacePrevious.appendChild(hightlightedTextElement);
+					highlightedTextElement.appendChild(document.createTextNode(matchedText));
+					newTextElementToReplacePrevious.appendChild(highlightedTextElement);
 
 					if (rightPartOfText.length > 0)
 					{
@@ -168,7 +173,7 @@ var Frontend = function ()
 
 	this.RemoveHighLights = function (word)
 	{
-		var highlightedElements = getElementsByClassName(document.body, "a", this.classNames.highlightedText);
+		var highlightedElements = document.getElementsByClassName(this.classNames.highlightedText);
 
 		for (var i = 0; i < highlightedElements.length; i++)
 		{
@@ -180,12 +185,13 @@ var Frontend = function ()
 				{
 					var textNode = document.createTextNode(highlightedElem.firstChild.nodeValue);
 					highlightedElem.parentNode.replaceChild(textNode, highlightedElem);
+					i--;
 				}
 			}
 		}
 	};
 
-	this.SelectWord = function (event)
+	this.SelectWordAction = function (event)
 	{
 		if (event.target.hasInParents(this.classNames.newWordForm.handler))
 			return false;
@@ -338,10 +344,10 @@ var Frontend = function ()
 	};
 
 
-	this.ShowHint = function (event)
+	this.ShowHintAction = function (event)
 	{
-		var highlightedText = event.target;
-		if (highlightedText.className !== this.classNames.highlightedText)
+		var highlightedTextElement = event.target;
+		if (highlightedTextElement.className !== this.classNames.highlightedText)
 			return false;
 
 		if (event.target.hasInChildren(this.classNames.hint.handler)) // hint already displaied
@@ -351,7 +357,7 @@ var Frontend = function ()
 		var hint = document.createElement("div");
 		hint.innerHTML = "<table id='" + this.IDs.hint.handlerTable + "'>" +
 							"<tr>" +
-								"<td> " + highlightedText.getAttribute("title") + "</td>" +
+								"<td> " + highlightedTextElement.getAttribute("title") + "</td>" +
 								"<td class='TR-Delete-Word'><span id='" + this.IDs.hint.deleteWord + "'>x</span>" +
 								"</td>" +
 							"</tr>" +
@@ -361,29 +367,28 @@ var Frontend = function ()
 		hint.id = this.IDs.hint.handler;
 
 
-		highlightedText.appendChild(hint);
+		highlightedTextElement.appendChild(hint);
 
 		var frntnd = this;
 
-		hint.addEventListener("click", function (e) { frntnd.RemoveHints(e); }, false);
-		document.onclick = function (e) { frntnd.RemoveHints(e); return false; };
+		hint.addEventListener("click", function (e) { frntnd.RemoveHintsAction(e); }, false);
+		document.onclick = function (e) { frntnd.RemoveHintsAction(e); return false; };
 
 		document.getElementById(this.IDs.hint.deleteWord).onclick = function ()
 		{
-			frntnd.DeleteWord(highlightedText.firstChild.nodeValue);
-			// TODO: opera.extension.postMessage({ action: "delete", word: curTarget.firstChild.nodeValue });
-			DeleteWord(highlightedText.firstChild.nodeValue);
+			frntnd.DeleteWord(highlightedTextElement.firstChild.nodeValue);
 		};
 	};
 
-	this.RemoveHints = function (event)
+	this.RemoveHintsAction = function (event)
 	{
 		if (event.target.hasInParents(this.classNames.highlightedText))
 			return false;
 
+		this.RemoveHints();
 	};
 
-	this.RemoveHints = function () 
+	this.RemoveHints = function ()
 	{
 		var allHints = document.getElementsByClassName(this.classNames.hint.handler);
 
@@ -391,13 +396,21 @@ var Frontend = function ()
 		{
 			var hint = allHints[i];
 			hint.parentNode.removeChild(hint);
-		}		
+		}
 	};
 
 
 	this.DeleteWord = function (word)
 	{
-		// TODO: opera.extension.postMessage({ action: "delete", word: word });
+		var db = new DB();
+		var frontendInstance = this;
+
+		db.DeleteWord(word, function ()
+		{
+			frontendInstance.RemoveHighLights(word);
+			frontendInstance.ShowHightlights();
+			frontendInstance.RemoveHints();
+		});
 	};
 
 };
