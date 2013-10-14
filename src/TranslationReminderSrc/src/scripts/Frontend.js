@@ -79,7 +79,8 @@ var Frontend = function ()
 
 			if (childNode.nodeType === 3) // 3 - is text node
 			{
-				var nodeValue = childNode.nodeValue.fullTrim();
+				var nodeValue = childNode.nodeValue.trim();
+
 				if (nodeValue !== undefined && nodeValue.length > 0)
 				{
 					this.textNodes.push(childNode);
@@ -331,7 +332,7 @@ var Frontend = function ()
 
 			var meaning = this.GetWordAddingFormTranslationInput().value;
 
-			if (meaning.fullTrim().length > 0)
+			if (meaning.trim().length > 0)
 			{
 				var db = new DB();
 				var frontendInstance = this;

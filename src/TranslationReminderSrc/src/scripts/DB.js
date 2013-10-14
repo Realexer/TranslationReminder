@@ -58,7 +58,7 @@ var DB = function ()
 
 			date = parseInt(date);
 
-			word = word.fullTrim();
+			word = word.trim();
 			tx.executeSql('INSERT INTO words (word, meaning, date) ' +
 							'VALUES (?, ?, ?)', [word.toLowerCase(), meaning, date],
 
@@ -81,7 +81,7 @@ var DB = function ()
 	{
 		getDb().transaction(function (tx)
 		{
-			word = word.fullTrim();
+			word = word.trim();
 			tx.executeSql('DELETE FROM words WHERE (word)=?', [word.toString().toLowerCase()],
 			function (tx, results)
 			{

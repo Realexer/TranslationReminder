@@ -1,30 +1,8 @@
-if (String.trim == undefined)
+String.prototype.trim = function ()
 {
-	String.prototype.trim = function (symbol)
-	{
-		if (symbol == undefined)
-		{
-			symbol = ' ';
-		}
-
-		var s = this;
-		var l = 0;
-		var r = s.length - 1;
-
-		while (l < s.length && s[l] == symbol) { l++; }
-		while (r > l && s[r] == symbol) { r -= 1; }
-
-		return s.substring(l, r + 1);
-	};
-}
-
-String.prototype.fullTrim = function ()
-{
-	String.prototype.trim.call(this, "\r");
-	String.prototype.trim.call(this, "\n");
-	String.prototype.trim.call(this, " ");
-	return this;
+	return this.replace(/^\s+|\s+$/g, '');
 };
+
 
 if (window.Element != undefined && !window.Element.getElementsByClassName)
 {
