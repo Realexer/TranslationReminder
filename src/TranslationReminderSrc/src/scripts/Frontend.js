@@ -128,7 +128,7 @@ var Frontend = function ()
 						newTextElementToReplacePrevious.appendChild(leftTextElement);
 					}
 
-					var highlightedTextElement = document.createElement("a");
+					var highlightedTextElement = document.createElement("trtag");
 					highlightedTextElement.setAttribute("title", meaning);
 					highlightedTextElement.setAttribute("class", this.classNames.highlightedText);
 					highlightedTextElement.addEventListener("click", function (e) { frontendInstance.ShowHintAction(e); }, true);
