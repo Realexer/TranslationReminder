@@ -12,6 +12,14 @@
 	padding: 0px;
 }
 
+/* BEGIN [HIGHLIGHTED TEXT] */
+.TR-HighlightedText 
+{
+	border-bottom: 1px dotted #2f6477;
+	position: relative;
+}
+/* END [HIGHLIGHTED TEXT] */
+
 /* BEGIN [NEW WORD ADDING FORM] */
 .TR-NewWordForm-Handler
 {
@@ -81,11 +89,6 @@
 
 /* END [NEW WORD ADDING FORM] */
 
-.TR-HighlightedText 
-{
-	background-color: #cef;
-	position: relative;
-}
 
 /* BEGIN [HINT] */
 .TR-Hint 
@@ -93,21 +96,24 @@
 	background: #fff;
 	border: 1px solid #AFC3CA;
 	position: absolute;
-	font-size: 1.2em;
-	padding: 10px 5px;
-	z-index: 100;
+	padding: 8px 5px;
+	z-index: 2147483647;
 	bottom: 1em;
-}
-.TR-Hint-DeleteWordButton
-{
-	color:red;
-	padding-right: 5px;
-	width: 13px;
+	min-width: 180px;
 }
 
 .TR-Hint-Translation 
 {
+	font-size: 1.2em;
 	padding-right: 5px;
+}
+
+.TR-Hint-DeleteWordButton
+{
+	color: #c77;
+	padding-right: 5px;
+	width: 13px;
+	float: right;
 }
 
 /* END [HINT] */
