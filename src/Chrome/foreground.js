@@ -5,21 +5,15 @@
 	console.log(callback);
 });*/
 
-window.onload = function ()
+var frontend = new Frontend();
+chrome.extension.sendMessage(null, "Hello", function (response)
 {
-	chrome.extension.sendMessage(null, "Hellow", function (response)
-	{
-		console.log(response);
-	});
+	console.log(response);
+});
 
-	var frontend = new Frontend();
-	frontend.Init();
-	
-	document.onmouseup = function (event)
-	{
-		with (frontend)
-		{
-			frontend.SelectWordAction(event);
-		}
-	};
+frontend.ShowHightlights();
+
+document.onmouseup = function (event)
+{
+	frontend.SelectWordAction(event);
 };

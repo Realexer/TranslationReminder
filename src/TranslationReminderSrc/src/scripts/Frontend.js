@@ -48,16 +48,11 @@ var Frontend = function ()
 
 	this.GetWordAddingFormCloseButton = function () { return document.getElementById(this.IDs.newWordForm.closeButton); };
 
-	this.Init = function ()
-	{
-		this.FindTexts(document.body);
-		this.ShowHightlights();
-	};
-
 
 	this.ShowHightlights = function ()
 	{
-
+		this.FindTexts(document.body);
+		
 		var db = new DB();
 		var frontendInstance = this;
 		db.GetWords(function (words)
