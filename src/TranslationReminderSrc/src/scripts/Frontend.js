@@ -2,12 +2,22 @@ var Frontend = function ()
 {
 	this.classNames =
 	{
+		clear: "TR-Clear",
 		highlightedText: "TR-HighlightedText",
 		newWordForm: {
-			handler: "TR-NewWordForm_handler"
+			formHandler: "TR-NewWordForm-Handler",
+			titleHandler: "TR-NewWordForm-TitleHandler",
+			title: "TR-NewWordForm-Title",
+			formBody: "TR-NewWordForm-Body",
+			selectedText: "TR-NewWordForm-CurrentSelection",
+			translationInput: "TR-NewWordForm-Translation",
+			closeButton: "TR-NewWordForm-CloseButton",
+			addButton: "TR-NewWordForm-AddButton"
 		},
 		hint: {
-			handler: "TR-Hint"
+			handler: "TR-Hint",
+			deleteWord: "TR-Hint-DeleteWordButton",
+			translation: "TR-Hint-Translation"
 		}
 	};
 
@@ -15,18 +25,17 @@ var Frontend = function ()
 	{
 		newWordForm:
 		{
-			formHandler: "TR-NewWordAddingForm", //""insertButton",
-			titleHandler: "TR-TitleHandler", //"insertButtonTitleHandler",
-			title: "TR-Title", //""insertButtonTitle",
-			closeButton: "TR-CloseButton", //"insertButtonClose",
-			selectedText: "TR-CurrentSelection", //" "current_selection",
-			translationInput: "TR-Translation", //""insertButtonValue",
-			submitButton: "TR-SubmitButton"//""insertButtonSubItem"
+			formHandler: "TR-NewWordForm",
+			titleHandler: "TR-NewWordForm-TitleHandler",
+			title: "TR-NewWordForm-Title",
+			closeButton: "TR-NewWordForm-CloseButton",
+			selectedText: "TR-NewWordForm-CurrentSelection",
+			translationInput: "TR-NewWordForm-Translation",
+			submitButton: "TR-NewWordForm-SubmitButton"
 		},
 		hint: {
-			handler: "TR-Handler",
-			handlerTable: "TR-Handler-Table",
-			deleteWord: "TR-DeleteWord"
+			handler: "TR-Hint",
+			deleteWord: "TR-Hint-DeleteWordButton"
 		}
 	};
 
@@ -52,7 +61,7 @@ var Frontend = function ()
 	this.ShowHightlights = function ()
 	{
 		this.FindTexts(document.body);
-		
+
 		var db = new DB();
 		var frontendInstance = this;
 		db.GetWords(function (words)
@@ -97,6 +106,9 @@ var Frontend = function ()
 		{
 			var word = this.globalWords[i].word;
 			var meaning = this.globalWords[i].meaning;
+
+			if (word.trim().length == 0)
+				continue;
 
 			try
 			{
@@ -189,7 +201,7 @@ var Frontend = function ()
 
 	this.SelectWordAction = function (event)
 	{
-		if (event.target.hasInParents(this.classNames.newWordForm.handler))
+		if (event.target.hasInParents(this.classNames.newWordForm.formHandler))
 			return false;
 
 		if (!event.ctrlKey)
@@ -200,7 +212,7 @@ var Frontend = function ()
 		}
 
 		var selection = window.getSelection();
-		this.selectedText = selection.toString();
+		this.selectedText = selection.toString().trim();
 
 		if (this.selectedText.length === 0)
 		{
@@ -266,30 +278,17 @@ var Frontend = function ()
 		{
 			newWordAddingFormElement = document.createElement("div");
 			newWordAddingFormElement.innerHTML =
-			 "<div class='" + this.classNames.newWordForm.handler + "' id='" + this.IDs.newWordForm.formHandler + "'>"
-				+ "<div id='" + this.IDs.newWordForm.titleHandler + "' class='TR-NewWordForm_title'>"
-					+ "<div style='float:left' id='" + this.IDs.newWordForm.title + "'>Remember</div>"
-					+ "<div class='TR-NewWordForm_close_button' id='" + this.IDs.newWordForm.closeButton + "'> x</div>"
-					+ "<div style='clear:both'></div> "
+			 "<div id='" + this.IDs.newWordForm.formHandler + "' class='" + this.classNames.newWordForm.formHandler + "'>"
+				+ "<div id='" + this.IDs.newWordForm.titleHandler + "' class='" + this.classNames.newWordForm.titleHandler + "'>"
+					+ "<span id='" + this.IDs.newWordForm.title + "' class='" + this.classNames.newWordForm.title + "'>add translaton to the word</span>"
+					+ "<button id='" + this.IDs.newWordForm.closeButton + "' class='" + this.classNames.newWordForm.closeButton + "'>x</button>"
+					+ "<div class='" + this.classNames.clear + "'></div> "
 				+ "</div> "
-				+ "<table class='TR-NewWordForm_word_table'>"
-					+ "<tr>"
-						+ "<td class='TR-NewWordForm_selected_word'>"
-							+ "<div id='" + this.IDs.newWordForm.selectedText + "'>word</div>"
-						+ "</td>"
-					+ "</tr>"
-				+ "</table>"
-				+ "<table class='TR-NewWordForm_meaning_table'>"
-					+ "<tr> "
-						+ "<td class='TR-NewWordForm_input'>"
-							+ "<b style='color:rgb(39, 150, 65);'>AS</b>"
-							+ "<input value='' type='text' id='" + this.IDs.newWordForm.translationInput + "'/>"
-						+ "</td>"
-						+ "<td class='TR-NewWordForm_add_button'>"
-							+ "<div id='" + this.IDs.newWordForm.submitButton + "'>+</div>"
-						+ "</td>"
-					+ "</tr>"
-				+ "</table>"
+				+ "<div class='" + this.classNames.newWordForm.formBody + "'>"
+				+ "<span class='" + this.classNames.newWordForm.selectedText + "' id='" + this.IDs.newWordForm.selectedText + "'>word</span>"
+				+ "<input class='" + this.classNames.newWordForm.translationInput + "' id='" + this.IDs.newWordForm.translationInput + "' value='' type='text' placeholder='translation'/>"
+				+ "<button class='" + this.classNames.newWordForm.addButton + "' id='" + this.IDs.newWordForm.submitButton + "'>+</button>"
+				+ "</div>"
 			+ "</div>";
 		}
 
@@ -351,13 +350,7 @@ var Frontend = function ()
 
 
 		var hint = document.createElement("div");
-		hint.innerHTML = "<table id='" + this.IDs.hint.handlerTable + "'>" +
-							"<tr>" +
-								"<td> " + highlightedTextElement.getAttribute("title") + "</td>" +
-								"<td class='TR-Delete-Word'><span id='" + this.IDs.hint.deleteWord + "'>x</span>" +
-								"</td>" +
-							"</tr>" +
-						"</table>";
+		hint.innerHTML = "<span class='" + this.classNames.hint.translation + "'>" + highlightedTextElement.getAttribute("title") + "</span>" + "<button class='" + this.IDs.hint.deleteWord + "' id='" + this.IDs.hint.deleteWord + "'>x</button>";
 
 		hint.setAttribute("class", this.classNames.hint.handler);
 		hint.id = this.IDs.hint.handler;
@@ -392,6 +385,7 @@ var Frontend = function ()
 		{
 			var hint = allHints[i];
 			hint.parentNode.removeChild(hint);
+			i--;
 		}
 	};
 

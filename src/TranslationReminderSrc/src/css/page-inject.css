@@ -1,109 +1,77 @@
+/* GENERAL */
+.TR-Clear 
+{
+	clear: both;
+}
+
+.TR-Hint button,.TR-NewWordForm-Handler button 
+{
+	background: none;
+	border: none;
+	margin: 0px;
+	padding: 0px;
+}
+
 /* BEGIN [NEW WORD ADDING FORM] */
-.TR-NewWordForm_handler
+.TR-NewWordForm-Handler
 {
 	background: #fff;
 	z-index: 2147483647;
 	display: none;
 	position: absolute;
-	width: 250px;
-	border: 1px solid #aaf;
-	font-family: Arial;
+	width: 260px;
+	border: 1px solid #AFC3CA;
+	font-family: Tahoma;
 	font-size: 17px;
 	overflow: hidden;
-	color: #000;
-}
-.TR-NewWordForm_handler div
-{
-	display: block;
-}
-.TR-NewWordForm_handler *
-{
-	text-align: left;
-}
-.TR-NewWordForm_handler span, input
-{
-	display: inline;
-}
-.TR-NewWordForm_title
-{
-	background: #aaf;
-	font-weight: bold;
-	font-size: 0.8em;
-	color: #fff;
-	padding: 2px 0px;
-	padding-left: 0.2em;
-	text-transform: uppercase;
-}
-.TR-NewWordForm_handler table
-{
-	font-size: 0.8em;
-	width: 100%;
-	border-collapse: collapse;
-}
-.TR-NewWordForm_handler tr td
-{
-	width: auto;
+	color: #333;
 }
 
-.TR-NewWordForm_word_table
+.TR-NewWordForm-TitleHandler
 {
-	height: 15px;
-	overflow: hidden;
+	font-size: 0.6em;
+	color: #777;
+	padding: 0px;
+	padding-top: 5px;
+	text-indent: 0.5em;
 }
-.TR-NewWordForm_selected_word
-{
-	font-weight: bold;
-	padding: 3px 4px;
-}
-.TR-NewWordForm_close_button
+
+.TR-NewWordForm-CloseButton
 {
 	width: 25px;
-}
-.TR-NewWordForm_close_button
-{
 	text-align: center;
 	color: #c77;
 	float: right;
 	cursor: pointer;
 }
-.TR-NewWordForm_meaning_table
+
+.TR-NewWordForm-Body 
 {
-	font-size: 0.8em;
-	height: 25px;
+	padding: 5px;	
 }
-.TR-NewWordForm_input
+.TR-NewWordForm-CurrentSelection
 {
-	padding-left: 4px;
+	font-weight: bold;
+	padding: 0px 6px;
+	padding-bottom: 10px;
+	padding-bottom: 10px;
+	display: block;
 }
-.TR-NewWordForm_input input
+
+.TR-NewWordForm-Translation
 {
-	width: 87%;
-	border-bottom-color: rgb(170, 170, 170);
-	border-bottom-left-radius: 2px;
-	border-bottom-right-radius: 2px;
-	border-bottom-style: solid;
-	border-bottom-width: 1px;
-	border-left-color: rgb(170, 170, 170);
-	border-left-style: solid;
-	border-left-width: 1px;
-	border-right-color: rgb(170, 170, 170);
-	border-right-style: solid;
-	border-right-width: 1px;
-	border-top-color: rgb(170, 170, 170);
-	border-top-left-radius: 2px;
-	border-top-right-radius: 2px;
-	border-top-style: solid;
-	border-top-width: 1px;
+	width: 229px;
+	border-color: rgb(170, 170, 170);
+	border-radius: 2px;
+	border-style: solid;
+	border-width: 1px;
 	box-sizing: border-box;
 }
-.TR-NewWordForm_add_button
+.TR-NewWordForm-AddButton
 {
 	font-size: 1.2em;
 	width: 25px;
 	cursor: pointer;
-}
-.TR-NewWordForm_add_button div
-{
 	color: green;
 	text-align: center;
 	border: 1px solid #7a7;
@@ -118,35 +86,28 @@
 	background-color: #cef;
 	position: relative;
 }
+
+/* BEGIN [HINT] */
 .TR-Hint 
 {
-	position: absolute;
-	bottom: 1.3em;
-	right: 0em;
-	font-size: 1em;
-	z-index: 100;
-}
-.TR-Hint table 
-{
-	width: 100%;
-	border-collapse:collapse;
-	min-width: 100px;
-	max-width: 300px;
-	border: 1px solid rgb(170, 170, 255);
 	background: #fff;
+	border: 1px solid #AFC3CA;
+	position: absolute;
+	font-size: 1.2em;
+	padding: 10px 5px;
+	z-index: 100;
+	bottom: 1em;
 }
-.TR-Hint td.TR-Delete-Word
+.TR-Hint-DeleteWordButton
 {
-	width: 0.8em;
 	color:red;
-	vertical-aligment:top;
-	cursor:pointer;
-	text-align:center;
+	padding-right: 5px;
+	width: 13px;
 }
 
-.TR-Hint td.TR-Delete-Word span
+.TR-Hint-Translation 
 {
-	text-align:center;
+	padding-right: 5px;
 }
 
-.TR-NewWordAddingForm {}
+/* END [HINT] */
