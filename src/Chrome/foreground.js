@@ -1,12 +1,5 @@
-/*chrome.extension.onMessage.addListener(function (message, sender, callback)
-{
-	console.log(message);
-	console.log(sender);
-	console.log(callback);
-});*/
-
 var frontend = new Frontend();
-chrome.extension.sendMessage(null, "Hello", function (response)
+chrome.extension.sendMessage(null, { name: "Hello", data: "My Data" }, function (response)
 {
 	console.log(response);
 });

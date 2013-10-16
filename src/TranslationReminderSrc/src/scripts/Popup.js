@@ -47,7 +47,7 @@
 				cell3.style.cursor = "pointer";
 
 				cell3.setAttribute("word", word);
-				cell3.addEventListener("click", DeleteWordFromTable, false);
+				cell3.addEventListener("click", function (event) { popup.DeleteWordFromTable(event); }, false);
 
 				row.appendChild(cell1);
 				row.appendChild(cell2);

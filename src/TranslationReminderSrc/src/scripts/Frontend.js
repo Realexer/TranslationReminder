@@ -62,9 +62,9 @@ var Frontend = function ()
 	{
 		this.FindTexts(document.body);
 
-		var db = new DB();
 		var frontendInstance = this;
-		db.GetWords(function (words)
+		chrome.extension.sendMessage(null, { name: "DB.GetWords", data: null },
+		function (words)
 		{
 			frontendInstance.globalWords = words;
 
@@ -324,13 +324,14 @@ var Frontend = function ()
 		{
 			this.HideNewWordAddingForm();
 
-			var meaning = this.GetWordAddingFormTranslationInput().value;
+			var translation = this.GetWordAddingFormTranslationInput().value;
 
-			if (meaning.trim().length > 0)
+			if (translation.trim().length > 0)
 			{
-				var db = new DB();
 				var frontendInstance = this;
-				db.WriteWord(this.selectedText, meaning, null, function ()
+
+				chrome.extension.sendMessage(null, { name: "DB.AddWord", data: { word: frontendInstance.selectedText, translation: translation} },
+				function ()
 				{
 					frontendInstance.ShowHightlights();
 				});
@@ -392,10 +393,10 @@ var Frontend = function ()
 
 	this.DeleteWord = function (word)
 	{
-		var db = new DB();
 		var frontendInstance = this;
 
-		db.DeleteWord(word, function ()
+		chrome.extension.sendMessage(null, { name: "DB.DeleteWord", data: word },
+		function ()
 		{
 			frontendInstance.RemoveHighLights(word);
 			frontendInstance.ShowHightlights();

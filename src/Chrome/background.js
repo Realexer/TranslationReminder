@@ -1,7 +1,35 @@
 chrome.extension.onMessage.addListener(function (message, sender, callback)
 {
-	console.log(message);
-	console.log(sender);
-	console.log(callback);
-	callback("Hellow world");
+	switch (message.name)
+	{
+		case "DB.GetWords":
+			new DB().GetWords(function (words)
+			{
+				callback(words);
+			});
+			break;
+
+		case "DB.AddWord":
+			new DB().WriteWord(message.data.word, message.data.translation, null, function ()
+			{
+				callback();
+			});
+			break;
+
+		case "DB.DeleteWord":
+			new DB().DeleteWord(message.data.word, function ()
+			{
+				callback();
+			});
+			break;
+
+		default:
+			console.log("Message wasn't handled: Name=" + message.name);
+			console.log(message);
+			console.log(sender);
+			console.log(callback);
+			return false;
+	}
+
+	return true;
 });
