@@ -8,23 +8,20 @@
 	<script type='text/javascript' src='scripts/Popup.js'></script>
 </head>
 
-<body class="TR">
+<body class="TR-Popup">
 	<!-- LOADING VIEW -->
-	<div class="cover-view" id="loading-view">
-		<div class="blur"></div>
-		<div class="cover-message">
-			<span>PLEASE WAIT</span>
-		</div>
+	<div id="TR-LoadingView" class="TR-Blur TR-InfoMessage">
+		<span>PLEASE WAIT</span>
+	</div>
+	
+	<!-- NO WORDS VIEW  -->
+	<div id="TR-NowWordsView" class="TR-Blur TR-InfoMessage" style="display: none;">
+		<span>YOU HAVE NO WORDS YET</span>
 	</div>
 
-	<!-- WORDS VIEW  -->
-	<div class="words-view" style="display: block;" id="words-window">
-		<div class="words-handler" id="words-handler">
-			<div id="no-words-view" class="blur no-words-view">
-				YOU HAVE NO WORDS YET
-			</div>
-			<table id="words-list" class="words-list"></table>
-		</div>
+	<!-- WORDS LIST  -->
+	<div class="TR-WordsView" id="TR-WordsView">	
+		<table id="TR-WordsList" class="TR-WordsList"></table>
 	</div>
 </body>
 </html>

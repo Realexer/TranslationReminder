@@ -1,7 +1,8 @@
 ﻿var Popup = function ()
 {
-	var wordsTable = document.getElementById("words-list");
-	var loadingView = document.getElementById("loading-view");
+	var wordsTable = document.getElementById("TR-WordsList");
+	var loadingView = document.getElementById("TR-LoadingView");
+	var nowwordsView = document.getElementById("TR-NoWordsView");
 
 	this.ShowLoadingView = function (hide)
 	{
@@ -13,6 +14,17 @@
 		loadingView.style.display = "none";
 	};
 
+	this.ShowNoWordsView = function ()
+	{
+		loadingView.style.display = "block";
+	};
+
+	this.HideNoWordsView = function ()
+	{
+		loadingView.style.display = "none";
+	};
+
+
 	this.ShowUserWords = function ()
 	{
 		var popup = this;
@@ -22,38 +34,46 @@
 
 		db.GetWords(function (words)
 		{
-			for (var i = 0; i < words.length; i++)
+			if (words.length > 0)
 			{
-				var word = words[i].word;
-				var meaning = words[i].meaning;
+				popup.HideNoWordsView();
 
-				if (word === 0)
-					continue;
+				for (var i = 0; i < words.length; i++)
+				{
+					var word = words[i].word;
+					var meaning = words[i].meaning;
 
-				var row = document.createElement("tr");
+					if (word === 0)
+						continue;
 
-				var cell1 = document.createElement("td");
-				var cell2 = document.createElement("td");
-				var cell3 = document.createElement("td");
+					var row = document.createElement("tr");
 
-				cell1.className = "word";
-				cell2.className = "meaning";
-				cell3.className = "delete";
+					var wordCell = document.createElement("td");
+					var translationCell = document.createElement("td");
+					var deleteButtonCell = document.createElement("td");
 
-				cell1.appendChild(document.createTextNode(word));
-				cell2.appendChild(document.createTextNode(meaning));
-				cell3.appendChild(document.createTextNode("x"));
-				cell3.style.color = "red";
-				cell3.style.cursor = "pointer";
+					wordCell.className = "TR-Word-Cell";
+					translationCell.className = "TR-Translation-Cell";
+					deleteButtonCell.className = "TR-DeleteButton-Cell";
 
-				cell3.setAttribute("word", word);
-				cell3.addEventListener("click", function (event) { popup.DeleteWordFromTable(event); }, false);
+					wordCell.appendChild(document.createTextNode(word));
+					translationCell.appendChild(document.createTextNode(meaning));
+					deleteButtonCell.appendChild(document.createTextNode("x"));
+					deleteButtonCell.style.cursor = "pointer";
 
-				row.appendChild(cell1);
-				row.appendChild(cell2);
-				row.appendChild(cell3);
+					deleteButtonCell.setAttribute("word", word);
+					deleteButtonCell.addEventListener("click", function (event) { popup.DeleteWordFromTable(event); }, false);
 
-				wordsTable.appendChild(row);
+					row.appendChild(wordCell);
+					row.appendChild(translationCell);
+					row.appendChild(deleteButtonCell);
+
+					wordsTable.appendChild(row);
+				}
+			}
+			else
+			{
+				popup.ShowNoWordsView();
 			}
 
 			popup.HideLoadingView();
