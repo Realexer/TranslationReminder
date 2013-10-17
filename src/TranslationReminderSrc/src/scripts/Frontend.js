@@ -131,11 +131,6 @@ var Frontend = function ()
 					var leftTextElement = null,
 						rightTextElement = null;
 
-//					if (leftPartOfText.length === 0 && rightPartOfText.length === 0)
-//					{
-
-//					}
-
 					if (node.parentNode)
 					{
 						if (node.parentNode.getAttribute("class") === this.classNames.highlightedText)
@@ -413,7 +408,7 @@ var Frontend = function ()
 	{
 		var frontendInstance = this;
 
-		chrome.extension.sendMessage(null, { name: "DB.DeleteWord", data: word },
+		chrome.extension.sendMessage(null, { name: "DB.DeleteWord", data: {word: word} },
 		function ()
 		{
 			frontendInstance.RemoveHighLights(word);
