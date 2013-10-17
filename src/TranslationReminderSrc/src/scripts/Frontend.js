@@ -46,6 +46,8 @@ var Frontend = function ()
 		}
 	};
 
+	this.restrictedTags = ["style", "script", "object", "embed"];
+
 	this.selectedText = null;
 
 	this.textNodes = new Array();
@@ -129,16 +131,24 @@ var Frontend = function ()
 					var leftTextElement = null,
 						rightTextElement = null;
 
-					if (leftPartOfText.length === 0 && rightPartOfText.length === 0)
+//					if (leftPartOfText.length === 0 && rightPartOfText.length === 0)
+//					{
+
+//					}
+
+					if (node.parentNode)
 					{
-						if (node.parentNode)
+						if (node.parentNode.getAttribute("class") === this.classNames.highlightedText)
 						{
-							if (node.parentNode.getAttribute("class") === this.classNames.highlightedText)
-							{
-								continue;
-							}
+							continue;
+						}
+
+						if (this.restrictedTags.indexOf(node.parentNode.tagName.toLowerCase()) !== -1)
+						{
+							continue;
 						}
 					}
+
 
 					var newTextElementToReplacePrevious = document.createElement("span");
 					if (leftPartOfText.length > 0)
@@ -361,7 +371,7 @@ var Frontend = function ()
 		hint.innerHTML = "<span class='" + this.classNames.common.translation + " " + this.classNames.hint.translation + "'>" + highlightedTextElement.getAttribute("title") + "</span>"
 						+ "<button class='" + this.classNames.common.red + " " + this.IDs.hint.deleteWord + "' id='" + this.IDs.hint.deleteWord + "'>x</button>";
 
-		hint.setAttribute("class", + this.classNames.common.base + " " + this.classNames.hint.handler);
+		hint.setAttribute("class", +this.classNames.common.base + " " + this.classNames.hint.handler);
 		hint.id = this.IDs.hint.handler;
 
 
