@@ -4,7 +4,7 @@
 	var loadingView = document.getElementById("TR-LoadingView");
 	var nowwordsView = document.getElementById("TR-NoWordsView");
 
-	this.ShowLoadingView = function (hide)
+	this.ShowLoadingView = function ()
 	{
 		loadingView.style.display = "block";
 	},
@@ -16,12 +16,12 @@
 
 	this.ShowNoWordsView = function ()
 	{
-		loadingView.style.display = "block";
+		nowwordsView.style.display = "block";
 	};
 
 	this.HideNoWordsView = function ()
 	{
-		loadingView.style.display = "none";
+		nowwordsView.style.display = "none";
 	};
 
 
@@ -58,11 +58,14 @@
 
 					wordCell.appendChild(document.createTextNode(word));
 					translationCell.appendChild(document.createTextNode(meaning));
-					deleteButtonCell.appendChild(document.createTextNode("x"));
-					deleteButtonCell.style.cursor = "pointer";
 
-					deleteButtonCell.setAttribute("word", word);
-					deleteButtonCell.addEventListener("click", function (event) { popup.DeleteWordFromTable(event); }, false);
+					var deleteButton = document.createElement("button");
+					deleteButton.setAttribute("class", "TR-Red");
+					deleteButton.appendChild(document.createTextNode("x"));
+					deleteButton.setAttribute("word", word);
+					deleteButton.addEventListener("click", function (event) { popup.DeleteWordFromTable(event); }, false);
+
+					deleteButtonCell.appendChild(deleteButton);
 
 					row.appendChild(wordCell);
 					row.appendChild(translationCell);

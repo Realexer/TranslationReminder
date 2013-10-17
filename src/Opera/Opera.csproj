@@ -38,6 +38,10 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Content Include="..\TranslationReminderSrc\src\css\common.css">
+      <Link>css\common.css</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="..\TranslationReminderSrc\src\css\page-inject.css">
       <Link>css\page-inject.css</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

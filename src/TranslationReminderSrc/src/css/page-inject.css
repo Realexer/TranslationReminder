@@ -6,8 +6,9 @@
 }
 /* END [HIGHLIGHTED TEXT] */
 
+
 /* BEGIN [NEW WORD ADDING FORM] */
-.TR-NewWordForm-Handler
+.TR-NewWordForm
 {
 	background: #fff;
 	z-index: 2147483647;
@@ -20,7 +21,7 @@
 	overflow: hidden;
 }
 
-.TR-NewWordForm-TitleHandler
+.TR-NewWordForm-Title
 {
 	font-size: 0.6em;
 	color: #777;
@@ -32,10 +33,7 @@
 .TR-NewWordForm-CloseButton
 {
 	width: 25px;
-	text-align: center;
-	color: #c77;
 	float: right;
-	cursor: pointer;
 }
 
 .TR-NewWordForm-Body 
@@ -64,7 +62,6 @@
 {
 	width: 21px;
 }
-
 /* END [NEW WORD ADDING FORM] */
 
 

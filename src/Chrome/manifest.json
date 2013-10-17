@@ -16,7 +16,7 @@
 		{
 			"matches": ["*://*/*"],
 			"js": ["scripts/Extensions.js", "scripts/Helper.js", "scripts/DB.js", "scripts/Frontend.js", "foreground.js"],
-			"css": ["css/page-inject.css"]
+			"css": ["css/common.css", "css/page-inject.css"]
 		}
 	],
 

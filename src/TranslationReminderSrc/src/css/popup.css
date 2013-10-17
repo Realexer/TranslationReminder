@@ -1,4 +1,4 @@
-body
+.TR-Popup
 {
 	color: #405cb6;
 	font-family: Arial;
@@ -41,7 +41,7 @@ body
 .TR-WordsList .delete
 {
 	text-align: center;
-	width: 15px;	
+	width: 15px;
 }
 
 /** COVER VIEWS **/

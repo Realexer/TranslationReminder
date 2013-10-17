@@ -1,29 +1,32 @@
-.TR-Common
+.TR-Base
 {
 	color: #333;
 }
 
-.TR-Hint button,.TR-NewWordForm-Handler button 
+.TR-Clear 
+{
+	clear: both;
+}
+
+.TR-Popup button, 
+.TR-Base button, 
+.TR-Hint button, 
+.TR-NewWordForm button 
 {
 	background: none;
 	border: none;
 	margin: 0px;
 	padding: 0px;
+	text-align: center;
+	cursor: pointer;
 }
 
-.TR-DeleteButton 
+.TR-Green 
+{
+	color: #407A40;
+}
+
+.TR-Red 
 {
 	color: #c77;	
-}
-
-.TR-AddButton 
-{
-	color: #FF407A40;
-	font-size: 1.2em;
-}
-
-/* GENERAL */
-.TR-Clear 
-{
-	clear: both;
 }

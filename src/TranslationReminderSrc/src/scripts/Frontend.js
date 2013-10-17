@@ -2,12 +2,17 @@ var Frontend = function ()
 {
 	this.classNames =
 	{
-		clear: "TR-Clear",
 		highlightedText: "TR-HighlightedText",
+		common: {
+			base: "TR-Common",
+			green: "TR-Green",
+			red: "TR-Red",
+			clear: "TR-Clear"
+		},
 		newWordForm: {
-			formHandler: "TR-NewWordForm-Handler",
-			titleHandler: "TR-NewWordForm-TitleHandler",
+			form: "TR-NewWordForm",
 			title: "TR-NewWordForm-Title",
+			titleText: "TR-NewWordForm-Title",
 			formBody: "TR-NewWordForm-Body",
 			selectedText: "TR-NewWordForm-CurrentSelection",
 			translationInput: "TR-NewWordForm-Translation",
@@ -25,9 +30,9 @@ var Frontend = function ()
 	{
 		newWordForm:
 		{
-			formHandler: "TR-NewWordForm",
-			titleHandler: "TR-NewWordForm-TitleHandler",
-			title: "TR-NewWordForm-Title",
+			form: "TR-NewWordForm",
+			title: "TR-NewWordForm-TitleHandler",
+			titleText: "TR-NewWordForm-Title",
 			closeButton: "TR-NewWordForm-CloseButton",
 			selectedText: "TR-NewWordForm-CurrentSelection",
 			translationInput: "TR-NewWordForm-Translation",
@@ -47,7 +52,7 @@ var Frontend = function ()
 	var newWordAddingFormElement;
 
 
-	this.GetWordAddingForm = function () { return document.getElementById(this.IDs.newWordForm.formHandler); };
+	this.GetWordAddingForm = function () { return document.getElementById(this.IDs.newWordForm.form); };
 
 	this.GetWordAddingFormCurrentSelection = function () { return document.getElementById(this.IDs.newWordForm.selectedText); };
 
@@ -201,7 +206,7 @@ var Frontend = function ()
 
 	this.SelectWordAction = function (event)
 	{
-		if (event.target.hasInParents(this.classNames.newWordForm.formHandler))
+		if (event.target.hasInParents(this.classNames.newWordForm.form))
 			return false;
 
 		if (!event.ctrlKey)
@@ -278,16 +283,16 @@ var Frontend = function ()
 		{
 			newWordAddingFormElement = document.createElement("div");
 			newWordAddingFormElement.innerHTML =
-			 "<div id='" + this.IDs.newWordForm.formHandler + "' class='" + this.classNames.newWordForm.formHandler + "'>"
-				+ "<div id='" + this.IDs.newWordForm.titleHandler + "' class='" + this.classNames.newWordForm.titleHandler + "'>"
-					+ "<span id='" + this.IDs.newWordForm.title + "' class='" + this.classNames.newWordForm.title + "'>add translaton to the word</span>"
-					+ "<button id='" + this.IDs.newWordForm.closeButton + "' class='" + this.classNames.newWordForm.closeButton + "'>x</button>"
-					+ "<div class='" + this.classNames.clear + "'></div> "
+			 "<div class='" + this.classNames.common.base + " " + this.classNames.newWordForm.form + "' id='" + this.IDs.newWordForm.form + "'>"
+				+ "<div class='" + this.classNames.newWordForm.title + "' id='" + this.IDs.newWordForm.title + "'>"
+					+ "<span class='" + this.classNames.newWordForm.titleText + "' id='" + this.IDs.newWordForm.titleText + "'>add translaton to the word</span>"
+					+ "<button class='" + this.classNames.common.red + " " + this.classNames.newWordForm.closeButton + "' id='" + this.IDs.newWordForm.closeButton + "'>x</button>"
+					+ "<div class='" + this.classNames.common.clear + "'></div> "
 				+ "</div> "
 				+ "<div class='" + this.classNames.newWordForm.formBody + "'>"
 				+ "<span class='" + this.classNames.newWordForm.selectedText + "' id='" + this.IDs.newWordForm.selectedText + "'>word</span>"
 				+ "<input class='" + this.classNames.newWordForm.translationInput + "' id='" + this.IDs.newWordForm.translationInput + "' value='' type='text' placeholder='translation'/>"
-				+ "<button class='" + this.classNames.newWordForm.addButton + "' id='" + this.IDs.newWordForm.submitButton + "'>+</button>"
+				+ "<button class='" + this.classNames.common.green + " " + this.classNames.newWordForm.addButton + "' id='" + this.IDs.newWordForm.submitButton + "'>+</button>"
 				+ "</div>"
 			+ "</div>";
 		}
@@ -351,9 +356,10 @@ var Frontend = function ()
 
 
 		var hint = document.createElement("div");
-		hint.innerHTML = "<span class='" + this.classNames.hint.translation + "'>" + highlightedTextElement.getAttribute("title") + "</span>" + "<button class='" + this.IDs.hint.deleteWord + "' id='" + this.IDs.hint.deleteWord + "'>x</button>";
+		hint.innerHTML = "<span class='" + this.classNames.common.base + " " + this.classNames.hint.translation + "'>" + highlightedTextElement.getAttribute("title") + "</span>"
+						+ "<button class='" + this.classNames.common.red + " " + this.IDs.hint.deleteWord + "' id='" + this.IDs.hint.deleteWord + "'>x</button>";
 
-		hint.setAttribute("class", this.classNames.hint.handler);
+		hint.setAttribute("class", + this.classNames.common.base + " " + this.classNames.hint.handler);
 		hint.id = this.IDs.hint.handler;
 
 
