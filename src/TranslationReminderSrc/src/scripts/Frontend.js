@@ -7,7 +7,9 @@ var Frontend = function ()
 			base: "TR-Common",
 			green: "TR-Green",
 			red: "TR-Red",
-			clear: "TR-Clear"
+			clear: "TR-Clear",
+			word: "TR-Word",
+			translation: "TR-Translation"
 		},
 		newWordForm: {
 			form: "TR-NewWordForm",
@@ -290,8 +292,8 @@ var Frontend = function ()
 					+ "<div class='" + this.classNames.common.clear + "'></div> "
 				+ "</div> "
 				+ "<div class='" + this.classNames.newWordForm.formBody + "'>"
-				+ "<span class='" + this.classNames.newWordForm.selectedText + "' id='" + this.IDs.newWordForm.selectedText + "'>word</span>"
-				+ "<input class='" + this.classNames.newWordForm.translationInput + "' id='" + this.IDs.newWordForm.translationInput + "' value='' type='text' placeholder='translation'/>"
+				+ "<span class='" + this.classNames.common.word + " " + this.classNames.newWordForm.selectedText + "' id='" + this.IDs.newWordForm.selectedText + "'>word</span>"
+				+ "<input class='" + this.classNames.common.translation + " " + this.classNames.newWordForm.translationInput + "' id='" + this.IDs.newWordForm.translationInput + "' value='' type='text' placeholder='translation'/>"
 				+ "<button class='" + this.classNames.common.green + " " + this.classNames.newWordForm.addButton + "' id='" + this.IDs.newWordForm.submitButton + "'>+</button>"
 				+ "</div>"
 			+ "</div>";
@@ -356,7 +358,7 @@ var Frontend = function ()
 
 
 		var hint = document.createElement("div");
-		hint.innerHTML = "<span class='" + this.classNames.common.base + " " + this.classNames.hint.translation + "'>" + highlightedTextElement.getAttribute("title") + "</span>"
+		hint.innerHTML = "<span class='" + this.classNames.common.translation + " " + this.classNames.hint.translation + "'>" + highlightedTextElement.getAttribute("title") + "</span>"
 						+ "<button class='" + this.classNames.common.red + " " + this.IDs.hint.deleteWord + "' id='" + this.IDs.hint.deleteWord + "'>x</button>";
 
 		hint.setAttribute("class", + this.classNames.common.base + " " + this.classNames.hint.handler);

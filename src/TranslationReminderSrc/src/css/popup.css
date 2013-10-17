@@ -1,12 +1,14 @@
 .TR-Popup
 {
-	color: #405cb6;
-	font-family: Arial;
-	font-size: 0.8em;
 	width: 400px;
-	height: 400px;
 }
 
+.TR-Popup h4
+{
+	margin: 0.7em 0em 1.2em 0em;
+	text-indent: 0.9em;
+	text-transform: capitalize;
+}
 
 /**
    words table
@@ -19,26 +21,64 @@
 }
 .TR-WordsList
 {
-	width: 100%;
+	width: 90%;
+	margin: 0% 5%;
 	border-collapse: collapse;
+	background: #fff;
+}
+
+.TR-WordsList thead
+{
+	border-bottom: 1px solid #ccc;
+	color: #AAA;
+}
+
+.TR-WordsList tbody
+{
+	font-size: 0.8em;	
+}
+
+
+.TR-WordsList th
+{
+	font-size: 0.8em;
+	font-weight: normal;
+	text-align: left;
+	text-indent: 0.1em;
+}
+
+.TR-WordsList tr 
+{
+	
 }
 
 .TR-WordsList td
 {
-	padding: 3px;
+	padding: 0.65em 0em;
+	vertical-align: top;
 }
-.TR-WordsList .word
+.TR-WordsList .TR-Word-Cell
 {
-	width: 50%;
-	color: #000;
+	width: 30%;
 }
-.TR-WordsList .meaning
+
+.TR-WordsList .TR-Word-Cell a
 {
-	width: 50%;
-	color: #048;
-	font-weight: bold;
+	font-size: 1.3em;
+	border-bottom: 1px dotted rgb(47, 100, 119);
+	text-decoration: none;
 }
-.TR-WordsList .delete
+
+.TR-WordsList .TR-Translation-Cell
+{
+	width: 70%;
+}
+
+.TR-WordsList .TR-Translation-Cell:before {
+	content: "- ";
+}
+
+.TR-WordsList .TR-DeleteButton-Cell
 {
 	text-align: center;
 	width: 15px;

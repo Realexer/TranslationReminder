@@ -1,6 +1,8 @@
 .TR-Base
 {
 	color: #333;
+	font-family: Tahoma;
+	background: #fff;
 }
 
 .TR-Clear 
@@ -23,10 +25,22 @@
 
 .TR-Green 
 {
-	color: #407A40;
+	color: #289328;
 }
 
 .TR-Red 
 {
-	color: #c77;	
+	color: #ee3b3b;	
+}
+
+.TR-Word 
+{
+	color: #111111;
+	font-family: Georgia;
+}
+
+.TR-Translation 
+{
+	color: #494949;
+	font-family: Verdana;	
 }

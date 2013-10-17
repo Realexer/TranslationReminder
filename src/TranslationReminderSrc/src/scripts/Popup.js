@@ -29,6 +29,7 @@
 	{
 		var popup = this;
 		popup.ShowLoadingView();
+		wordsTable.innerHTML = "";
 
 		var db = new DB();
 
@@ -53,10 +54,14 @@
 					var deleteButtonCell = document.createElement("td");
 
 					wordCell.className = "TR-Word-Cell";
-					translationCell.className = "TR-Translation-Cell";
+					translationCell.className = "TR-Translation-Cell TR-Translation";
 					deleteButtonCell.className = "TR-DeleteButton-Cell";
 
-					wordCell.appendChild(document.createTextNode(word));
+					var wordLink = document.createElement("a");
+					wordLink.className = "TR-Word";
+					wordLink.appendChild(document.createTextNode(word));
+
+					wordCell.appendChild(wordLink);
 					translationCell.appendChild(document.createTextNode(meaning));
 
 					var deleteButton = document.createElement("button");
@@ -87,11 +92,15 @@
 
 	this.DeleteWordFromTable = function (event)
 	{
-		var cell = event.target;
-		var word = cell.getAttribute("word");
+		var word = event.target.getAttribute("word");
 
-		// TODO: this.delteWord(word);
-		this.ShowUserWords();
+		var db = new DB();
+		var frontendInstance = this;
+
+		db.DeleteWord(word, function ()
+		{
+			frontendInstance.ShowUserWords();
+		});
 	};
 };
 

@@ -10,15 +10,14 @@
 /* BEGIN [NEW WORD ADDING FORM] */
 .TR-NewWordForm
 {
-	background: #fff;
 	z-index: 2147483647;
 	display: none;
 	position: absolute;
 	width: 260px;
 	border: 1px solid #AFC3CA;
-	font-family: Tahoma;
-	font-size: 17px;
+	font-size: 1.5em;
 	overflow: hidden;
+	background: #fff;
 }
 
 .TR-NewWordForm-Title
@@ -38,7 +37,7 @@
 
 .TR-NewWordForm-Body 
 {
-	padding: 5px;	
+	padding: 5px;
 }
 .TR-NewWordForm-CurrentSelection
 {
