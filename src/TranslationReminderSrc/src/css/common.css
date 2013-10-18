@@ -33,6 +33,13 @@
 	color: #ee3b3b;	
 }
 
+.TR-KnowIt 
+{
+	color: #3d7a40;
+	border-bottom: 1px dotted !important;
+	font-size: 10px;
+}
+
 .TR-Word 
 {
 	color: #111111;
@@ -42,5 +49,6 @@
 .TR-Translation 
 {
 	color: #494949;
-	font-family: Verdana;	
+	font-family: Verdana;
+	font-style: italic;
 }

@@ -9,7 +9,8 @@ var Frontend = function ()
 			red: "TR-Red",
 			clear: "TR-Clear",
 			word: "TR-Word",
-			translation: "TR-Translation"
+			translation: "TR-Translation",
+			knowIt: "TR-KnowIt"
 		},
 		newWordForm: {
 			form: "TR-NewWordForm",
@@ -24,7 +25,8 @@ var Frontend = function ()
 		hint: {
 			handler: "TR-Hint",
 			deleteWord: "TR-Hint-DeleteWordButton",
-			translation: "TR-Hint-Translation"
+			translation: "TR-Hint-Translation",
+			infoBox: "TR-Hint-InfoBox"
 		}
 	};
 
@@ -361,25 +363,32 @@ var Frontend = function ()
 		if (event.target.hasInChildren(this.classNames.hint.handler)) // hint already displaied
 			return false;
 
+		var word = highlightedTextElement.getAttribute("title");
 
 		var hint = document.createElement("div");
-		hint.innerHTML = "<span class='" + this.classNames.common.translation + " " + this.classNames.hint.translation + "'>" + highlightedTextElement.getAttribute("title") + "</span>"
-						+ "<button class='" + this.classNames.common.red + " " + this.IDs.hint.deleteWord + "' id='" + this.IDs.hint.deleteWord + "'>x</button>";
+		hint.innerHTML = "<span class='" + this.classNames.common.translation + " " + this.classNames.hint.translation + "'>" + word + "</span>"
+						+ "<div class='" + this.classNames.hint.infoBox + "'>"
+							+ "<button class='" + this.classNames.common.knowIt + " " + this.classNames.hint.deleteWord + "' id='" + this.IDs.hint.deleteWord + "' word='" + word + "'>I already know this word!</button>"
+						+ "</div>";
 
-		hint.setAttribute("class", +this.classNames.common.base + " " + this.classNames.hint.handler);
+		hint.setAttribute("class", this.classNames.common.base + " " + this.classNames.hint.handler);
 		hint.id = this.IDs.hint.handler;
 
+		document.body.appendChild(hint);
 
-		highlightedTextElement.appendChild(hint);
+		var highlightedTextElementRect = highlightedTextElement.getBoundingClientRect();
+		var hintRect = hint.getBoundingClientRect();
+		hint.style.left = (highlightedTextElementRect.right - highlightedTextElementRect.width / 2) + "px";
+		hint.style.top = (highlightedTextElementRect.top - hintRect.height) + "px";
 
 		var frntnd = this;
 
 		hint.addEventListener("click", function (e) { frntnd.RemoveHintsAction(e); }, false);
 		document.onclick = function (e) { frntnd.RemoveHintsAction(e); return false; };
 
-		document.getElementById(this.IDs.hint.deleteWord).onclick = function ()
+		document.getElementById(this.IDs.hint.deleteWord).onclick = function (e)
 		{
-			frntnd.DeleteWord(highlightedTextElement.firstChild.nodeValue);
+			frntnd.DeleteWord(e.target.getAttribute("word"));
 		};
 	};
 
@@ -408,7 +417,7 @@ var Frontend = function ()
 	{
 		var frontendInstance = this;
 
-		chrome.extension.sendMessage(null, { name: "DB.DeleteWord", data: {word: word} },
+		chrome.extension.sendMessage(null, { name: "DB.DeleteWord", data: { word: word} },
 		function ()
 		{
 			frontendInstance.RemoveHighLights(word);

@@ -14,7 +14,7 @@
 	display: none;
 	position: absolute;
 	width: 260px;
-	border: 1px solid #AFC3CA;
+	border: 1px solid #ccc;
 	font-size: 1.5em;
 	overflow: hidden;
 	background: #fff;
@@ -67,26 +67,33 @@
 /* BEGIN [HINT] */
 .TR-Hint 
 {
-	background: #fff;
-	border: 1px solid #AFC3CA;
+	background: #FBFFDD;
+	border: 1px dashed #FFD4BB;
 	position: absolute;
-	padding: 8px 5px;
+	padding: 5px 3px;
 	z-index: 2147483647;
-	bottom: 1em;
 	min-width: 180px;
+
+	text-align: left;
+	font-weight: normal;
 }
 
 .TR-Hint-Translation 
 {
-	font-size: 1.2em;
-	padding-right: 5px;
+	text-indent: 0.2em;
+	display: block;
+	font-size: 18px;
+}
+
+.TR-Hint-InfoBox 
+{
+	text-align: right;
+	height: 16px;
 }
 
 .TR-Hint-DeleteWordButton
 {
-	padding-right: 5px;
-	width: 13px;
-	float: right;
+	
 }
 
 /* END [HINT] */

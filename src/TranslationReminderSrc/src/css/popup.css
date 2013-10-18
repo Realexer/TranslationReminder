@@ -71,7 +71,7 @@
 
 .TR-WordsList .TR-Translation-Cell
 {
-	width: 70%;
+	width: 55%;
 }
 
 .TR-WordsList .TR-Translation-Cell:before {
@@ -81,7 +81,7 @@
 .TR-WordsList .TR-DeleteButton-Cell
 {
 	text-align: center;
-	width: 15px;
+	width: 15%;
 }
 
 /** COVER VIEWS **/

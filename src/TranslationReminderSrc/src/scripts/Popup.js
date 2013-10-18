@@ -65,8 +65,8 @@
 					translationCell.appendChild(document.createTextNode(meaning));
 
 					var deleteButton = document.createElement("button");
-					deleteButton.setAttribute("class", "TR-Red");
-					deleteButton.appendChild(document.createTextNode("x"));
+					deleteButton.setAttribute("class", "TR-KnowIt");
+					deleteButton.appendChild(document.createTextNode("Know it!"));
 					deleteButton.setAttribute("word", word);
 					deleteButton.addEventListener("click", function (event) { popup.DeleteWordFromTable(event); }, false);
 
