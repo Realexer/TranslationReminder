@@ -47,36 +47,24 @@
 					if (word === 0)
 						continue;
 
-					var row = document.createElement("tr");
+					var wordRow = "<tr>"
+									+ "<td class='TR-Word-Cell'>"
+										+ "<a class='TR-Word'>" + word + "</a>"
+									+ "</td>"
+									+ "<td class='TR-Translation-Cell TR-Translation'>" + meaning + "</td>"
+									+ "<td class='TR-DeleteButton-Cell'>"
+										+ "<button class='TR-KnowIt' word='" + word + "'>Know it!</button>"
+									+ "</td>"
+								+ "</tr>";
 
-					var wordCell = document.createElement("td");
-					var translationCell = document.createElement("td");
-					var deleteButtonCell = document.createElement("td");
+					wordsTable.innerHTML += wordRow;
+				}
 
-					wordCell.className = "TR-Word-Cell";
-					translationCell.className = "TR-Translation-Cell TR-Translation";
-					deleteButtonCell.className = "TR-DeleteButton-Cell";
-
-					var wordLink = document.createElement("a");
-					wordLink.className = "TR-Word";
-					wordLink.appendChild(document.createTextNode(word));
-
-					wordCell.appendChild(wordLink);
-					translationCell.appendChild(document.createTextNode(meaning));
-
-					var deleteButton = document.createElement("button");
-					deleteButton.setAttribute("class", "TR-KnowIt");
-					deleteButton.appendChild(document.createTextNode("Know it!"));
-					deleteButton.setAttribute("word", word);
+				var deleteButtonsList = document.getElementsByClassName("TR-KnowIt");
+				for (var y = 0; y < deleteButtonsList.length; y++)
+				{
+					var deleteButton = deleteButtonsList[y];
 					deleteButton.addEventListener("click", function (event) { popup.DeleteWordFromTable(event); }, false);
-
-					deleteButtonCell.appendChild(deleteButton);
-
-					row.appendChild(wordCell);
-					row.appendChild(translationCell);
-					row.appendChild(deleteButtonCell);
-
-					wordsTable.appendChild(row);
 				}
 			}
 			else
