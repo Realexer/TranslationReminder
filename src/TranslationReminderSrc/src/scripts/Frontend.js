@@ -147,7 +147,7 @@ var Frontend = function ()
 					}
 
 
-					var newTextElementToReplacePrevious = document.createElement("span");
+					var newTextElementToReplacePrevious = document.createElement("trtag");
 					if (leftPartOfText.length > 0)
 					{
 						leftTextElement = document.createTextNode(leftPartOfText);
