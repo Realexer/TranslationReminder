@@ -6,7 +6,7 @@ var DB = function ()
 		
 		db.transaction(function (tx)
 		{
-			tx.executeSql('CREATE TABLE IF NOT EXISTS words (word, meaning, date)', null, null,
+			tx.executeSql('CREATE TABLE IF NOT EXISTS words (word, translation, date, hits)', null, null,
 			function (tx, error)
 			{
 				// TODO: Report error
@@ -59,7 +59,7 @@ var DB = function ()
 			date = parseInt(date);
 
 			word = word.trim();
-			tx.executeSql('INSERT INTO words (word, meaning, date) ' +
+			tx.executeSql('INSERT INTO words (word, translation, date) ' +
 							'VALUES (?, ?, ?)', [word.toLowerCase(), meaning, date],
 
 			function (tx, results)

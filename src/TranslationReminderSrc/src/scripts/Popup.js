@@ -41,19 +41,18 @@
 
 				for (var i = 0; i < words.length; i++)
 				{
-					var word = words[i].word;
-					var meaning = words[i].meaning;
-
-					if (word === 0)
-						continue;
+					var wordItem = words[i];
 
 					var wordRow = "<tr>"
 									+ "<td class='TR-Word-Cell'>"
-										+ "<a class='TR-Word'>" + word + "</a>"
+										+ "<a class='TR-Word'>" + wordItem.word + "</a>"
 									+ "</td>"
-									+ "<td class='TR-Translation-Cell TR-Translation'>" + meaning + "</td>"
+									+ "<td class='TR-Translation-Cell'>"
+										+ "<span class='TR-Translation'>" + wordItem.meaning + "</span>"
+										+ "<div class='TR-WordInfo'>" + new Date(wordItem.date).Ago() + "</div>"
+									+"</td>"
 									+ "<td class='TR-DeleteButton-Cell'>"
-										+ "<button class='TR-KnowIt' word='" + word + "'>Know it!</button>"
+										+ "<button class='TR-KnowIt' word='" + wordItem.word + "'>Know it!</button>"
 									+ "</td>"
 								+ "</tr>";
 

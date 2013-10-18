@@ -74,8 +74,13 @@
 	width: 55%;
 }
 
-.TR-WordsList .TR-Translation-Cell:before {
+.TR-WordsList .TR-Translation:before {
 	content: "- ";
+}
+
+.TR-WordsList .TR-WordInfo {
+	font-size: 0.7em;
+	color: #888;
 }
 
 .TR-WordsList .TR-DeleteButton-Cell
