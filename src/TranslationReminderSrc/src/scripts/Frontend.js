@@ -25,6 +25,7 @@ var Frontend = function ()
 		hint: {
 			handler: "TR-Hint",
 			deleteWord: "TR-Hint-DeleteWordButton",
+			word: "TR-Hint-Word",
 			translation: "TR-Hint-Translation",
 			infoBox: "TR-Hint-InfoBox"
 		}
@@ -116,7 +117,7 @@ var Frontend = function ()
 		for (var i = 0; i < this.globalWords.length; i++)
 		{
 			var word = this.globalWords[i].word;
-			var meaning = this.globalWords[i].meaning;
+			var translation = this.globalWords[i].meaning;
 
 			if (word.trim().length == 0)
 				continue;
@@ -155,7 +156,9 @@ var Frontend = function ()
 					}
 
 					var highlightedTextElement = document.createElement("trtag");
-					highlightedTextElement.setAttribute("title", meaning);
+					highlightedTextElement.setAttribute("word", word);
+					highlightedTextElement.setAttribute("translation", translation);
+					highlightedTextElement.setAttribute("title", translation);
 					highlightedTextElement.setAttribute("class", this.classNames.highlightedText);
 					highlightedTextElement.addEventListener("click", function (e) { frontendInstance.ShowHintAction(e); }, true);
 
@@ -363,10 +366,11 @@ var Frontend = function ()
 		if (event.target.hasInChildren(this.classNames.hint.handler)) // hint already displaied
 			return false;
 
-		var word = highlightedTextElement.getAttribute("title");
+		var word = highlightedTextElement.getAttribute("word");
+		var translation = highlightedTextElement.getAttribute("translation");
 
 		var hint = document.createElement("div");
-		hint.innerHTML = "<span class='" + this.classNames.common.translation + " " + this.classNames.hint.translation + "'>" + word + "</span>"
+		hint.innerHTML = "<span class='" + this.classNames.common.word + " " + this.classNames.hint.word + "'>" + word + "</span> <span class='" + this.classNames.common.translation + " " + this.classNames.hint.translation + "'>" + translation + "</span>"
 						+ "<div class='" + this.classNames.hint.infoBox + "'>"
 							+ "<button class='" + this.classNames.common.knowIt + " " + this.classNames.hint.deleteWord + "' id='" + this.IDs.hint.deleteWord + "' word='" + word + "'>I already know this word!</button>"
 						+ "</div>";
