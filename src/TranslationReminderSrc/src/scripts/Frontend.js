@@ -55,6 +55,7 @@ var Frontend = function ()
 
 	this.textNodes = new Array();
 	this.globalWords = new Array();
+	this.wordsHits = {};
 
 	var newWordAddingFormElement;
 
@@ -83,6 +84,15 @@ var Frontend = function ()
 			for (var i = 0; i < frontendInstance.textNodes.length; i++)
 			{
 				frontendInstance.HighlightTexts(frontendInstance.textNodes[i]);
+			}
+
+			for (var key in frontendInstance.wordsHits)
+			{
+				var wordHits = frontendInstance.wordsHits[key];
+				chrome.extension.sendMessage(null, { name: "DB.UpdateWordHitCount", data: { word: key, hits: wordHits} }, function ()
+				{
+					console.log("Word hit counts updated");
+				});
 			}
 		});
 	};
@@ -116,20 +126,19 @@ var Frontend = function ()
 
 		for (var i = 0; i < this.globalWords.length; i++)
 		{
-			var word = this.globalWords[i].word;
-			var translation = this.globalWords[i].meaning;
+			var wordItem = this.globalWords[i];
 
-			if (word.trim().length == 0)
+			if (wordItem.word.trim().length == 0)
 				continue;
 
 			try
 			{
-				var pos = nodeText.toLowerCase().search(new RegExp(word.toLowerCase(), 'mg'));
+				var pos = nodeText.toLowerCase().search(new RegExp(wordItem.word.toLowerCase(), 'mg'));
 				if (pos !== -1)
 				{
 					var leftPartOfText = nodeText.substr(0, pos);
-					var rightPartOfText = nodeText.substr(pos + word.length, nodeText.length);
-					var matchedText = nodeText.substr(pos, word.length);
+					var rightPartOfText = nodeText.substr(pos + wordItem.word.length, nodeText.length);
+					var matchedText = nodeText.substr(pos, wordItem.word.length);
 
 					var leftTextElement = null,
 						rightTextElement = null;
@@ -156,15 +165,25 @@ var Frontend = function ()
 					}
 
 					var highlightedTextElement = document.createElement("trtag");
-					highlightedTextElement.setAttribute("word", word);
-					highlightedTextElement.setAttribute("translation", translation);
-					highlightedTextElement.setAttribute("title", translation);
+					highlightedTextElement.setAttribute("word", wordItem.word);
+					highlightedTextElement.setAttribute("translation", wordItem.translation);
+					highlightedTextElement.setAttribute("title", wordItem.translation);
 					highlightedTextElement.setAttribute("class", this.classNames.highlightedText);
 					highlightedTextElement.addEventListener("click", function (e) { frontendInstance.ShowHintAction(e); }, true);
 
 
 					highlightedTextElement.appendChild(document.createTextNode(matchedText));
 					newTextElementToReplacePrevious.appendChild(highlightedTextElement);
+
+					// increase word hits count
+					if (!this.wordsHits[wordItem.word])
+					{
+						this.wordsHits[wordItem.word] = parseInt(wordItem.hits) + 1;
+					}
+					else
+					{
+						this.wordsHits[wordItem.word] += 1;
+					}
 
 					if (rightPartOfText.length > 0)
 					{

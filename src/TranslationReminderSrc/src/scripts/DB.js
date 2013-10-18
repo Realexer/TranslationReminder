@@ -3,7 +3,7 @@ var DB = function ()
 	function getDb()
 	{
 		var db = window.openDatabase('YMDB', '1.0', 'Translation Reminder', 2 * 1024 * 1024);
-		
+
 		db.transaction(function (tx)
 		{
 			tx.executeSql('CREATE TABLE IF NOT EXISTS words (word, translation, date, hits)', null, null,
@@ -29,8 +29,9 @@ var DB = function ()
 				{
 					words.push({
 						word: results.rows.item(i).word,
-						meaning: results.rows.item(i).meaning,
-						date: results.rows.item(i).date
+						translation: results.rows.item(i).translation,
+						date: results.rows.item(i).date,
+						hits: results.rows.item(i).hits
 					});
 				}
 
@@ -47,7 +48,7 @@ var DB = function ()
 	};
 
 
-	this.WriteWord = function (word, meaning, date, callback)
+	this.AddWord = function (word, translation, date, callback)
 	{
 		getDb().transaction(function (tx)
 		{
@@ -59,9 +60,29 @@ var DB = function ()
 			date = parseInt(date);
 
 			word = word.trim();
-			tx.executeSql('INSERT INTO words (word, translation, date) ' +
-							'VALUES (?, ?, ?)', [word.toLowerCase(), meaning, date],
+			tx.executeSql('INSERT INTO words (word, translation, date, hits) ' +
+							'VALUES (?, ?, ?, ?)', [word.toLowerCase(), translation, date, 0],
 
+			function (tx, results)
+			{
+				if (callback)
+				{
+					callback();
+				}
+			},
+			function (tx, error)
+			{
+				// TODO: Report error
+			});
+		});
+	};
+
+	this.UpdateWordHitCount = function (word, hits, callback) 
+	{
+		getDb().transaction(function (tx)
+		{
+			word = word.trim();
+			tx.executeSql('UPDATE words SET hits=? WHERE (word)=?', [hits, word.toString().toLowerCase()],
 			function (tx, results)
 			{
 				if (callback)

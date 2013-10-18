@@ -38,7 +38,7 @@ opera.extension.onmessage = function (event)
 			break;
 
 		case "write":
-			if (!db.WriteWord(event.data.word, event.data.meaning, event))
+			if (!db.AddWord(event.data.word, event.data.meaning, event))
 			{
 				toolBarButton.click();
 			}

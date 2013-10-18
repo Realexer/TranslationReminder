@@ -10,7 +10,14 @@ chrome.extension.onMessage.addListener(function (message, sender, callback)
 			break;
 
 		case "DB.AddWord":
-			new DB().WriteWord(message.data.word, message.data.translation, null, function ()
+			new DB().AddWord(message.data.word, message.data.translation, null, function ()
+			{
+				callback();
+			});
+			break;
+
+		case "DB.UpdateWordHitCount":
+			new DB().UpdateWordHitCount(message.data.word, message.data.hits, null, function ()
 			{
 				callback();
 			});
