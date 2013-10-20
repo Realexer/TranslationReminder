@@ -261,31 +261,24 @@ var Frontend = function ()
 		this.ShowNewWordAddingForm();
 
 		var range = selection.getRangeAt(0);
+		var selectionRect = range.getBoundingClientRect();
 
-		range.collapse(false);
-		var offsets = range.getClientRects();
-		var top = offsets[0].top - this.GetWordAddingForm().clientHeight + window.pageYOffset;
-		var left = offsets[0].left;
-
-
-		if (top < 0)
+		// in Google Translate selectionRect is filled with zeros. Reason unknown. 
+		// Trying to solve by using event coordiates to find out where to show the form
+		if (selectionRect.left == 0 && selectionRect.top == 0)
 		{
-			this.GetWordAddingForm().style.top = offsets[0].bottom + window.pageYOffset + "px";
-		}
-		else
-		{
-			this.GetWordAddingForm().style.top = top + "px";
+			selectionRect = 
+			{
+				left: event.x,
+				top: event.y,
+				width: 0,
+				height: 0
+			};
 		}
 
-		if (parseInt(left + parseInt(this.GetWordAddingForm().clientWidth)) > parseInt(window.outerWidth))
-		{
-			var scrollWidth = 20;
-			this.GetWordAddingForm().style.left = (parseInt(window.outerWidth) - parseInt(this.GetWordAddingForm().clientWidth)) - scrollWidth + "px";
-		}
-		else
-		{
-			this.GetWordAddingForm().style.left = left + "px";
-		}
+		var formRect = this.GetWordAddingForm().getBoundingClientRect();
+		this.GetWordAddingForm().style.left = (window.scrollX + selectionRect.right - selectionRect.width / 2) + "px";
+		this.GetWordAddingForm().style.top = (window.scrollY + selectionRect.top - formRect.height) + "px";
 
 		this.GetWordAddingFormTranslationInput().focus();
 	};
@@ -401,8 +394,8 @@ var Frontend = function ()
 
 		var highlightedTextElementRect = highlightedTextElement.getBoundingClientRect();
 		var hintRect = hint.getBoundingClientRect();
-		hint.style.left = (highlightedTextElementRect.right - highlightedTextElementRect.width / 2) + "px";
-		hint.style.top = (highlightedTextElementRect.top - hintRect.height) + "px";
+		hint.style.left = (window.scrollX + highlightedTextElementRect.right - highlightedTextElementRect.width / 2) + "px";
+		hint.style.top = (window.scrollY + highlightedTextElementRect.top - hintRect.height) + "px";
 
 		var frntnd = this;
 
