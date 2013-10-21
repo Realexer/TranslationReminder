@@ -65,7 +65,6 @@
 .TR-WordsList .TR-Word-Cell a
 {
 	font-size: 1.3em;
-	border-bottom: 1px dotted rgb(47, 100, 119);
 	text-decoration: none;
 }
 
@@ -76,11 +75,6 @@
 
 .TR-WordsList .TR-Translation:before {
 	content: "- ";
-}
-
-.TR-WordsList .TR-WordInfo {
-	font-size: 0.7em;
-	color: #888;
 }
 
 .TR-WordsList .TR-DeleteButton-Cell

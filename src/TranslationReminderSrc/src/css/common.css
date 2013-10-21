@@ -44,6 +44,7 @@
 {
 	color: #111111;
 	font-family: Georgia;
+	border-bottom: 1px dotted rgb(47, 100, 119);
 }
 
 .TR-Translation 
@@ -51,4 +52,9 @@
 	color: #494949;
 	font-family: Verdana;
 	font-style: italic;
+}
+
+.TR-WordData {
+	font-size: 0.7em;
+	color: #888;
 }

@@ -68,14 +68,20 @@
 /* BEGIN [HINT] */
 .TR-Hint 
 {
-	background: #FBFFDD;
+	background: #FFFFED;
+	padding: 3px;
 	border: 1px dashed #FFD4BB;
 	position: absolute;
-	padding: 5px 5px;
 	z-index: 2147483647;
-	min-width: 180px;
+	min-width: 200px;
 	text-align: left;
 	font-weight: normal;
+}
+
+.TR-Hint .TR-WordBaseInfo 
+{
+	background: rgb(250, 237, 146);
+	padding: 7px;
 }
 
 .TR-Hint-Word
@@ -84,26 +90,37 @@
 	font-size: 18px;
 }
 
-.TR-Hint-Word:after {
-	content: " -";
-}
-
 .TR-Hint-Translation 
 {
 	text-indent: 1em;
 	font-size: 13px;
 }
 
-
-.TR-Hint-InfoBox 
+.TR-Hint-Translation:before 
 {
-	text-align: right;
-	height: 16px;
+	content: " - ";	
+}
+
+.TR-Hint .TR-WordAdditionalInfo
+{
+	text-align: left;
+	margin-top: 0.5em;
+	position: relative;
+	height: 30px;
+}
+
+.TR-Hint .TR-WordAdditionalInfo .TR-WordData 
+{
+	position: absolute;
+	left: 0;
+	bottom: 0;
 }
 
 .TR-Hint-DeleteWordButton
 {
-	
+	position: absolute;
+	right: 0;
+	bottom: 0;
 }
 
 /* END [HINT] */

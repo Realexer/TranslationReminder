@@ -10,7 +10,8 @@ var Frontend = function ()
 			clear: "TR-Clear",
 			word: "TR-Word",
 			translation: "TR-Translation",
-			knowIt: "TR-KnowIt"
+			knowIt: "TR-KnowIt",
+			wordData: "TR-WordData"
 		},
 		newWordForm: {
 			form: "TR-NewWordForm",
@@ -24,10 +25,11 @@ var Frontend = function ()
 		},
 		hint: {
 			handler: "TR-Hint",
-			deleteWord: "TR-Hint-DeleteWordButton",
+			wordBaseInfo: "TR-WordBaseInfo",
 			word: "TR-Hint-Word",
 			translation: "TR-Hint-Translation",
-			infoBox: "TR-Hint-InfoBox"
+			wordAdditionalInfo: "TR-WordAdditionalInfo",
+			deleteWord: "TR-Hint-DeleteWordButton"
 		}
 	};
 
@@ -167,6 +169,9 @@ var Frontend = function ()
 					var highlightedTextElement = document.createElement("trtag");
 					highlightedTextElement.setAttribute("word", wordItem.word);
 					highlightedTextElement.setAttribute("translation", wordItem.translation);
+					highlightedTextElement.setAttribute("hits", wordItem.hits);
+					highlightedTextElement.setAttribute("date", wordItem.date);
+					
 					highlightedTextElement.setAttribute("title", wordItem.translation);
 					highlightedTextElement.setAttribute("class", this.classNames.highlightedText);
 					highlightedTextElement.addEventListener("click", function (e) { frontendInstance.ShowHintAction(e); }, true);
@@ -380,11 +385,17 @@ var Frontend = function ()
 
 		var word = highlightedTextElement.getAttribute("word");
 		var translation = highlightedTextElement.getAttribute("translation");
+		var hits = highlightedTextElement.getAttribute("hits");
+		var date = parseInt(highlightedTextElement.getAttribute("date"));
 
 		var hint = document.createElement("div");
-		hint.innerHTML = "<span class='" + this.classNames.common.word + " " + this.classNames.hint.word + "'>" + word + "</span> <span class='" + this.classNames.common.translation + " " + this.classNames.hint.translation + "'>" + translation + "</span>"
-						+ "<div class='" + this.classNames.hint.infoBox + "'>"
+		hint.innerHTML = "<div class='" + this.classNames.hint.wordBaseInfo + "'>"
+							+ "<span class='" + this.classNames.common.word + " " + this.classNames.hint.word + "'>" + word + "</span> <span class='" + this.classNames.common.translation + " " + this.classNames.hint.translation + "'>" + translation + "</span>"
+						+ "</div>"
+						+ "<div class='" + this.classNames.hint.wordAdditionalInfo + "'>"
+							+ "<div class='" + this.classNames.common.wordData + "'>" + hits + " times met<br/>" + new Date(date).Ago() + "</div>"
 							+ "<button class='" + this.classNames.common.knowIt + " " + this.classNames.hint.deleteWord + "' id='" + this.IDs.hint.deleteWord + "' word='" + word + "'>I already know this word!</button>"
+							+ "<div class='" + this.classNames.common.clear + "'></div>"
 						+ "</div>";
 
 		hint.setAttribute("class", this.classNames.common.base + " " + this.classNames.hint.handler);
