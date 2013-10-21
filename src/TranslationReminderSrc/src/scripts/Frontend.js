@@ -69,6 +69,8 @@ var Frontend = function ()
 	this.GetWordAddingFormCurrentSelection = function () { return document.getElementById(this.IDs.newWordForm.selectedText); };
 
 	this.GetWordAddingFormTranslationInput = function () { return document.getElementById(this.IDs.newWordForm.translationInput); };
+	
+	this.GetWordAddingFormSpecifiedTranslation = function () { return document.getElementById(this.IDs.newWordForm.specifiedTranslation); };
 
 	this.GetWordAddingFormSubmitButton = function () { return document.getElementById(this.IDs.newWordForm.submitButton); };
 
@@ -294,6 +296,7 @@ var Frontend = function ()
 	{
 		this.GetWordAddingForm().style.display = "table";
 		this.GetWordAddingFormTranslationInput().value = "";
+		this.GetWordAddingFormSpecifiedTranslation().innerHTML = "";
 
 		this.GetWordAddingFormCurrentSelection().firstChild.nodeValue = this.selectedText;
 	};
@@ -343,7 +346,7 @@ var Frontend = function ()
 
 			this.GetWordAddingFormTranslationInput().oninput = function ()
 			{
-				document.getElementById(frontendInstance.IDs.newWordForm.specifiedTranslation).innerHTML = frontendInstance.GetWordAddingFormTranslationInput().value;
+				frontendInstance.GetWordAddingFormSpecifiedTranslation().innerHTML = frontendInstance.GetWordAddingFormTranslationInput().value;
 			};
 			
 			this.GetWordAddingFormTranslationInput().onkeydown = function (event)
