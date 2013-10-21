@@ -19,6 +19,7 @@ var Frontend = function ()
 			titleText: "TR-NewWordForm-Title",
 			formBody: "TR-NewWordForm-Body",
 			selectedText: "TR-NewWordForm-CurrentSelection",
+			specifiedTranslation: "TR-NewWordForm-SpecifiedTranslation",
 			translationInput: "TR-NewWordForm-Translation",
 			closeButton: "TR-NewWordForm-CloseButton",
 			addButton: "TR-NewWordForm-AddButton"
@@ -42,6 +43,7 @@ var Frontend = function ()
 			titleText: "TR-NewWordForm-Title",
 			closeButton: "TR-NewWordForm-CloseButton",
 			selectedText: "TR-NewWordForm-CurrentSelection",
+			specifiedTranslation: "TR-NewWordForm-SpecifiedTranslation",
 			translationInput: "TR-NewWordForm-Translation",
 			submitButton: "TR-NewWordForm-SubmitButton"
 		},
@@ -171,7 +173,7 @@ var Frontend = function ()
 					highlightedTextElement.setAttribute("translation", wordItem.translation);
 					highlightedTextElement.setAttribute("hits", wordItem.hits);
 					highlightedTextElement.setAttribute("date", wordItem.date);
-					
+
 					highlightedTextElement.setAttribute("title", wordItem.translation);
 					highlightedTextElement.setAttribute("class", this.classNames.highlightedText);
 					highlightedTextElement.addEventListener("click", function (e) { frontendInstance.ShowHintAction(e); }, true);
@@ -272,7 +274,7 @@ var Frontend = function ()
 		// Trying to solve by using event coordiates to find out where to show the form
 		if (selectionRect.left == 0 && selectionRect.top == 0)
 		{
-			selectionRect = 
+			selectionRect =
 			{
 				left: event.x,
 				top: event.y,
@@ -319,7 +321,11 @@ var Frontend = function ()
 					+ "<div class='" + this.classNames.common.clear + "'></div> "
 				+ "</div> "
 				+ "<div class='" + this.classNames.newWordForm.formBody + "'>"
-				+ "<span class='" + this.classNames.common.word + " " + this.classNames.newWordForm.selectedText + "' id='" + this.IDs.newWordForm.selectedText + "'>word</span>"
+				+ "<div class='" + this.classNames.newWordForm.selectedText + "'>"
+					+ "<span class='" + this.classNames.common.word + "' id='" + this.IDs.newWordForm.selectedText + "'>word</span>"
+					+ " - "
+					+ "<span class='" + this.classNames.common.translation + " " + this.classNames.newWordForm.specifiedTranslation + "' id='" + this.IDs.newWordForm.specifiedTranslation + "'></span>"
+				+"</div>"
 				+ "<input class='" + this.classNames.common.translation + " " + this.classNames.newWordForm.translationInput + "' id='" + this.IDs.newWordForm.translationInput + "' value='' type='text' placeholder='translation'/>"
 				+ "<button class='" + this.classNames.common.green + " " + this.classNames.newWordForm.addButton + "' id='" + this.IDs.newWordForm.submitButton + "'>+</button>"
 				+ "</div>"
@@ -335,6 +341,11 @@ var Frontend = function ()
 
 			this.GetWordAddingFormSubmitButton().onclick = function () { frontendInstance.AddWord(); };
 
+			this.GetWordAddingFormTranslationInput().oninput = function ()
+			{
+				document.getElementById(frontendInstance.IDs.newWordForm.specifiedTranslation).innerHTML = frontendInstance.GetWordAddingFormTranslationInput().value;
+			};
+			
 			this.GetWordAddingFormTranslationInput().onkeydown = function (event)
 			{
 				if (event.keyCode === 13) // enter

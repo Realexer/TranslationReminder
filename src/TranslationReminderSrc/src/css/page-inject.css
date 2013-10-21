@@ -14,10 +14,10 @@
 	display: none;
 	position: absolute;
 	width: 260px;
-	border: 1px solid #ccc;
+	border: 1px solid rgb(252, 232, 221);
 	font-size: 1.5em;
 	overflow: hidden;
-	background: #fff;
+	background: #FFFFED;
 }
 
 .TR-NewWordForm-Title
@@ -42,10 +42,14 @@
 .TR-NewWordForm-CurrentSelection
 {
 	font-weight: bold;
-	padding: 0px 6px;
-	padding-bottom: 10px;
-	padding-bottom: 10px;
-	display: block;
+	margin-bottom: 10px;
+	padding-left: 6px;
+}
+
+.TR-NewWordForm-SpecifiedTranslation 
+{
+	font-weight: normal;
+	font-size: 0.7em;
 }
 
 .TR-NewWordForm-Translation
@@ -74,6 +78,7 @@
 	position: absolute;
 	z-index: 2147483647;
 	min-width: 200px;
+	max-width: 300px;
 	text-align: left;
 	font-weight: normal;
 }
