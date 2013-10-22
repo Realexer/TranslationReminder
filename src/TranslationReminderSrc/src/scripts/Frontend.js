@@ -4,14 +4,15 @@ var Frontend = function ()
 	{
 		highlightedText: "TR-HighlightedText",
 		common: {
-			base: "TR-Common",
+			base: "TR-Base",
 			green: "TR-Green",
 			red: "TR-Red",
 			clear: "TR-Clear",
 			word: "TR-Word",
 			translation: "TR-Translation",
 			knowIt: "TR-KnowIt",
-			wordData: "TR-WordData"
+			wordData: "TR-WordData",
+			successful: "TR-Successful"
 		},
 		newWordForm: {
 			form: "TR-NewWordForm",
@@ -69,7 +70,7 @@ var Frontend = function ()
 	this.GetWordAddingFormCurrentSelection = function () { return document.getElementById(this.IDs.newWordForm.selectedText); };
 
 	this.GetWordAddingFormTranslationInput = function () { return document.getElementById(this.IDs.newWordForm.translationInput); };
-	
+
 	this.GetWordAddingFormSpecifiedTranslation = function () { return document.getElementById(this.IDs.newWordForm.specifiedTranslation); };
 
 	this.GetWordAddingFormSubmitButton = function () { return document.getElementById(this.IDs.newWordForm.submitButton); };
@@ -139,7 +140,7 @@ var Frontend = function ()
 
 			try
 			{
-				var pos = nodeText.toLowerCase().search(new RegExp(wordItem.word.toLowerCase(), 'mg'));
+				var pos = nodeText.toLowerCase().search(new RegExp("\\b" + wordItem.word.toLowerCase() + "\\b", "mg"));
 				if (pos !== -1)
 				{
 					var leftPartOfText = nodeText.substr(0, pos);
@@ -151,68 +152,62 @@ var Frontend = function ()
 
 					if (node.parentNode)
 					{
-						if (node.parentNode.getAttribute("class") === this.classNames.highlightedText)
+						if (node.parentNode.hasInParents(this.classNames.newWordForm.form)
+							|| node.parentNode.getAttribute("class") === this.classNames.highlightedText
+							|| this.restrictedTags.indexOf(node.parentNode.tagName.toLowerCase()) !== -1)
 						{
 							continue;
 						}
 
-						if (this.restrictedTags.indexOf(node.parentNode.tagName.toLowerCase()) !== -1)
+
+						var newTextElementToReplacePrevious = document.createElement("trtag");
+						if (leftPartOfText.length > 0)
 						{
-							continue;
+							leftTextElement = document.createTextNode(leftPartOfText);
+							newTextElementToReplacePrevious.appendChild(leftTextElement);
 						}
-					}
+
+						var highlightedTextElement = document.createElement("trtag");
+						highlightedTextElement.setAttribute("word", wordItem.word);
+						highlightedTextElement.setAttribute("translation", wordItem.translation);
+						highlightedTextElement.setAttribute("hits", wordItem.hits);
+						highlightedTextElement.setAttribute("date", wordItem.date);
+
+						highlightedTextElement.setAttribute("title", wordItem.translation);
+						highlightedTextElement.setAttribute("class", this.classNames.highlightedText);
+						highlightedTextElement.addEventListener("click", function(e) { frontendInstance.ShowHintAction(e); }, true);
 
 
-					var newTextElementToReplacePrevious = document.createElement("trtag");
-					if (leftPartOfText.length > 0)
-					{
-						leftTextElement = document.createTextNode(leftPartOfText);
-						newTextElementToReplacePrevious.appendChild(leftTextElement);
-					}
+						highlightedTextElement.appendChild(document.createTextNode(matchedText));
+						newTextElementToReplacePrevious.appendChild(highlightedTextElement);
 
-					var highlightedTextElement = document.createElement("trtag");
-					highlightedTextElement.setAttribute("word", wordItem.word);
-					highlightedTextElement.setAttribute("translation", wordItem.translation);
-					highlightedTextElement.setAttribute("hits", wordItem.hits);
-					highlightedTextElement.setAttribute("date", wordItem.date);
+						// increase word hits count
+						if (!this.wordsHits[wordItem.word])
+						{
+							this.wordsHits[wordItem.word] = parseInt(wordItem.hits) + 1;
+						}
+						else
+						{
+							this.wordsHits[wordItem.word] += 1;
+						}
 
-					highlightedTextElement.setAttribute("title", wordItem.translation);
-					highlightedTextElement.setAttribute("class", this.classNames.highlightedText);
-					highlightedTextElement.addEventListener("click", function (e) { frontendInstance.ShowHintAction(e); }, true);
+						if (rightPartOfText.length > 0)
+						{
+							rightTextElement = document.createTextNode(rightPartOfText);
+							newTextElementToReplacePrevious.appendChild(rightTextElement);
+						}
 
-
-					highlightedTextElement.appendChild(document.createTextNode(matchedText));
-					newTextElementToReplacePrevious.appendChild(highlightedTextElement);
-
-					// increase word hits count
-					if (!this.wordsHits[wordItem.word])
-					{
-						this.wordsHits[wordItem.word] = parseInt(wordItem.hits) + 1;
-					}
-					else
-					{
-						this.wordsHits[wordItem.word] += 1;
-					}
-
-					if (rightPartOfText.length > 0)
-					{
-						rightTextElement = document.createTextNode(rightPartOfText);
-						newTextElementToReplacePrevious.appendChild(rightTextElement);
-					}
-
-					if (node.parentNode)
-					{
 						node.parentNode.replaceChild(newTextElementToReplacePrevious, node);
-					}
 
-					if (leftPartOfText.length > 0)
-					{
-						this.HighlightTexts(leftTextElement);
-					}
+						if (leftPartOfText.length > 0)
+						{
+							this.HighlightTexts(leftTextElement);
+						}
 
-					if (rightPartOfText.length > 0)
-					{
-						this.HighlightTexts(rightTextElement);
+						if (rightPartOfText.length > 0)
+						{
+							this.HighlightTexts(rightTextElement);
+						}
 					}
 				}
 			}
@@ -246,8 +241,10 @@ var Frontend = function ()
 
 	this.SelectWordAction = function (event)
 	{
-		if (event.target.hasInParents(this.classNames.newWordForm.form))
+		if (event.target.hasInParents(this.classNames.newWordForm.form) || event.target.hasInParents(this.classNames.hint.handler))
 			return false;
+
+		this.RemoveHints();
 
 		if (!event.ctrlKey)
 		{
@@ -328,7 +325,7 @@ var Frontend = function ()
 					+ "<span class='" + this.classNames.common.word + "' id='" + this.IDs.newWordForm.selectedText + "'>word</span>"
 					+ " - "
 					+ "<span class='" + this.classNames.common.translation + " " + this.classNames.newWordForm.specifiedTranslation + "' id='" + this.IDs.newWordForm.specifiedTranslation + "'></span>"
-				+"</div>"
+				+ "</div>"
 				+ "<input class='" + this.classNames.common.translation + " " + this.classNames.newWordForm.translationInput + "' id='" + this.IDs.newWordForm.translationInput + "' value='' type='text' placeholder='translation'/>"
 				+ "<button class='" + this.classNames.common.green + " " + this.classNames.newWordForm.addButton + "' id='" + this.IDs.newWordForm.submitButton + "'>+</button>"
 				+ "</div>"
@@ -348,7 +345,7 @@ var Frontend = function ()
 			{
 				frontendInstance.GetWordAddingFormSpecifiedTranslation().innerHTML = frontendInstance.GetWordAddingFormTranslationInput().value;
 			};
-			
+
 			this.GetWordAddingFormTranslationInput().onkeydown = function (event)
 			{
 				if (event.keyCode === 13) // enter
@@ -370,8 +367,6 @@ var Frontend = function ()
 	{
 		if (this.selectedText.length > 0)
 		{
-			this.HideNewWordAddingForm();
-
 			var translation = this.GetWordAddingFormTranslationInput().value;
 
 			if (translation.trim().length > 0)
@@ -382,6 +377,13 @@ var Frontend = function ()
 				function ()
 				{
 					frontendInstance.ShowHightlights();
+					frontendInstance.GetWordAddingForm().classList.add(frontendInstance.classNames.common.successful);
+
+					setTimeout(function ()
+					{
+						frontendInstance.HideNewWordAddingForm();
+						frontendInstance.GetWordAddingForm().classList.remove(frontendInstance.classNames.common.successful);
+					}, 120);
 				});
 			}
 		}
@@ -422,24 +424,14 @@ var Frontend = function ()
 		hint.style.left = (window.scrollX + highlightedTextElementRect.right - highlightedTextElementRect.width / 2) + "px";
 		hint.style.top = (window.scrollY + highlightedTextElementRect.top - hintRect.height) + "px";
 
-		var frntnd = this;
-
-		hint.addEventListener("click", function (e) { frntnd.RemoveHintsAction(e); }, false);
-		document.onclick = function (e) { frntnd.RemoveHintsAction(e); return false; };
+		var frontendInstance = this;
 
 		document.getElementById(this.IDs.hint.deleteWord).onclick = function (e)
 		{
-			frntnd.DeleteWord(e.target.getAttribute("word"));
+			frontendInstance.DeleteWord(e.target.getAttribute("word"));
 		};
 	};
 
-	this.RemoveHintsAction = function (event)
-	{
-		if (event.target.hasInParents(this.classNames.highlightedText))
-			return false;
-
-		this.RemoveHints();
-	};
 
 	this.RemoveHints = function ()
 	{
@@ -467,4 +459,68 @@ var Frontend = function ()
 		});
 	};
 
+
+	/*
+	var allHightlightTexts = document.getElementsByClassName(frontendInstance.classNames.highlightedText);
+
+for (var i = 0; i < allHightlightTexts.length; i++)
+{
+	var highlightedText = allHightlightTexts[i];
+	highlightedText.onclick = function (e) { frontendInstance.ShowHintAction(e); };
+}
+
+this.HighlightTextsAlt = function (node)
+{
+	var frontendInstance = this;
+	var nodeText = new String(node.nodeValue);
+
+	for (var i = 0; i < this.globalWords.length; i++)
+	{
+		var wordItem = this.globalWords[i];
+
+		if (wordItem.word.trim().length == 0)
+			continue;
+
+		try
+		{
+			if (node.parentNode)
+			{
+				if (node.parentNode.hasInParents(this.classNames.newWordForm.form) ||
+						node.parentNode.getAttribute("class") === this.classNames.highlightedText ||
+						this.restrictedTags.indexOf(node.parentNode.tagName.toLowerCase()) !== -1)
+				{
+					continue;
+				}
+
+				node.parentNode.innerHTML = nodeText.replace(new RegExp("\\b" + wordItem.word + "\\b", "mgi"), function (match, offset, string)
+				{
+					return "<trtag"
+								+ " word='" + wordItem.word + "'"
+								+ " translation='" + wordItem.translation + "'"
+								+ " hits='" + wordItem.hits + "'"
+								+ " date='" + wordItem.date + "'"
+								+ " title='" + wordItem.translation + "'"
+								+ " class='" + frontendInstance.classNames.highlightedText + "'>"
+								+ match + "</trtag>";
+				});
+
+				// increase word hits count
+				if (!this.wordsHits[wordItem.word])
+				{
+					this.wordsHits[wordItem.word] = parseInt(wordItem.hits) + 1;
+				}
+				else
+				{
+					this.wordsHits[wordItem.word] += 1;
+				}
+			}
+		}
+		catch (error)
+		{
+			console.log(error);
+			continue;
+		}
+	}
+};
+	*/
 };

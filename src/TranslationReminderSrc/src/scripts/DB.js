@@ -61,7 +61,7 @@ var DB = function ()
 
 			word = word.trim();
 			tx.executeSql('INSERT INTO words (word, translation, date, hits) ' +
-							'VALUES (?, ?, ?, ?)', [word.toLowerCase(), translation, date, 0],
+							'VALUES (?, ?, ?, ?)', [word.toLowerCase(), translation, date, 1],
 
 			function (tx, results)
 			{
