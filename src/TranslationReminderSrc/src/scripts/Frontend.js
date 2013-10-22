@@ -80,6 +80,9 @@ var Frontend = function ()
 
 	this.ShowHightlights = function ()
 	{
+		this.textNodes = new Array();
+		this.globalWords = new Array();
+		
 		this.FindTexts(document.body);
 
 		var frontendInstance = this;
@@ -100,6 +103,14 @@ var Frontend = function ()
 				{
 					console.log("Word hit counts updated");
 				});
+			}
+
+			var allHightlightTexts = document.getElementsByClassName(frontendInstance.classNames.highlightedText);
+
+			for (var i = 0; i < allHightlightTexts.length; i++)
+			{
+				var highlightedText = allHightlightTexts[i];
+				highlightedText.onclick = function (e) { frontendInstance.ShowHintAction(e); };
 			}
 		});
 	};
@@ -128,94 +139,67 @@ var Frontend = function ()
 
 	this.HighlightTexts = function (node)
 	{
-		var frontendInstance = this;
-		var nodeText = new String(node.nodeValue);
-
-		for (var i = 0; i < this.globalWords.length; i++)
+		try
 		{
-			var wordItem = this.globalWords[i];
+			var frontendInstance = this;
 
-			if (wordItem.word.trim().length == 0)
-				continue;
-
-			try
+			if (node.parentNode)
 			{
-				var pos = nodeText.toLowerCase().search(new RegExp("\\b" + wordItem.word.toLowerCase() + "\\b", "mg"));
-				if (pos !== -1)
+				var resultInnerHTML = node.parentNode.innerHTML;
+				
+				if (node.parentNode.hasInParents(this.classNames.newWordForm.form) ||
+					node.parentNode.getAttribute("class") === this.classNames.highlightedText ||
+						this.restrictedTags.indexOf(node.parentNode.tagName.toLowerCase()) !== -1)
 				{
-					var leftPartOfText = nodeText.substr(0, pos);
-					var rightPartOfText = nodeText.substr(pos + wordItem.word.length, nodeText.length);
-					var matchedText = nodeText.substr(pos, wordItem.word.length);
-
-					var leftTextElement = null,
-						rightTextElement = null;
-
-					if (node.parentNode)
-					{
-						if (node.parentNode.hasInParents(this.classNames.newWordForm.form)
-							|| node.parentNode.getAttribute("class") === this.classNames.highlightedText
-							|| this.restrictedTags.indexOf(node.parentNode.tagName.toLowerCase()) !== -1)
-						{
-							continue;
-						}
-
-
-						var newTextElementToReplacePrevious = document.createElement("trtag");
-						if (leftPartOfText.length > 0)
-						{
-							leftTextElement = document.createTextNode(leftPartOfText);
-							newTextElementToReplacePrevious.appendChild(leftTextElement);
-						}
-
-						var highlightedTextElement = document.createElement("trtag");
-						highlightedTextElement.setAttribute("word", wordItem.word);
-						highlightedTextElement.setAttribute("translation", wordItem.translation);
-						highlightedTextElement.setAttribute("hits", wordItem.hits);
-						highlightedTextElement.setAttribute("date", wordItem.date);
-
-						highlightedTextElement.setAttribute("title", wordItem.translation);
-						highlightedTextElement.setAttribute("class", this.classNames.highlightedText);
-						highlightedTextElement.addEventListener("click", function(e) { frontendInstance.ShowHintAction(e); }, true);
-
-
-						highlightedTextElement.appendChild(document.createTextNode(matchedText));
-						newTextElementToReplacePrevious.appendChild(highlightedTextElement);
-
-						// increase word hits count
-						if (!this.wordsHits[wordItem.word])
-						{
-							this.wordsHits[wordItem.word] = parseInt(wordItem.hits) + 1;
-						}
-						else
-						{
-							this.wordsHits[wordItem.word] += 1;
-						}
-
-						if (rightPartOfText.length > 0)
-						{
-							rightTextElement = document.createTextNode(rightPartOfText);
-							newTextElementToReplacePrevious.appendChild(rightTextElement);
-						}
-
-						node.parentNode.replaceChild(newTextElementToReplacePrevious, node);
-
-						if (leftPartOfText.length > 0)
-						{
-							this.HighlightTexts(leftTextElement);
-						}
-
-						if (rightPartOfText.length > 0)
-						{
-							this.HighlightTexts(rightTextElement);
-						}
-					}
+					return;
 				}
+
+				for (var i = 0; i < this.globalWords.length; i++)
+				{
+					var wordItem = this.globalWords[i];
+
+					if (wordItem.word.trim().length == 0)
+						continue;
+
+				
+						if (resultInnerHTML.search(new RegExp("\\b" + wordItem.word + "\\b", "mgi")) !== -1)
+						{
+							resultInnerHTML = resultInnerHTML.replace(new RegExp("\\b" + wordItem.word + "\\b", "mgi"), function (match, offset, string)
+							{
+
+								return "<trtag"
+								+ " word='" + wordItem.word + "'"
+								+ " translation='" + wordItem.translation + "'"
+								+ " hits='" + wordItem.hits + "'"
+								+ " date='" + wordItem.date + "'"
+								+ " title='" + wordItem.translation + "'"
+								+ " class='" + frontendInstance.classNames.highlightedText + "'>"
+								+ match + "</trtag>";
+							});
+
+							frontendInstance.IncreaseWordHitsCount(wordItem);
+						}
+				
+				}
+
+				node.parentNode.innerHTML = resultInnerHTML;
 			}
-			catch (error)
-			{
-				console.log(error);
-				continue;
-			}
+		}
+		catch (error)
+		{
+			console.log(error);
+		}
+	};
+
+	this.IncreaseWordHitsCount = function (wordItem)
+	{
+		if (!this.wordsHits[wordItem.word])
+		{
+			this.wordsHits[wordItem.word] = parseInt(wordItem.hits) + 1;
+		}
+		else
+		{
+			this.wordsHits[wordItem.word] += 1;
 		}
 	};
 
@@ -383,7 +367,7 @@ var Frontend = function ()
 					{
 						frontendInstance.HideNewWordAddingForm();
 						frontendInstance.GetWordAddingForm().classList.remove(frontendInstance.classNames.common.successful);
-					}, 120);
+					}, 50);
 				});
 			}
 		}
@@ -458,69 +442,4 @@ var Frontend = function ()
 			frontendInstance.RemoveHints();
 		});
 	};
-
-
-	/*
-	var allHightlightTexts = document.getElementsByClassName(frontendInstance.classNames.highlightedText);
-
-for (var i = 0; i < allHightlightTexts.length; i++)
-{
-	var highlightedText = allHightlightTexts[i];
-	highlightedText.onclick = function (e) { frontendInstance.ShowHintAction(e); };
-}
-
-this.HighlightTextsAlt = function (node)
-{
-	var frontendInstance = this;
-	var nodeText = new String(node.nodeValue);
-
-	for (var i = 0; i < this.globalWords.length; i++)
-	{
-		var wordItem = this.globalWords[i];
-
-		if (wordItem.word.trim().length == 0)
-			continue;
-
-		try
-		{
-			if (node.parentNode)
-			{
-				if (node.parentNode.hasInParents(this.classNames.newWordForm.form) ||
-						node.parentNode.getAttribute("class") === this.classNames.highlightedText ||
-						this.restrictedTags.indexOf(node.parentNode.tagName.toLowerCase()) !== -1)
-				{
-					continue;
-				}
-
-				node.parentNode.innerHTML = nodeText.replace(new RegExp("\\b" + wordItem.word + "\\b", "mgi"), function (match, offset, string)
-				{
-					return "<trtag"
-								+ " word='" + wordItem.word + "'"
-								+ " translation='" + wordItem.translation + "'"
-								+ " hits='" + wordItem.hits + "'"
-								+ " date='" + wordItem.date + "'"
-								+ " title='" + wordItem.translation + "'"
-								+ " class='" + frontendInstance.classNames.highlightedText + "'>"
-								+ match + "</trtag>";
-				});
-
-				// increase word hits count
-				if (!this.wordsHits[wordItem.word])
-				{
-					this.wordsHits[wordItem.word] = parseInt(wordItem.hits) + 1;
-				}
-				else
-				{
-					this.wordsHits[wordItem.word] += 1;
-				}
-			}
-		}
-		catch (error)
-		{
-			console.log(error);
-			continue;
-		}
-	}
-};
-	*/
 };
