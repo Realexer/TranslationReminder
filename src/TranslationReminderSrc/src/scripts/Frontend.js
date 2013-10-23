@@ -54,7 +54,7 @@ var Frontend = function ()
 		}
 	};
 
-	this.restrictedTags = ["style", "script", "object", "embed"];
+	this.restrictedTags = ["style", "script", "object", "embed", "textarea"];
 
 	this.selectedText = null;
 
