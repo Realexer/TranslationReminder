@@ -46,7 +46,7 @@
 					var wordRow = "<tr>"
 									+ "<td class='TR-Word-Cell'>"
 										+ "<div class='TR-WordHandler'><span class='TR-Word'>" + wordItem.word + "</span></div>"
-										+ "<div class='TR-WordData'>" + new Date(wordItem.date).Ago() + "<br/>" + wordItem.hits + " times met</div>"
+										+ "<div class='TR-WordData'>" + wordItem.hits + " times met<br/>" + new Date(wordItem.date).Ago() + "</div>"
 									+ "</td>"
 									+ "<td class='TR-Translation-Cell'>"
 										+ "<span class='TR-Translation'>" + wordItem.translation + "</span>"

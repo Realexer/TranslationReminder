@@ -13,26 +13,29 @@
 	z-index: 2147483647;
 	display: none;
 	position: absolute;
-	width: 260px;
+	width: 270px;
 	border: 1px solid rgb(216, 199, 190);
 	font-size: 1.5em;
 	overflow: hidden;
 	background: #FFFFED;
 }
 
+.TR-NewWordForm-TitleHandler
+{
+	padding: 3px 6px;
+}
+
 .TR-NewWordForm-Title
 {
-	font-size: 0.6em;
 	color: #777;
-	padding: 0px;
-	padding-top: 5px;
-	text-indent: 0.5em;
+	float: left;
+	font-size: 0.45em;
 }
 
 .TR-NewWordForm-CloseButton
 {
-	width: 25px;
 	float: right;
+	font-size: 0.45em;
 }
 
 .TR-NewWordForm-Body 
@@ -54,17 +57,13 @@
 
 .TR-NewWordForm-Translation
 {
-	width: 229px;
+	width: 100%;
 	border-color: rgb(170, 170, 170);
 	border-radius: 2px;
 	border-style: solid;
 	border-width: 1px;
 	box-sizing: border-box;
 	text-indent: 0.3em;
-}
-.TR-NewWordForm-AddButton
-{
-	width: 21px;
 }
 /* END [NEW WORD ADDING FORM] */
 

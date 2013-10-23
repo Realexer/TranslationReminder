@@ -16,14 +16,13 @@ var Frontend = function ()
 		},
 		newWordForm: {
 			form: "TR-NewWordForm",
-			title: "TR-NewWordForm-Title",
+			title: "TR-NewWordForm-TitleHandler",
 			titleText: "TR-NewWordForm-Title",
 			formBody: "TR-NewWordForm-Body",
 			selectedText: "TR-NewWordForm-CurrentSelection",
 			specifiedTranslation: "TR-NewWordForm-SpecifiedTranslation",
 			translationInput: "TR-NewWordForm-Translation",
 			closeButton: "TR-NewWordForm-CloseButton",
-			addButton: "TR-NewWordForm-AddButton"
 		},
 		hint: {
 			handler: "TR-Hint",
@@ -45,8 +44,7 @@ var Frontend = function ()
 			closeButton: "TR-NewWordForm-CloseButton",
 			selectedText: "TR-NewWordForm-CurrentSelection",
 			specifiedTranslation: "TR-NewWordForm-SpecifiedTranslation",
-			translationInput: "TR-NewWordForm-Translation",
-			submitButton: "TR-NewWordForm-SubmitButton"
+			translationInput: "TR-NewWordForm-Translation"
 		},
 		hint: {
 			handler: "TR-Hint",
@@ -318,7 +316,7 @@ var Frontend = function ()
 			 "<div class='" + this.classNames.common.base + " " + this.classNames.newWordForm.form + "' id='" + this.IDs.newWordForm.form + "'>"
 				+ "<div class='" + this.classNames.newWordForm.title + "' id='" + this.IDs.newWordForm.title + "'>"
 					+ "<span class='" + this.classNames.newWordForm.titleText + "' id='" + this.IDs.newWordForm.titleText + "'>add translaton to the word</span>"
-					+ "<button class='" + this.classNames.common.red + " " + this.classNames.newWordForm.closeButton + "' id='" + this.IDs.newWordForm.closeButton + "'>x</button>"
+					+ "<button class='" + this.classNames.common.red + " " + this.classNames.newWordForm.closeButton + "' id='" + this.IDs.newWordForm.closeButton + "'>close</button>"
 					+ "<div class='" + this.classNames.common.clear + "'></div> "
 				+ "</div> "
 				+ "<div class='" + this.classNames.newWordForm.formBody + "'>"
@@ -327,8 +325,7 @@ var Frontend = function ()
 					+ " - "
 					+ "<span class='" + this.classNames.common.translation + " " + this.classNames.newWordForm.specifiedTranslation + "' id='" + this.IDs.newWordForm.specifiedTranslation + "'></span>"
 				+ "</div>"
-				+ "<input class='" + this.classNames.common.translation + " " + this.classNames.newWordForm.translationInput + "' id='" + this.IDs.newWordForm.translationInput + "' value='' type='text' placeholder='translation'/>"
-				+ "<button class='" + this.classNames.common.green + " " + this.classNames.newWordForm.addButton + "' id='" + this.IDs.newWordForm.submitButton + "'>+</button>"
+				+ "<input class='" + this.classNames.common.translation + " " + this.classNames.newWordForm.translationInput + "' id='" + this.IDs.newWordForm.translationInput + "' value='' type='text' placeholder='translation (press enter)'/>"
 				+ "</div>"
 			+ "</div>";
 		}
@@ -339,8 +336,6 @@ var Frontend = function ()
 
 			newWordAddingFormElement.id = this._YM_newWordFormID;
 			document.body.appendChild(newWordAddingFormElement);
-
-			this.GetWordAddingFormSubmitButton().onclick = function () { frontendInstance.AddWord(); };
 
 			this.GetWordAddingFormTranslationInput().oninput = function ()
 			{
