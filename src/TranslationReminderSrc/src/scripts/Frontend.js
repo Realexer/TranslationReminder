@@ -82,7 +82,7 @@ var Frontend = function ()
 	{
 		this.textNodes = new Array();
 		this.globalWords = new Array();
-		
+
 		this.FindTexts(document.body);
 
 		var frontendInstance = this;
@@ -146,10 +146,10 @@ var Frontend = function ()
 			if (node.parentNode)
 			{
 				var resultInnerHTML = node.parentNode.innerHTML;
-				
+
 				if (node.parentNode.hasInParents(this.classNames.newWordForm.form) ||
-					node.parentNode.getAttribute("class") === this.classNames.highlightedText ||
-						this.restrictedTags.indexOf(node.parentNode.tagName.toLowerCase()) !== -1)
+					node.parentNode.hasInParents(this.classNames.highlightedText) ||
+					this.restrictedTags.indexOf(node.parentNode.tagName.toLowerCase()) !== -1)
 				{
 					return;
 				}
@@ -161,25 +161,18 @@ var Frontend = function ()
 					if (wordItem.word.trim().length == 0)
 						continue;
 
-				
-						if (resultInnerHTML.search(new RegExp("\\b" + wordItem.word + "\\b", "mgi")) !== -1)
+					//"<trtag a='t'>t t</trtag>".split(new RegExp("(<trtag[^<]*)", "mgi")).join("")
+					var resultInnerHTMLSplitted = resultInnerHTML.split(new RegExp("(<trtag[^<]*)", "mgi"));
+
+					for (var j = 0; j < resultInnerHTMLSplitted.length; j++)
+					{
+						if (resultInnerHTMLSplitted[j].search("<trtag"))
 						{
-							resultInnerHTML = resultInnerHTML.replace(new RegExp("\\b" + wordItem.word + "\\b", "mgi"), function (match, offset, string)
-							{
-
-								return "<trtag"
-								+ " word='" + wordItem.word + "'"
-								+ " translation='" + wordItem.translation + "'"
-								+ " hits='" + wordItem.hits + "'"
-								+ " date='" + wordItem.date + "'"
-								+ " title='" + wordItem.translation + "'"
-								+ " class='" + frontendInstance.classNames.highlightedText + "'>"
-								+ match + "</trtag>";
-							});
-
-							frontendInstance.IncreaseWordHitsCount(wordItem);
+							resultInnerHTMLSplitted[j] = frontendInstance.ReplaceHTMLWithHightlightedTexts(resultInnerHTMLSplitted[j], wordItem);
 						}
-				
+					}
+
+					resultInnerHTML = resultInnerHTMLSplitted.join("");
 				}
 
 				node.parentNode.innerHTML = resultInnerHTML;
@@ -189,6 +182,30 @@ var Frontend = function ()
 		{
 			console.log(error);
 		}
+	};
+
+	this.ReplaceHTMLWithHightlightedTexts = function (resultInnerHTML, wordItem)
+	{
+		var frontendInstance = this;
+
+		if (resultInnerHTML.search(new RegExp("\\b" + wordItem.word + "\\b", "mgi")) !== -1)
+		{
+			resultInnerHTML = resultInnerHTML.replace(new RegExp("\\b" + wordItem.word + "\\b", "mgi"), function (match, offset, string)
+			{
+				return "<trtag"
+				+ " word='" + wordItem.word + "'"
+				+ " translation='" + wordItem.translation + "'"
+				+ " hits='" + wordItem.hits + "'"
+				+ " date='" + wordItem.date + "'"
+				+ " title='" + wordItem.translation + "'"
+				+ " class='" + frontendInstance.classNames.highlightedText + "'>"
+				+ match + "</trtag>";
+			});
+
+			this.IncreaseWordHitsCount(wordItem);
+		}
+
+		return resultInnerHTML;
 	};
 
 	this.IncreaseWordHitsCount = function (wordItem)
