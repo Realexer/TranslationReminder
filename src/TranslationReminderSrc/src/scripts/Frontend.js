@@ -312,9 +312,8 @@ var Frontend = function ()
 		if (!newWordAddingFormElement)
 		{
 			newWordAddingFormElement = document.createElement("div");
-			newWordAddingFormElement.innerHTML =
-			 "<div class='" + this.classNames.common.base + " " + this.classNames.newWordForm.form + "' id='" + this.IDs.newWordForm.form + "'>"
-				+ "<div class='" + this.classNames.newWordForm.title + "' id='" + this.IDs.newWordForm.title + "'>"
+			newWordAddingFormElement.innerHTML = 
+				"<div class='" + this.classNames.newWordForm.title + "' id='" + this.IDs.newWordForm.title + "'>"
 					+ "<span class='" + this.classNames.newWordForm.titleText + "' id='" + this.IDs.newWordForm.titleText + "'>add translaton to the word</span>"
 					+ "<button class='" + this.classNames.common.red + " " + this.classNames.newWordForm.closeButton + "' id='" + this.IDs.newWordForm.closeButton + "'>close</button>"
 					+ "<div class='" + this.classNames.common.clear + "'></div> "
@@ -326,15 +325,15 @@ var Frontend = function ()
 					+ "<span class='" + this.classNames.common.translation + " " + this.classNames.newWordForm.specifiedTranslation + "' id='" + this.IDs.newWordForm.specifiedTranslation + "'></span>"
 				+ "</div>"
 				+ "<input class='" + this.classNames.common.translation + " " + this.classNames.newWordForm.translationInput + "' id='" + this.IDs.newWordForm.translationInput + "' value='' type='text' placeholder='translation (press enter)'/>"
-				+ "</div>"
-			+ "</div>";
+				+ "</div>";
 		}
 
 		if (!this.GetWordAddingForm())
 		{
 			var frontendInstance = this;
 
-			newWordAddingFormElement.id = this._YM_newWordFormID;
+			newWordAddingFormElement.id = this.IDs.newWordForm.form;
+			newWordAddingFormElement.className = this.classNames.common.base + " " + this.classNames.newWordForm.form;
 			document.body.appendChild(newWordAddingFormElement);
 
 			this.GetWordAddingFormTranslationInput().oninput = function ()
