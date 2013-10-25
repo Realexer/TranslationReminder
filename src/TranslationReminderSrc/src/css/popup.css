@@ -22,11 +22,45 @@
 	width: 400px;
 }
 
-.TR-Popup h4
+/*
+	Header
+*/
+.TR-Header {}
+.TR-Header h4
 {
 	margin: 0.7em 0em 0.6em 0em;
 	text-transform: capitalize;
 	text-indent: 0.5em;
+	float: left;
+}
+.TR-ListControls 
+{
+	margin: 1.1em 0em 0.6em 0em;
+	color: #888;
+	float: right;
+	font-size: 0.8em;
+}
+
+.TR-SelectWordsOrder 
+{
+	
+}
+
+.TR-ListControls button
+{
+	color: #AC6E34;
+	text-decoration: none;
+	border-bottom: 1px dotted;
+}
+
+.TR-ListControls button:focus
+{
+	outline: none;
+}
+
+.TR-ListControls button.TR-SelectedWordsOrder 
+{
+	font-weight: bold;
 }
 
 /**
@@ -137,4 +171,12 @@
 	font-weight: bold;
 	font-size: 0.8em;
 	letter-spacing: 0.3em;
+}
+
+.TR-WordsCount 
+{
+	margin: 0.7em 0em;
+	color: #888;
+	font-size: 0.8em;
+	text-align: center;
 }

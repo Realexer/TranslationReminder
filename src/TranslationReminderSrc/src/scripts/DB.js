@@ -17,11 +17,17 @@ var DB = function ()
 	};
 
 
-	this.GetWords = function (callback)
+	this.GetWords = function (callback, order, direction)
 	{
+		if (!order)
+			order = "date";
+		
+		if (!direction)
+			direction = "DESC";
+		
 		getDb().transaction(function (tx)
 		{
-			tx.executeSql("SELECT * FROM words ORDER BY date DESC", [],
+			tx.executeSql("SELECT * FROM words ORDER BY " + order + " " + direction, [],
 			function (tx, results)
 			{
 				var words = new Array();
@@ -77,7 +83,7 @@ var DB = function ()
 		});
 	};
 
-	this.UpdateWordHitCount = function (word, hits, callback) 
+	this.UpdateWordHitCount = function (word, hits, callback)
 	{
 		getDb().transaction(function (tx)
 		{
