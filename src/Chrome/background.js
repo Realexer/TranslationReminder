@@ -9,8 +9,8 @@ chrome.runtime.onMessage.addListener(function (message, sender, callback)
 			});
 			break;
 
-		case "DB.SetupNewWordAddingFormWithCurrentSelection":
-			new DB().SetupNewWordAddingFormWithCurrentSelection(message.data.word, message.data.translation, null, function ()
+		case "DB.AddWord":
+			new DB().AddWord(message.data.word, message.data.translation, null, function ()
 			{
 				callback();
 			});
@@ -45,7 +45,7 @@ chrome.contextMenus.onClicked.addListener(function (info, tab)
 chrome.runtime.onInstalled.addListener(function ()
 {
 	chrome.contextMenus.create({
-		title: "Highlight the word...",
+		title: "Highlight text...",
 		contexts: ["selection"],
 		id: "TR-AddNewWord"
 	}, function () { console.log("Couldn't create context menu"); });
