@@ -6,6 +6,7 @@
 	"version": "1.0",
 
 	"permissions": [
+		"contextMenus",
 		"activeTab",
 		"tabs",
 		"http://*/*",
@@ -19,6 +20,12 @@
 			"css": ["css/common.css", "css/page-inject.css"]
 		}
 	],
+	
+	"icons": {
+		"16": "img/icon.png",
+		"48": "img/icon.png",
+		"128": "img/icon.png"
+	},
 
 	"background": {
 		"persistent": false,

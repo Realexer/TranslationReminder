@@ -1,4 +1,4 @@
-chrome.extension.onMessage.addListener(function (message, sender, callback)
+chrome.runtime.onMessage.addListener(function (message, sender, callback)
 {
 	switch (message.name)
 	{
@@ -9,8 +9,8 @@ chrome.extension.onMessage.addListener(function (message, sender, callback)
 			});
 			break;
 
-		case "DB.AddWord":
-			new DB().AddWord(message.data.word, message.data.translation, null, function ()
+		case "DB.SetupNewWordAddingFormWithCurrentSelection":
+			new DB().SetupNewWordAddingFormWithCurrentSelection(message.data.word, message.data.translation, null, function ()
 			{
 				callback();
 			});
@@ -29,14 +29,24 @@ chrome.extension.onMessage.addListener(function (message, sender, callback)
 				callback();
 			});
 			break;
-
-		default:
-			console.log("Message wasn't handled: Name=" + message.name);
-			console.log(message);
-			console.log(sender);
-			console.log(callback);
-			return false;
 	}
 
 	return true;
+});
+
+chrome.contextMenus.onClicked.addListener(function (info, tab)
+{
+	chrome.tabs.query({ active: true, currentWindow: true }, function (tabs)
+	{
+		chrome.tabs.sendMessage(tabs[0].id, { name: "Frontend.SetupNewWordAddingFormWithCurrentSelection", word: info.selectionText }, function (response) { alert("Whoa: " + response); });
+	});
+});
+
+chrome.runtime.onInstalled.addListener(function ()
+{
+	chrome.contextMenus.create({
+		title: "Highlight the word...",
+		contexts: ["selection"],
+		id: "TR-AddNewWord"
+	}, function () { console.log("Couldn't create context menu"); });
 });

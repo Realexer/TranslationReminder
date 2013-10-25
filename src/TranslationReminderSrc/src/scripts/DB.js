@@ -54,7 +54,7 @@ var DB = function ()
 	};
 
 
-	this.AddWord = function (word, translation, date, callback)
+	this.SetupNewWordAddingFormWithCurrentSelection = function (word, translation, date, callback)
 	{
 		getDb().transaction(function (tx)
 		{

@@ -84,7 +84,7 @@ var Frontend = function ()
 		this.FindTexts(document.body);
 
 		var frontendInstance = this;
-		chrome.extension.sendMessage(null, { name: "DB.GetWords", data: null },
+		chrome.runtime.sendMessage({ name: "DB.GetWords", data: null },
 		function (words)
 		{
 			frontendInstance.globalWords = words;
@@ -97,7 +97,7 @@ var Frontend = function ()
 			for (var key in frontendInstance.wordsHits)
 			{
 				var wordHits = frontendInstance.wordsHits[key];
-				chrome.extension.sendMessage(null, { name: "DB.UpdateWordHitCount", data: { word: key, hits: wordHits} }, function ()
+				chrome.runtime.sendMessage({ name: "DB.UpdateWordHitCount", data: { word: key, hits: wordHits} }, function ()
 				{
 					console.log("Word hit counts updated");
 				});
@@ -168,7 +168,7 @@ var Frontend = function ()
 					{
 						if (resultInnerHTMLSplitted[j].search("<trtag"))
 						{
-							if(frontendInstance.IsHTMLContainsWord(resultInnerHTMLSplitted[j], wordItem)) 
+							if (frontendInstance.IsHTMLContainsWord(resultInnerHTMLSplitted[j], wordItem))
 							{
 								resultInnerHTMLSplitted[j] = frontendInstance.ReplaceHTMLWithHightlightedTexts(resultInnerHTMLSplitted[j], wordItem);
 								replacementRequired = true;
@@ -178,8 +178,8 @@ var Frontend = function ()
 
 					resultInnerHTML = resultInnerHTMLSplitted.join("");
 				}
-				
-				if(replacementRequired) 
+
+				if (replacementRequired)
 				{
 					node.parentNode.innerHTML = resultInnerHTML;
 				}
@@ -251,6 +251,7 @@ var Frontend = function ()
 
 	this.SelectWordAction = function (event)
 	{
+
 		if (event.target.hasInParents(this.classNames.newWordForm.form) || event.target.hasInParents(this.classNames.hint.handler))
 			return false;
 
@@ -263,6 +264,11 @@ var Frontend = function ()
 			return false;
 		}
 
+		this.SetupNewWordAddingFormWithCurrentSelection();
+	};
+
+	this.SetupNewWordAddingFormWithCurrentSelection = function ()
+	{
 		var selection = window.getSelection();
 		this.selectedText = selection.toString().trim();
 
@@ -379,7 +385,7 @@ var Frontend = function ()
 			{
 				var frontendInstance = this;
 
-				chrome.extension.sendMessage(null, { name: "DB.AddWord", data: { word: frontendInstance.selectedText, translation: translation} },
+				chrome.runtime.sendMessage({ name: "DB.AddWord", data: { word: frontendInstance.selectedText, translation: translation} },
 				function ()
 				{
 					frontendInstance.ShowHightlights();
@@ -456,7 +462,7 @@ var Frontend = function ()
 	{
 		var frontendInstance = this;
 
-		chrome.extension.sendMessage(null, { name: "DB.DeleteWord", data: { word: word} },
+		chrome.runtime.sendMessage({ name: "DB.DeleteWord", data: { word: word} },
 		function ()
 		{
 			frontendInstance.RemoveHighLights(word);
