@@ -1,0 +1,47 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel="stylesheet" type="text/css" href="css/common.css" />
+	<link rel="stylesheet" type="text/css" href="css/BrowserPopup.css" />
+	<script type='text/javascript' src='scripts/Extensions.js'></script>
+	<script type='text/javascript' src='scripts/DB.js'></script>
+	<script type='text/javascript' src='scripts/BrowserPopup.js'></script>
+</head>
+
+<body class="TR-Base TR-Popup">
+	<!-- LOADING VIEW -->
+	<div id="TR-LoadingView" class="TR-Blur TR-InfoMessage">
+		<span>PLEASE WAIT</span>
+	</div>
+	
+	<!-- NO WORDS VIEW  -->
+	<div id="TR-NoWordsView" class="TR-Blur TR-InfoMessage" style="display: none;">
+		<span>YOU HAVE NO WORDS YET</span>
+	</div>
+
+	<!-- WORDS LIST  -->
+	<div class="TR-WordsView" id="TR-WordsView">	
+		<div class="TR-Header">
+			<h4>Words I need to remember</h4>
+			<div class="TR-ListControls">Order by: 
+				<button class="TR-SelectWordsOrder TR-SelectedWordsOrder" id="TR-OrderWordsByDate">date</button> 
+				<button class="TR-SelectWordsOrder" id="TR-OrderWordsByHits">hits</button>
+			</div>
+		</div>
+		<table class="TR-WordsList">
+			<thead>
+				<tr>
+					<th>word</th>
+					<th>translation</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody id="TR-WordsList">
+			</tbody>
+		</table>
+		<div class="TR-WordsCount"><span id="TR-WordsCount">65 words</span></div>
+	</div>
+</body>
+</html>

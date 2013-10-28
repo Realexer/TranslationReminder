@@ -76,6 +76,7 @@
 	width: 100%;
 	border-collapse: collapse;
 	background: #fff;
+	margin-bottom: 2.2em;
 }
 
 .TR-WordsList thead
@@ -174,8 +175,12 @@
 
 .TR-WordsCount 
 {
-	margin: 0.7em 0em;
+	padding: 0.7em 0em;
 	color: #888;
 	font-size: 0.8em;
 	text-align: center;
+	position: fixed;
+	bottom: 0;
+	width: 100%;
+	background: #fff;
 }

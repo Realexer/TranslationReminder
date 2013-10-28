@@ -29,6 +29,20 @@ chrome.runtime.onMessage.addListener(function (message, sender, callback)
 				callback();
 			});
 			break;
+
+		case "DB.GetSitesBlackList":
+			new DB().GetSitesBlackList(function (sites)
+			{
+				callback(sites);
+			});
+			break;
+
+		case "DB.AddSiteToBlackList":
+			new DB().AddSiteToBlackList(message.data.site, function ()
+			{
+				callback();
+			});
+			break;
 	}
 
 	return true;
@@ -36,10 +50,24 @@ chrome.runtime.onMessage.addListener(function (message, sender, callback)
 
 chrome.contextMenus.onClicked.addListener(function (info, tab)
 {
-	chrome.tabs.query({ active: true, currentWindow: true }, function (tabs)
+	switch (info.menuItemId)
 	{
-		chrome.tabs.sendMessage(tabs[0].id, { name: "Frontend.SetupNewWordAddingForm", word: info.selectionText }, function (response) { alert("Whoa: " + response); });
-	});
+		case "TR-AddNewWord":
+			chrome.tabs.query({ active: true, currentWindow: true }, function (tabs)
+			{
+				chrome.tabs.sendMessage(tabs[0].id, { name: "Frontend.SetupNewWordAddingForm", word: info.selectionText }, function () { });
+			});
+			break;
+
+		case "TR-DisableWordHighlightingOnTheSite":
+			chrome.tabs.query({ active: true, currentWindow: true }, function (tabs)
+			{
+				chrome.tabs.sendMessage(tabs[0].id, { name: "AddSiteToBlackList", word: info.selectionText }, function () {});
+			});
+			break;
+
+		default:
+	}
 });
 
 chrome.runtime.onInstalled.addListener(function ()
@@ -48,5 +76,11 @@ chrome.runtime.onInstalled.addListener(function ()
 		title: "Highlight text...",
 		contexts: ["selection"],
 		id: "TR-AddNewWord"
-	}, function () { console.log("Couldn't create context menu"); });
+	}, function () { console.log("Couldn't create context menu for 'Add New Word'"); });
+	
+	chrome.contextMenus.create({
+		title: "Don't highlight text on this site",
+		contexts: ["all"],
+		id: "TR-DisableWordHighlightingOnTheSite"
+	}, function () { console.log("Couldn't create context menu for 'Disable Highlighting function'"); });
 });

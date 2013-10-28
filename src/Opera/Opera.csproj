@@ -38,16 +38,16 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Content Include="..\TranslationReminderSrc\src\css\BrowserPopup.css">
+      <Link>css\BrowserPopup.css</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="..\TranslationReminderSrc\src\css\common.css">
       <Link>css\common.css</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="..\TranslationReminderSrc\src\css\page-inject.css">
       <Link>css\page-inject.css</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\TranslationReminderSrc\src\css\popup.css">
-      <Link>css\popup.css</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="..\translationremindersrc\src\icons\bing_icon.png">
@@ -60,6 +60,10 @@
     </Content>
     <Content Include="..\translationremindersrc\src\icons\icon_18.png">
       <Link>img\icon_18.png</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\TranslationReminderSrc\src\scripts\BrowserPopup.js">
+      <Link>scripts\BrowserPopup.js</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="..\TranslationReminderSrc\src\scripts\DB.js">
@@ -76,10 +80,6 @@
     </Content>
     <Content Include="..\TranslationReminderSrc\src\scripts\Helper.js">
       <Link>scripts\Helper.js</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\TranslationReminderSrc\src\scripts\Popup.js">
-      <Link>scripts\Popup.js</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="..\TranslationReminderSrc\src\scripts\WebClient.js">

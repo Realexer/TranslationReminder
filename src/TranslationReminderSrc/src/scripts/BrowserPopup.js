@@ -1,4 +1,4 @@
-﻿var Popup = function ()
+﻿var BrowserPopup = function ()
 {
 	var wordsTable = document.getElementById("TR-WordsList");
 	var loadingView = document.getElementById("TR-LoadingView");
@@ -61,8 +61,8 @@
 
 	this.ShowUserWords = function ()
 	{
-		var popup = this;
-		popup.ShowLoadingView();
+		var browserPopup = this;
+		browserPopup.ShowLoadingView();
 		wordsTable.innerHTML = "";
 
 		var db = new DB();
@@ -73,7 +73,7 @@
 			{
 				document.getElementById("TR-WordsCount").innerHTML = words.length + " words";
 
-				popup.HideNoWordsView();
+				browserPopup.HideNoWordsView();
 
 				for (var i = 0; i < words.length; i++)
 				{
@@ -99,15 +99,15 @@
 				for (var y = 0; y < deleteButtonsList.length; y++)
 				{
 					var deleteButton = deleteButtonsList[y];
-					deleteButton.addEventListener("click", function (event) { popup.DeleteWordFromTable(event); }, false);
+					deleteButton.addEventListener("click", function (event) { browserPopup.DeleteWordFromTable(event); }, false);
 				}
 			}
 			else
 			{
-				popup.ShowNoWordsView();
+				browserPopup.ShowNoWordsView();
 			}
 
-			popup.HideLoadingView();
+			browserPopup.HideLoadingView();
 		}, this.WordsOrder.by, this.WordsOrder.direction);
 	};
 
@@ -129,7 +129,7 @@
 
 window.onload = function ()
 {
-	var popup = new Popup();
-	popup.Init();
-	popup.ShowUserWords();
+	var browserPopup = new BrowserPopup();
+	browserPopup.Init();
+	browserPopup.ShowUserWords();
 };

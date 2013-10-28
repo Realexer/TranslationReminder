@@ -11,6 +11,12 @@ var DB = function ()
 			{
 				// TODO: Report error
 			});
+
+			tx.executeSql('CREATE TABLE IF NOT EXISTS SitesBlackList (site)', null, null,
+			function (tx, error)
+			{
+				// TODO: Report error
+			});
 		});
 
 		return db;
@@ -21,10 +27,10 @@ var DB = function ()
 	{
 		if (!order)
 			order = "date";
-		
+
 		if (!direction)
 			direction = "DESC";
-		
+
 		getDb().transaction(function (tx)
 		{
 			tx.executeSql("SELECT * FROM words ORDER BY " + order + " " + direction, [],
@@ -139,6 +145,79 @@ var DB = function ()
 			function (tx, error)
 			{
 				opera.postError("Delete error: " + error);
+			});
+		});
+	};
+
+
+	this.AddSiteToBlackList = function (site, callback)
+	{
+		if (this.GetSitesBlackList(function (sites)
+		{
+			if (sites.indexOf(site) == -1)
+			{
+				getDb().transaction(function(tx)
+				{
+					tx.executeSql('INSERT INTO SitesBlackList (site) ' + 'VALUES (?)', [site.toLowerCase()],
+
+						function(tx, results)
+						{
+							if (callback)
+							{
+								callback();
+							}
+						},
+						function(tx, error)
+						{
+							// TODO: Report error
+						});
+				});
+			}
+		}));
+	};
+
+
+	this.GetSitesBlackList = function (callback)
+	{
+		getDb().transaction(function (tx)
+		{
+			tx.executeSql("SELECT * FROM SitesBlackList", [],
+			function (tx, results)
+			{
+				var sites = new Array();
+				for (var i = 0; i < results.rows.length; i++)
+				{
+					sites.push(results.rows.item(i).site);
+				}
+
+				if (callback)
+				{
+					callback(sites);
+				}
+			},
+			function (tx, error)
+			{
+				// TODO: Report error
+			});
+		});
+	};
+
+	this.DeleteSiteFromBlackList = function (site, callback)
+	{
+		getDb().transaction(function (tx)
+		{
+			word = word.trim();
+			tx.executeSql('DELETE FROM SitesBlackList WHERE (site)=?', [site.toLowerCase()],
+			function (tx, results)
+			{
+				if (callback)
+				{
+					callback();
+				}
+			},
+			function (tx, error)
+			{
+				// TODO: Report error
 			});
 		});
 	};

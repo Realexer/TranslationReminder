@@ -87,29 +87,35 @@ var Frontend = function ()
 		chrome.runtime.sendMessage({ name: "DB.GetWords", data: null },
 		function (words)
 		{
-			frontendInstance.globalWords = words;
-
-			for (var i = 0; i < frontendInstance.textNodes.length; i++)
+			chrome.runtime.sendMessage({ name: "DB.GetSitesBlackList" }, function (sites)
 			{
-				frontendInstance.HighlightTexts(frontendInstance.textNodes[i]);
-			}
-
-			for (var key in frontendInstance.wordsHits)
-			{
-				var wordHits = frontendInstance.wordsHits[key];
-				chrome.runtime.sendMessage({ name: "DB.UpdateWordHitCount", data: { word: key, hits: wordHits} }, function ()
+				if (sites.indexOf(document.domain) == -1)
 				{
-					console.log("Word hit counts updated");
-				});
-			}
+					frontendInstance.globalWords = words;
 
-			var allHightlightTexts = document.getElementsByClassName(frontendInstance.classNames.highlightedText);
+					for (var i = 0; i < frontendInstance.textNodes.length; i++)
+					{
+						frontendInstance.HighlightTexts(frontendInstance.textNodes[i]);
+					}
 
-			for (var i = 0; i < allHightlightTexts.length; i++)
-			{
-				var highlightedText = allHightlightTexts[i];
-				highlightedText.onclick = function (e) { frontendInstance.ShowHintAction(e); };
-			}
+					for (var key in frontendInstance.wordsHits)
+					{
+						var wordHits = frontendInstance.wordsHits[key];
+						chrome.runtime.sendMessage({ name: "DB.UpdateWordHitCount", data: { word: key, hits: wordHits } }, function()
+						{
+							console.log("Word hit counts updated");
+						});
+					}
+
+					var allHightlightTexts = document.getElementsByClassName(frontendInstance.classNames.highlightedText);
+
+					for (var i = 0; i < allHightlightTexts.length; i++)
+					{
+						var highlightedText = allHightlightTexts[i];
+						highlightedText.onclick = function(e) { frontendInstance.ShowHintAction(e); };
+					}
+				}
+			});
 		});
 	};
 
@@ -229,15 +235,21 @@ var Frontend = function ()
 		}
 	};
 
+
 	this.RemoveHighLights = function (word)
 	{
+		/// <summary>
+		/// if word is null - all highlights will be removed
+		/// </summary>
+		/// <param name="word"></param>
+
 		var highlightedElements = document.getElementsByClassName(this.classNames.highlightedText);
 
 		for (var i = 0; i < highlightedElements.length; i++)
 		{
 			var highlightedElem = highlightedElements[i];
 
-			if (highlightedElem.firstChild.nodeValue.toLowerCase() == word.toLowerCase())
+			if (word == null || highlightedElem.firstChild.nodeValue.toLowerCase() == word.toLowerCase())
 			{
 				if (highlightedElem.parentNode)
 				{
@@ -248,6 +260,7 @@ var Frontend = function ()
 			}
 		}
 	};
+
 
 	this.SelectWordAction = function (event)
 	{
