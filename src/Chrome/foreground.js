@@ -11,8 +11,8 @@ chrome.runtime.onMessage.addListener(function (message, sender, callback)
 {
 	switch (message.name)
 	{
-		case "Frontend.SetupNewWordAddingFormWithCurrentSelection":
-			frontend.SetupNewWordAddingFormWithCurrentSelection();
+		case "Frontend.SetupNewWordAddingForm":
+			frontend.SetupNewWordAddingForm();
 			break;
 	}
 	

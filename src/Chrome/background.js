@@ -38,7 +38,7 @@ chrome.contextMenus.onClicked.addListener(function (info, tab)
 {
 	chrome.tabs.query({ active: true, currentWindow: true }, function (tabs)
 	{
-		chrome.tabs.sendMessage(tabs[0].id, { name: "Frontend.SetupNewWordAddingFormWithCurrentSelection", word: info.selectionText }, function (response) { alert("Whoa: " + response); });
+		chrome.tabs.sendMessage(tabs[0].id, { name: "Frontend.SetupNewWordAddingForm", word: info.selectionText }, function (response) { alert("Whoa: " + response); });
 	});
 });
 

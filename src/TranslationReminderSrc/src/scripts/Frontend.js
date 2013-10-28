@@ -264,10 +264,10 @@ var Frontend = function ()
 			return false;
 		}
 
-		this.SetupNewWordAddingFormWithCurrentSelection();
+		this.SetupNewWordAddingForm();
 	};
 
-	this.SetupNewWordAddingFormWithCurrentSelection = function ()
+	this.SetupNewWordAddingForm = function ()
 	{
 		var selection = window.getSelection();
 		this.selectedText = selection.toString().trim();
