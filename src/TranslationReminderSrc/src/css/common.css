@@ -4,6 +4,14 @@
 	font-family: Tahoma;
 	background: #fff;
 }
+.TR-Base h1, .TR-Base h2, .TR-Base h3, .TR-Base h4, .TR-Base h5, .TR-Base h6 
+{
+	margin-top: 0px;	
+}
+
+.TR-Base label {
+	font-weight: bold;
+}
 
 .TR-Clear 
 {

@@ -71,7 +71,7 @@
 		{
 			if (words.length > 0)
 			{
-				document.getElementById("TR-WordsCount").innerHTML = words.length + " words";
+				document.getElementById("TR-WordsCount").innerHTML = words.length + " word" + (words.length > 1 ? "s" : "");
 
 				browserPopup.HideNoWordsView();
 

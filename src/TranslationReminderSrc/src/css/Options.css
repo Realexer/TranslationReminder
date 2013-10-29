@@ -1,0 +1,19 @@
+.TR-Options 
+{
+	width: 500px;
+	margin: 0 auto;
+	padding: 20px;
+	border: 1px solid #D8D8D8;
+	font-size: 0.8em;
+}
+.TR-Settings 
+{
+	padding: 10px 20px;
+	background: rgb(241, 228, 203);
+}
+
+.TR-Settings textarea 
+{
+	width: 100%;
+	max-width: 100%;
+}

@@ -57,6 +57,9 @@
     <Content Include="index.html" />
     <Content Include="popup.html" />
     <Content Include="src\css\common.css" />
+    <Content Include="src\css\Options.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="src\css\page-inject.css" />
     <Content Include="src\css\BrowserPopup.css" />
     <Content Include="src\icons\bing_icon.png" />
@@ -65,6 +68,9 @@
     <Content Include="src\imgs\back.png" />
     <Content Include="src\imgs\edit.png" />
     <Content Include="src\imgs\synch.png" />
+    <Content Include="src\scripts\OptionsManager.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="src\scripts\DB.js" />
     <Content Include="src\scripts\Extensions.js" />
     <Content Include="src\scripts\Frontend.js" />
