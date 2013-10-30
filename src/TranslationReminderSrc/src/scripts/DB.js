@@ -173,6 +173,13 @@ var DB = function ()
 						});
 				});
 			}
+			else 
+			{
+				if (callback)
+				{
+					callback();
+				}
+			}
 		}));
 	};
 
@@ -206,8 +213,26 @@ var DB = function ()
 	{
 		getDb().transaction(function (tx)
 		{
-			word = word.trim();
 			tx.executeSql('DELETE FROM SitesBlackList WHERE (site)=?', [site.toLowerCase()],
+			function (tx, results)
+			{
+				if (callback)
+				{
+					callback();
+				}
+			},
+			function (tx, error)
+			{
+				// TODO: Report error
+			});
+		});
+	};
+
+	this.DeleteAllSitesFromBlackList = function (callback)
+	{
+		getDb().transaction(function (tx)
+		{
+			tx.executeSql('DELETE FROM SitesBlackList', [],
 			function (tx, results)
 			{
 				if (callback)
