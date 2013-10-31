@@ -17,3 +17,23 @@
 	width: 100%;
 	max-width: 100%;
 }
+
+.TR-Saved 
+{
+	animation: TR-Saved-Anim ease-out 2s;
+	animation-fill-mode: forwards;
+	-webkit-animation: TR-Saved-Anim ease-out 2s;
+	-webkit-animation-fill-mode: forwards;
+}
+
+@keyframes TR-Saved-Anim
+{
+	from {opacity: 1.0; }
+	to {opacity: 0.0; }
+}
+
+@-webkit-keyframes TR-Saved-Anim
+{
+	from {opacity: 1.0; }
+	to {opacity: 0.0; }
+}

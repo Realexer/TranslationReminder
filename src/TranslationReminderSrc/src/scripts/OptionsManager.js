@@ -25,12 +25,13 @@
 		{
 			if (optionsManagerInstance.GetSitesBlackListTextArea().value != optionsManagerInstance.SitesInitialValues)
 			{
+				optionsManagerInstance.GetSavingStatusLabel().style.display = "block";
 				optionsManagerInstance.GetSavingStatusLabel().className = "TR-Red";
 				optionsManagerInstance.GetSavingStatusLabel().innerHTML = "Not saved";
 			}
 			else
 			{
-				optionsManagerInstance.GetSavingStatusLabel().innerHTML = " ";
+				optionsManagerInstance.GetSavingStatusLabel().style.display = "none";
 			}
 		};
 	};
@@ -55,11 +56,9 @@ window.onkeydown = function ()
 			addSiteToBlackList(db, sites, 0, function ()
 			{
 				optionsManager.InitSitesBlackListTextarea();
-				optionsManager.GetSavingStatusLabel().className = "TR-Green";
+				optionsManager.GetSavingStatusLabel().style.display = "block";
+				optionsManager.GetSavingStatusLabel().className = "TR-Green TR-Saved";
 				optionsManager.GetSavingStatusLabel().innerHTML = "Saved";
-				setTimeout(function() {
-					optionsManager.GetSavingStatusLabel().innerHTML = " ";
-				}, 1000);
 			});
 		});
 	}
