@@ -101,7 +101,7 @@ var Frontend = function ()
 					for (var key in frontendInstance.wordsHits)
 					{
 						var wordHits = frontendInstance.wordsHits[key];
-						chrome.runtime.sendMessage({ name: "DB.UpdateWordHitCount", data: { word: key, hits: wordHits } }, function()
+						chrome.runtime.sendMessage({ name: "DB.UpdateWordHitCount", data: { word: key, hits: wordHits} }, function ()
 						{
 							console.log("Word hit counts updated");
 						});
@@ -112,7 +112,7 @@ var Frontend = function ()
 					for (var i = 0; i < allHightlightTexts.length; i++)
 					{
 						var highlightedText = allHightlightTexts[i];
-						highlightedText.onclick = function(e) { frontendInstance.ShowHintAction(e); };
+						highlightedText.onclick = function (e) { frontendInstance.ShowHintAction(e); };
 					}
 				}
 			});
@@ -354,6 +354,8 @@ var Frontend = function ()
 					+ " - "
 					+ "<span class='" + this.classNames.common.translation + " " + this.classNames.newWordForm.specifiedTranslation + "' id='" + this.IDs.newWordForm.specifiedTranslation + "'></span>"
 				+ "</div>"
+				+ "<div><button class='' id='BingBing'>Bing</button>"
+				+ "</div>"
 				+ "<input class='" + this.classNames.common.translation + " " + this.classNames.newWordForm.translationInput + "' id='" + this.IDs.newWordForm.translationInput + "' value='' type='text' placeholder='translation (press enter)'/>"
 				+ "</div>";
 		}
@@ -382,6 +384,22 @@ var Frontend = function ()
 				{
 					frontendInstance.HideNewWordAddingForm();
 				}
+			};
+
+			var bing = document.getElementById("BingBing");
+			bing.onclick = function ()
+			{
+				new WebClient().Ajax(
+					{
+						url: "http://api.microsofttranslator.com/V2/Ajax.svc/Translate?appId=8E54095330F0B7E7CB73527A50437E6110A64730&to=ru&text=" + frontendInstance.selectedText
+					},
+					function (result)
+					{
+						frontendInstance.GetWordAddingFormTranslationInput().value = result.trim("\"");
+						frontendInstance.GetWordAddingFormSpecifiedTranslation().innerHTML = result.trim("\"");
+						frontendInstance.GetWordAddingFormTranslationInput().focus();
+
+					});
 			};
 
 			this.GetWordAddingFormCloseButton().onclick = function () { frontendInstance.HideNewWordAddingForm(); };

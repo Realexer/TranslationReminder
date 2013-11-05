@@ -1,6 +1,9 @@
-String.prototype.trim = function ()
+String.prototype.trim = function (symbol)
 {
-	return this.replace(/^\s+|\s+$/g, '');
+	if (!symbol)
+		symbol = "\\s";
+
+	return this.replace(new RegExp("^" + symbol + "+|" + symbol + "+$", "g"), '');
 };
 
 
