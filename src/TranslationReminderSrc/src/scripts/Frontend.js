@@ -389,17 +389,14 @@ var Frontend = function ()
 			var bing = document.getElementById("BingBing");
 			bing.onclick = function ()
 			{
-				new WebClient().Ajax(
-					{
-						url: "http://api.microsofttranslator.com/V2/Ajax.svc/Translate?appId=8E54095330F0B7E7CB73527A50437E6110A64730&to=ru&text=" + frontendInstance.selectedText
-					},
+				new BingClient().Translate(frontendInstance.selectedText,
 					function (result)
 					{
 						frontendInstance.GetWordAddingFormTranslationInput().value = result.trim("\"");
 						frontendInstance.GetWordAddingFormSpecifiedTranslation().innerHTML = result.trim("\"");
 						frontendInstance.GetWordAddingFormTranslationInput().focus();
-
-					});
+					}
+				);
 			};
 
 			this.GetWordAddingFormCloseButton().onclick = function () { frontendInstance.HideNewWordAddingForm(); };

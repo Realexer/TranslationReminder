@@ -108,6 +108,18 @@ Date.prototype.Ago = function ()
 	}
 };
 
+Array.prototype.RemoveDuplicates = function ()
+{
+	return this.filter(function (v, i, a) { return a.indexOf(v) == i; });
+};
+
+Array.prototype.TrimAllElements = function ()
+{
+	this.forEach(function (el, i, a) { a[i] = el.trim(); });
+	return this;
+};
+
+
 // This source code is free for use in the public domain.
 // NO WARRANTY EXPRESSED OR IMPLIED. USE AT YOUR OWN RISK.
 

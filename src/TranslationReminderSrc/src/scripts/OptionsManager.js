@@ -48,36 +48,12 @@ window.onkeydown = function ()
 {
 	if (event.keyCode === 13 && event.ctrlKey) // enter
 	{
-		var db = new DB();
-		db.DeleteAllSitesFromBlackList(function ()
+		new DB().UpdateSitesBlackList(optionsManager.GetSitesBlackListTextArea().value.split(";"), function () 
 		{
-			var sites = optionsManager.GetSitesBlackListTextArea().value.split(";");
-
-			addSiteToBlackList(db, sites, 0, function ()
-			{
-				optionsManager.InitSitesBlackListTextarea();
-				optionsManager.GetSavingStatusLabel().style.display = "block";
-				optionsManager.GetSavingStatusLabel().className = "TR-Green TR-Saved";
-				optionsManager.GetSavingStatusLabel().innerHTML = "Saved";
-			});
-		});
+			optionsManager.InitSitesBlackListTextarea();
+			optionsManager.GetSavingStatusLabel().style.display = "block";
+			optionsManager.GetSavingStatusLabel().className = "TR-Green TR-Saved";
+			optionsManager.GetSavingStatusLabel().innerHTML = "Saved";
+		});	
 	}
-
-	function addSiteToBlackList(db, sites, iterator, callback)
-	{
-		if (iterator < sites.length)
-		{
-			var site = sites[iterator].trim();
-			if (site.length > 0)
-			{
-				db.AddSiteToBlackList(site, function ()
-				{
-					iterator++;
-					addSiteToBlackList(db, sites, iterator, callback);
-				});
-			}
-		}
-
-		callback();
-	};
 };

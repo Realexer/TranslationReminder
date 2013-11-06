@@ -12,10 +12,10 @@ var DB = function ()
 				// TODO: Report error
 			});
 
-			tx.executeSql('CREATE TABLE IF NOT EXISTS SitesBlackList (site)', null, null,
+			tx.executeSql('CREATE TABLE IF NOT EXISTS Settings (setting, value)', null, null,
 			function (tx, error)
 			{
-				// TODO: Report error
+				console.log(error);
 			});
 		});
 
@@ -54,7 +54,7 @@ var DB = function ()
 			},
 			function (tx, error)
 			{
-				// TODO: Report error
+				console.log(error);
 			});
 		});
 	};
@@ -84,7 +84,7 @@ var DB = function ()
 			},
 			function (tx, error)
 			{
-				// TODO: Report error
+				console.log(error);
 			});
 		});
 	};
@@ -104,7 +104,7 @@ var DB = function ()
 			},
 			function (tx, error)
 			{
-				// TODO: Report error
+				console.log(error);
 			});
 		});
 	};
@@ -125,7 +125,7 @@ var DB = function ()
 			},
 			function (tx, error)
 			{
-				// TODO: Report error
+				console.log(error);
 			});
 		});
 	};
@@ -144,106 +144,98 @@ var DB = function ()
 			},
 			function (tx, error)
 			{
-				opera.postError("Delete error: " + error);
+				console.log(error);
 			});
 		});
 	};
 
-
-	this.AddSiteToBlackList = function (site, callback)
+	var settingsKeys =
 	{
-		if (this.GetSitesBlackList(function (sites)
-		{
-			if (sites.indexOf(site) == -1)
-			{
-				getDb().transaction(function(tx)
-				{
-					tx.executeSql('INSERT INTO SitesBlackList (site) ' + 'VALUES (?)', [site.toLowerCase()],
-
-						function(tx, results)
-						{
-							if (callback)
-							{
-								callback();
-							}
-						},
-						function(tx, error)
-						{
-							// TODO: Report error
-						});
-				});
-			}
-			else 
-			{
-				if (callback)
-				{
-					callback();
-				}
-			}
-		}));
+		SitesBlackList: "SitesBlackList"
 	};
 
+	var getAllSettings = function (callback)
+	{
+		getDb().transaction(function (tx)
+		{
+			tx.executeSql("SELECT * FROM Settings", [],
+			function (tx, results)
+			{
+				var settings = {};
+				for (var i = 0; i < results.rows.length; i++)
+				{
+					settings[results.rows.item(i).setting] = results.rows.item(i).value;
+				}
+
+				if (callback)
+				{
+					callback(settings);
+				}
+			},
+			function (tx, error)
+			{
+				console.log(error);
+			});
+		});
+	};
+
+	var setSetting = function (setting, value, callback)
+	{
+		getAllSettings(function (settings)
+		{
+			var query = 'INSERT INTO Settings (setting, value) VALUES (?, ?)';
+			var params = [setting, value];
+
+			if (settings[setting])
+			{
+				query = 'UPDATE Settings SET value=? WHERE (setting)=?';
+				params = [value, setting];
+			}
+
+			getDb().transaction(function (tx)
+			{
+				tx.executeSql(query, params,
+					function (tx, results)
+					{
+						if (callback)
+						{
+							callback();
+						}
+					},
+					function (tx, error)
+					{
+						console.log(error);
+					});
+			});
+		});
+	};
 
 	this.GetSitesBlackList = function (callback)
 	{
-		getDb().transaction(function (tx)
+		getAllSettings(function (settings)
 		{
-			tx.executeSql("SELECT * FROM SitesBlackList", [],
-			function (tx, results)
-			{
-				var sites = new Array();
-				for (var i = 0; i < results.rows.length; i++)
-				{
-					sites.push(results.rows.item(i).site);
-				}
+			var result = [];
 
-				if (callback)
-				{
-					callback(sites);
-				}
-			},
-			function (tx, error)
-			{
-				// TODO: Report error
-			});
+			if (settings[settingsKeys.SitesBlackList])
+				result = settings[settingsKeys.SitesBlackList].split(";");
+
+			callback(result);
 		});
 	};
 
-	this.DeleteSiteFromBlackList = function (site, callback)
+	this.UpdateSitesBlackList = function (sites, callback)
 	{
-		getDb().transaction(function (tx)
+		setSetting(settingsKeys.SitesBlackList, sites.RemoveDuplicates().TrimAllElements().join(";"), callback);
+	};
+
+	this.AddSiteToBlackList = function (site, callback)
+	{
+		var db = this;
+		this.GetSitesBlackList(function (sites)
 		{
-			tx.executeSql('DELETE FROM SitesBlackList WHERE (site)=?', [site.toLowerCase()],
-			function (tx, results)
-			{
-				if (callback)
-				{
-					callback();
-				}
-			},
-			function (tx, error)
-			{
-				// TODO: Report error
-			});
+			sites.push(site);
+			db.UpdateSitesBlackList(sites, callback);
 		});
 	};
 
-	this.DeleteAllSitesFromBlackList = function (callback)
-	{
-		getDb().transaction(function (tx)
-		{
-			tx.executeSql('DELETE FROM SitesBlackList', [],
-			function (tx, results)
-			{
-				if (callback)
-				{
-					callback();
-				}
-			},
-			function (tx, error)
-			{
-				// TODO: Report error
-			});
-		});
-	};
 };

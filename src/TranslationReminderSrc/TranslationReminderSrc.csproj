@@ -68,6 +68,8 @@
     <Content Include="src\imgs\back.png" />
     <Content Include="src\imgs\edit.png" />
     <Content Include="src\imgs\synch.png" />
+    <Content Include="src\scripts\BingClient.js" />
+    <Content Include="src\scripts\Ajax.js" />
     <Content Include="src\scripts\OptionsManager.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

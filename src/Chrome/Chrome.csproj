@@ -67,6 +67,14 @@
       <Link>img\icon_18.png</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="..\TranslationReminderSrc\src\scripts\Ajax.js">
+      <Link>scripts\Ajax.js</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\TranslationReminderSrc\src\scripts\BingClient.js">
+      <Link>scripts\BingClient.js</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="..\TranslationReminderSrc\src\scripts\BrowserPopup.js">
       <Link>scripts\BrowserPopup.js</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
