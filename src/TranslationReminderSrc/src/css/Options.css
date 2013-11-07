@@ -12,6 +12,10 @@
 	background: rgb(241, 228, 203);
 }
 
+.TR-Settings .TR-Section {
+	margin-bottom: 1em;
+}
+
 .TR-Settings textarea 
 {
 	width: 100%;

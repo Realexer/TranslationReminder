@@ -26,17 +26,20 @@ var BingClient = function ()
 		);
 	};
 
-	this.GetSupportedLangs = function(callback)
+	this.GetSupportedLangs = function (callback)
 	{
 		var bingClient = this;
 		new Ajax().Invoke(
 			{
-				url: "http://api.microsofttranslator.com/V2/Ajax.svc/" + bingClient.methods.GetLangsList,
+				url: "http://api.microsofttranslator.com/V2/Ajax.svc/" + bingClient.config.methods.GetLangsList,
 				data: {
-					"appId": bingClient.params.appId
+					"appId": bingClient.config.params.appId
 				}
 			},
-			callback
+			function (result)
+			{
+				callback(JSON.parse(result));
+			}
 		);
 	};
 };

@@ -6,32 +6,39 @@
 	<link rel="stylesheet" type="text/css" href="css/common.css" />
 	<link rel="stylesheet" type="text/css" href="css/Options.css" />
 	<script type='text/javascript' src='scripts/Extensions.js'></script>
+	<script type='text/javascript' src='scripts/Ajax.js'></script>
+	<script type='text/javascript' src='scripts/BingClient.js'></script>
 	<script type='text/javascript' src='scripts/DB.js'></script>
 	<script type='text/javascript' src='scripts/OptionsManager.js'></script>
 </head>
 <body class="TR-Base">
 	<div class="TR-Options">
+		<span id="TR-SavingLabel" style="float:right;" class="TR-Red"></span>
 		<h2>Translation Reminder - Options</h2>
 		<div class="TR-Settings">
+			<h3>General</h3>
+			<hr />
 
-			<h3>General</h3><hr />
-			<label for="TR-SitesBlackList">Sites without words highlighting:</label><span id="TR-SavingLabel" style="float:right;" class="TR-Red"></span>
-			<div class="TR-Clear"></div>
-			<textarea id="TR-SitesBlackList" rows="5" placeholder="Specify domains separated by ';'"></textarea>
-			<br />
+			<div class="TR-Section">
+				<label for="TR-SitesBlackList">Sites without words highlighting:</label>
+				<div class="TR-Clear"></div>
+				<textarea id="TR-SitesBlackList" rows="5" placeholder="Specify domains separated by ';'"></textarea>
+				<span class="TR-MinorInfo">Ctrl+Enter to save</span>
+			</div>
 
-			<h3>Translation</h3><hr />
-			<input type="checkbox" id="TR-EnableAutoTranslate"/>
-			<label for="TR-EnableAutoTranslate">Automatically translate selection:</label><span id="Span1" style="float:right;" class="TR-Red"></span>
-			<br />
-			<br />
-			<select id="TR-TranslationLanguage"><option>TST</option></select>
-			<label for="TR-TranslationLanguage">Language of translation</label><span id="Span2" style="float:right;" class="TR-Red"></span>
-			<br />
-			<br />
+			<h3>Translation</h3>
+			<hr />
 
-			<br/>
-			<span>Ctrl+Enter to save</span>
+			<div class="TR-Section">
+				<input type="checkbox" id="TR-EnableAutoTranslate"/>
+				<label for="TR-EnableAutoTranslate">Automatically translate selection</label><span id="Span1" style="float:right;" class="TR-Red"></span>
+			</div>
+
+			<div class="TR-Section">
+				<select id="TR-TranslationLanguage"><option value="select" disabled="disabled">select</option></select>
+				<label for="TR-TranslationLanguage">Language of translation</label><span id="Span2" style="float:right;" class="TR-Red"></span>
+			</div>
+			
 		</div>
 	</div>
 </body>

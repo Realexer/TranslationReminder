@@ -151,7 +151,9 @@ var DB = function ()
 
 	var settingsKeys =
 	{
-		SitesBlackList: "SitesBlackList"
+		SitesBlackList: "SitesBlackList",
+		AutoTranslatioinEnabled: "AutoTranslationEnabled",
+		TranslationLanguage: "TranslationLanguage"
 	};
 
 	var getAllSettings = function (callback)
@@ -238,4 +240,26 @@ var DB = function ()
 		});
 	};
 
+	this.IsAutotranslationEnabled = function (callback) 
+	{
+		getAllSettings(function (settings)
+		{
+			var result = false;
+
+			if (settings[settingsKeys.AutoTranslatioinEnabled])
+				result = parseInt(settings[settingsKeys.AutoTranslatioinEnabled]) == 1;
+
+			callback(result);
+		});
+	};
+	
+	this.EnableAutoTranslation = function(callback)
+	{
+		setSetting(settingsKeys.AutoTranslatioinEnabled, 1, callback);
+	};
+
+	this.DisableAutoTranslation = function (callback)
+	{
+		setSetting(settingsKeys.AutoTranslatioinEnabled, 0, callback);
+	};
 };

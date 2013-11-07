@@ -2,17 +2,19 @@
 {
 	this.SitesInitialValues = "";
 
-	this.GetSitesBlackListTextArea = function ()
+	this.GetSitesBlackListTextArea = function () { return document.getElementById("TR-SitesBlackList"); };
+	this.GetSavingStatusLabel = function () { return document.getElementById("TR-SavingLabel"); };
+	this.GetEnableAutoTranslateCheckbox = function () { return document.getElementById("TR-EnableAutoTranslate"); };
+	this.GetLanguageSelect = function () { return document.getElementById("TR-TranslationLanguage"); };
+
+	this.InitSettingsControls = function ()
 	{
-		return document.getElementById("TR-SitesBlackList");
+		this.InitGeneralSettingsControls();
+		this.InitTranslationSettingsControls();
 	};
 
-	this.GetSavingStatusLabel = function ()
-	{
-		return document.getElementById("TR-SavingLabel");
-	};
 
-	this.InitSitesBlackListTextarea = function ()
+	this.InitGeneralSettingsControls = function ()
 	{
 		var optionsManagerInstance = this;
 
@@ -25,15 +27,74 @@
 		{
 			if (optionsManagerInstance.GetSitesBlackListTextArea().value != optionsManagerInstance.SitesInitialValues)
 			{
-				optionsManagerInstance.GetSavingStatusLabel().style.display = "block";
-				optionsManagerInstance.GetSavingStatusLabel().className = "TR-Red";
-				optionsManagerInstance.GetSavingStatusLabel().innerHTML = "Not saved";
+				optionsManagerInstance.TellNotSaved();
 			}
 			else
 			{
-				optionsManagerInstance.GetSavingStatusLabel().style.display = "none";
+				optionsManagerInstance.TellNothingToSave();
 			}
 		};
+	};
+
+	this.InitTranslationSettingsControls = function ()
+	{
+		var optionsManagerInstance = this;
+
+		new DB().IsAutotranslationEnabled(function (result)
+		{
+			optionsManagerInstance.GetEnableAutoTranslateCheckbox().checked = result;
+		});
+
+		optionsManagerInstance.GetEnableAutoTranslateCheckbox().onchange = function ()
+		{
+			if (optionsManagerInstance.GetEnableAutoTranslateCheckbox().checked)
+			{
+				new DB().EnableAutoTranslation(function () { optionsManagerInstance.TellSaved(); });
+			}
+			else
+			{
+				new DB().DisableAutoTranslation(function () { optionsManagerInstance.TellSaved(); });
+			}
+		};
+
+
+		new BingClient().GetSupportedLangs(function (langs)
+		{
+			langs.sort();
+			for (var i = 0; i < langs.length; i++)
+			{
+				var option = document.createElement("option");
+				option.setAttribute("value", langs[i]);
+				option.innerHTML = langs[i];
+				optionsManagerInstance.GetLanguageSelect().appendChild(option);
+			}
+		});
+	};
+
+	this.TellSaved = function ()
+	{
+		var optionsManagerInstance = this;
+
+		optionsManagerInstance.GetSavingStatusLabel().className = "TR-Green";
+		setTimeout(function ()
+		{
+			optionsManagerInstance.GetSavingStatusLabel().style.display = "block";
+			optionsManagerInstance.GetSavingStatusLabel().innerHTML = "Saved";
+			optionsManagerInstance.GetSavingStatusLabel().className = "TR-Green TR-Saved";
+		}, 1);
+
+	};
+
+	this.TellNotSaved = function ()
+	{
+		this.GetSavingStatusLabel().style.display = "block";
+		this.GetSavingStatusLabel().className = "TR-Red";
+		this.GetSavingStatusLabel().innerHTML = "Not saved";
+	};
+
+	this.TellNothingToSave = function ()
+	{
+		this.GetSavingStatusLabel().style.display = "none";
 	};
 };
 
@@ -41,19 +102,17 @@ var optionsManager = new OptionsManager();
 
 window.onload = function ()
 {
-	optionsManager.InitSitesBlackListTextarea();
+	optionsManager.InitSettingsControls();
 };
 
 window.onkeydown = function ()
 {
 	if (event.keyCode === 13 && event.ctrlKey) // enter
 	{
-		new DB().UpdateSitesBlackList(optionsManager.GetSitesBlackListTextArea().value.split(";"), function () 
+		new DB().UpdateSitesBlackList(optionsManager.GetSitesBlackListTextArea().value.split(";"), function ()
 		{
-			optionsManager.InitSitesBlackListTextarea();
-			optionsManager.GetSavingStatusLabel().style.display = "block";
-			optionsManager.GetSavingStatusLabel().className = "TR-Green TR-Saved";
-			optionsManager.GetSavingStatusLabel().innerHTML = "Saved";
-		});	
+			optionsManager.InitGeneralSettingsControls();
+			optionsManager.TellSaved();
+		});
 	}
 };

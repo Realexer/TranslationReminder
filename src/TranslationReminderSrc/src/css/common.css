@@ -12,7 +12,7 @@
 
 
 .TR-Base label {
-	font-weight: bold;
+	
 }
 
 .TR-Clear 
@@ -31,6 +31,12 @@
 	padding: 0px;
 	text-align: center;
 	cursor: pointer;
+}
+
+.TR-MinorInfo 
+{
+	font-size: 0.9em;
+	color: #999;
 }
 
 .TR-Green 
