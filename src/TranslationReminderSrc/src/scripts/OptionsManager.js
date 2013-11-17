@@ -76,6 +76,7 @@
 		var optionsManagerInstance = this;
 
 		optionsManagerInstance.GetSavingStatusLabel().className = "TR-Green";
+		// hack for making animation run again
 		setTimeout(function ()
 		{
 			optionsManagerInstance.GetSavingStatusLabel().style.display = "block";

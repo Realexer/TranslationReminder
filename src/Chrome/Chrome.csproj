@@ -79,6 +79,10 @@
       <Link>scripts\BrowserPopup.js</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="..\TranslationReminderSrc\src\scripts\Config.js">
+      <Link>scripts\Config.js</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="..\TranslationReminderSrc\src\scripts\DB.js">
       <Link>scripts\DB.js</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
