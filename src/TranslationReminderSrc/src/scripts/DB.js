@@ -240,7 +240,7 @@ var DB = function ()
 		});
 	};
 
-	this.IsAutotranslationEnabled = function (callback) 
+	this.IsAutotranslationEnabled = function (callback)
 	{
 		getAllSettings(function (settings)
 		{
@@ -252,8 +252,8 @@ var DB = function ()
 			callback(result);
 		});
 	};
-	
-	this.EnableAutoTranslation = function(callback)
+
+	this.EnableAutoTranslation = function (callback)
 	{
 		setSetting(settingsKeys.AutoTranslatioinEnabled, 1, callback);
 	};
@@ -261,5 +261,23 @@ var DB = function ()
 	this.DisableAutoTranslation = function (callback)
 	{
 		setSetting(settingsKeys.AutoTranslatioinEnabled, 0, callback);
+	};
+
+	this.GetTranslationLanguage = function (callback)
+	{
+		getAllSettings(function (settings)
+		{
+			var lang = Config.defaults.TranslationLanguage;
+
+			if (settings[settingsKeys.TranslationLanguage])
+				lang = settings[settingsKeys.TranslationLanguage];
+
+			callback(lang);
+		});
+	};
+
+	this.SetTranslationLanguage = function (lang, callback)
+	{
+		setSetting(settingsKeys.TranslationLanguage, lang, callback);
 	};
 };

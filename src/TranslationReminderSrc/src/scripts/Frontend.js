@@ -327,6 +327,15 @@ var Frontend = function ()
 		this.GetWordAddingFormSpecifiedTranslation().innerHTML = "";
 
 		this.GetWordAddingFormCurrentSelection().firstChild.nodeValue = this.selectedText;
+
+		var frontendInstance = this;
+		chrome.runtime.sendMessage({ name: "DB.IsAutotranslationEnabled" }, function (isEnabled)
+		{
+			if (isEnabled)
+			{
+				frontendInstance.PerformWordTranslation();
+			}
+		});
 	};
 
 	this.HideNewWordAddingForm = function ()
@@ -391,18 +400,25 @@ var Frontend = function ()
 			var bing = document.getElementById("BingBing");
 			bing.onclick = function ()
 			{
-				new BingClient().Translate(frontendInstance.selectedText,
-					function (result)
-					{
-						frontendInstance.GetWordAddingFormTranslationInput().value = result.trim("\"");
-						frontendInstance.GetWordAddingFormSpecifiedTranslation().innerHTML = result.trim("\"");
-						frontendInstance.GetWordAddingFormTranslationInput().focus();
-					}
-				);
+				frontendInstance.PerformWordTranslation();
 			};
 
 			this.GetWordAddingFormCloseButton().onclick = function () { frontendInstance.HideNewWordAddingForm(); };
 		}
+	};
+
+	this.PerformWordTranslation = function ()
+	{
+		var frontendInstance = this;
+
+		new BingClient().Translate(frontendInstance.selectedText,
+			function (result)
+			{
+				frontendInstance.GetWordAddingFormTranslationInput().value = result.trim("\"");
+				frontendInstance.GetWordAddingFormSpecifiedTranslation().innerHTML = result.trim("\"");
+				frontendInstance.GetWordAddingFormTranslationInput().focus();
+			}
+		);
 	};
 
 	this.AddWord = function ()

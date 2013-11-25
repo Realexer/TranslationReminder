@@ -1,5 +1,10 @@
 var Config = new function ()
 {
+	this.defaults = 
+	{
+		TranslationLanguage: "en"
+	};
+	
 	this.classNames =
 	{
 		highlightedText: "TR-HighlightedText",

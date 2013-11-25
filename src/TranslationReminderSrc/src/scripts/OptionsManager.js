@@ -57,17 +57,25 @@
 			}
 		};
 
+		optionsManagerInstance.GetLanguageSelect().onchange = function ()
+		{
+			new DB().SetTranslationLanguage(optionsManagerInstance.GetLanguageSelect().value, function () { optionsManagerInstance.TellSaved(); });
+		};
 
 		new BingClient().GetSupportedLangs(function (langs)
 		{
-			langs.sort();
-			for (var i = 0; i < langs.length; i++)
+			new DB().GetTranslationLanguage(function (lang)
 			{
-				var option = document.createElement("option");
-				option.setAttribute("value", langs[i]);
-				option.innerHTML = langs[i];
-				optionsManagerInstance.GetLanguageSelect().appendChild(option);
-			}
+				langs.sort();
+				for (var i = 0; i < langs.length; i++)
+				{
+					var option = document.createElement("option");
+					option.setAttribute("value", langs[i]);
+					option.selected = lang == langs[i];
+					option.innerHTML = langs[i];
+					optionsManagerInstance.GetLanguageSelect().appendChild(option);
+				}
+			});
 		});
 	};
 
@@ -76,7 +84,7 @@
 		var optionsManagerInstance = this;
 
 		optionsManagerInstance.GetSavingStatusLabel().className = "TR-Green";
-		// hack for making animation run again
+		// hack for making animation run again. We first (re) apply not animated class and then run animated (again)
 		setTimeout(function ()
 		{
 			optionsManagerInstance.GetSavingStatusLabel().style.display = "block";

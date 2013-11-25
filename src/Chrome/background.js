@@ -43,6 +43,20 @@ chrome.runtime.onMessage.addListener(function (message, sender, callback)
 				callback();
 			});
 			break;
+
+		case "DB.IsAutotranslationEnabled":
+			new DB().IsAutotranslationEnabled(function (isEnabled)
+			{
+				callback(isEnabled);
+			});
+			break;
+
+		case "DB.GetTranslationLanguage":
+			new DB().GetTranslationLanguage(function (lang)
+			{
+				callback(lang);
+			});
+			break;
 	}
 
 	return true;

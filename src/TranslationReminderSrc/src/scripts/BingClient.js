@@ -13,17 +13,20 @@ var BingClient = function ()
 	this.Translate = function (text, callback)
 	{
 		var bingClient = this;
-		new Ajax().Invoke(
+		chrome.runtime.sendMessage({ name: "DB.GetTranslationLanguage" }, function (lang)
+		{
+			new Ajax().Invoke(
 			{
 				url: "http://api.microsofttranslator.com/V2/Ajax.svc/" + bingClient.config.methods.Translate,
 				data: {
 					"appId": bingClient.config.params.appId,
-					"to": "ru",
+					"to": lang,
 					"text": text
 				}
 			},
 			callback
 		);
+		});
 	};
 
 	this.GetSupportedLangs = function (callback)
