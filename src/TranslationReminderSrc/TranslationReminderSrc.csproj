@@ -68,10 +68,11 @@
     <Content Include="src\imgs\back.png" />
     <Content Include="src\imgs\bing_icon.png" />
     <Content Include="src\imgs\edit.png" />
+    <Content Include="src\imgs\loading.gif" />
     <Content Include="src\imgs\synch.png" />
     <Content Include="src\scripts\BingClient.js" />
     <Content Include="src\scripts\Ajax.js" />
-    <Content Include="src\scripts\Config.js" />
+    <Content Include="src\scripts\Props.js" />
     <Content Include="src\scripts\OptionsManager.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

@@ -1,34 +1,20 @@
 ﻿var BrowserPopup = function ()
 {
 	var wordsTable = document.getElementById("TR-WordsList");
-	var loadingView = document.getElementById("TR-LoadingView");
-	var nowwordsView = document.getElementById("TR-NoWordsView");
-
+	var loadingAnimation = document.getElementById("TR-LoadingAnimation");
+	var noWordsView = document.getElementById("TR-NoWordsView");
+	
 	this.WordsOrder = {
 		by: "date",
 		direction: "DESC"
 	};
 
 
-	this.ShowLoadingView = function ()
-	{
-		loadingView.style.display = "block";
-	},
+	this.ShowLoadingAnimation = function () { loadingAnimation.style.display = "block"; },
+	this.HideLoadingAnimation = function () { loadingAnimation.style.display = "none"; };
 
-	this.HideLoadingView = function ()
-	{
-		loadingView.style.display = "none";
-	};
-
-	this.ShowNoWordsView = function ()
-	{
-		nowwordsView.style.display = "block";
-	};
-
-	this.HideNoWordsView = function ()
-	{
-		nowwordsView.style.display = "none";
-	};
+	this.ShowNoWordsView = function () { noWordsView.style.display = "block"; };
+	this.HideNoWordsView = function () { noWordsView.style.display = "none";};
 
 	this.Init = function ()
 	{
@@ -62,7 +48,7 @@
 	this.ShowUserWords = function ()
 	{
 		var browserPopup = this;
-		browserPopup.ShowLoadingView();
+		browserPopup.ShowLoadingAnimation();
 		wordsTable.innerHTML = "";
 
 		var db = new DB();
@@ -107,7 +93,7 @@
 				browserPopup.ShowNoWordsView();
 			}
 
-			browserPopup.HideLoadingView();
+			browserPopup.HideLoadingAnimation();
 		}, this.WordsOrder.by, this.WordsOrder.direction);
 	};
 

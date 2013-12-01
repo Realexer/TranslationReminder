@@ -2,7 +2,6 @@
 {
 	color: #333;
 	font-family: Tahoma;
-	background: #fff;
 }
 .TR-Base h1, .TR-Base h2, .TR-Base h3, .TR-Base h4, .TR-Base h5, .TR-Base h6 
 {
@@ -61,6 +60,7 @@
 {
 	color: #111111;
 	font-family: Georgia;
+	font-weight: bold;
 	border-bottom: 1px dotted rgb(47, 100, 119);
 }
 
@@ -80,4 +80,10 @@
 .TR-Successful
 {
 	background: #C0FFC5 !important;
+}
+
+.TR-LoadingAnimation 
+{
+	width: 15px;
+	height: 15px;
 }

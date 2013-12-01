@@ -1,65 +1,73 @@
 ﻿var OptionsManager = function ()
 {
-	this.SitesInitialValues = "";
+	var sitesInitialValues = "";
 
-	this.GetSitesBlackListTextArea = function () { return document.getElementById("TR-SitesBlackList"); };
-	this.GetSavingStatusLabel = function () { return document.getElementById("TR-SavingLabel"); };
-	this.GetEnableAutoTranslateCheckbox = function () { return document.getElementById("TR-EnableAutoTranslate"); };
-	this.GetLanguageSelect = function () { return document.getElementById("TR-TranslationLanguage"); };
+	var sitesBlackListTextArea = document.getElementById("TR-SitesBlackList");
+	var enableAutoTranslateCheckbox = document.getElementById("TR-EnableAutoTranslate");
+	var languageSelect = document.getElementById("TR-TranslationLanguage");
+	var savingStatusLabel = document.getElementById("TR-SavingLabel");
 
-	this.InitSettingsControls = function ()
+	this.Init = function ()
 	{
-		this.InitGeneralSettingsControls();
-		this.InitTranslationSettingsControls();
+		initGeneralSettingsControls();
+		initTranslationSettingsControls();
 	};
 
 
-	this.InitGeneralSettingsControls = function ()
+	function initGeneralSettingsControls()
 	{
-		var optionsManagerInstance = this;
+		sitesBlackListTextArea.onkeydown = function ()
+		{
+			if (event.keyCode === 13 && event.ctrlKey) // enter
+			{
+				new DB().UpdateSitesBlackList(sitesBlackListTextArea.value.split(";"), function ()
+				{
+					initGeneralSettingsControls();
+					tellSaved();
+				});
+			}
+		};
 
 		new DB().GetSitesBlackList(function (sites)
 		{
-			optionsManagerInstance.SitesInitialValues = optionsManagerInstance.GetSitesBlackListTextArea().value = sites.join(";");
+			sitesInitialValues = sitesBlackListTextArea.value = sites.join(";");
 		});
 
-		optionsManagerInstance.GetSitesBlackListTextArea().oninput = function ()
+		sitesBlackListTextArea.oninput = function ()
 		{
-			if (optionsManagerInstance.GetSitesBlackListTextArea().value != optionsManagerInstance.SitesInitialValues)
+			if (sitesBlackListTextArea.value != sitesInitialValues)
 			{
-				optionsManagerInstance.TellNotSaved();
+				tellNotSaved();
 			}
 			else
 			{
-				optionsManagerInstance.TellNothingToSave();
+				tellNothingToSave();
 			}
 		};
 	};
 
-	this.InitTranslationSettingsControls = function ()
+	function initTranslationSettingsControls()
 	{
-		var optionsManagerInstance = this;
-
 		new DB().IsAutotranslationEnabled(function (result)
 		{
-			optionsManagerInstance.GetEnableAutoTranslateCheckbox().checked = result;
+			enableAutoTranslateCheckbox.checked = result;
 		});
 
-		optionsManagerInstance.GetEnableAutoTranslateCheckbox().onchange = function ()
+		enableAutoTranslateCheckbox.onchange = function ()
 		{
-			if (optionsManagerInstance.GetEnableAutoTranslateCheckbox().checked)
+			if (enableAutoTranslateCheckbox.checked)
 			{
-				new DB().EnableAutoTranslation(function () { optionsManagerInstance.TellSaved(); });
+				new DB().EnableAutoTranslation(function () { tellSaved(); });
 			}
 			else
 			{
-				new DB().DisableAutoTranslation(function () { optionsManagerInstance.TellSaved(); });
+				new DB().DisableAutoTranslation(function () { tellSaved(); });
 			}
 		};
 
-		optionsManagerInstance.GetLanguageSelect().onchange = function ()
+		languageSelect.onchange = function ()
 		{
-			new DB().SetTranslationLanguage(optionsManagerInstance.GetLanguageSelect().value, function () { optionsManagerInstance.TellSaved(); });
+			new DB().SetTranslationLanguage(languageSelect.value, function () { tellSaved(); });
 		};
 
 		new BingClient().GetSupportedLangs(function (langs)
@@ -73,55 +81,40 @@
 					option.setAttribute("value", langs[i]);
 					option.selected = lang == langs[i];
 					option.innerHTML = langs[i];
-					optionsManagerInstance.GetLanguageSelect().appendChild(option);
+					languageSelect.appendChild(option);
 				}
 			});
 		});
 	};
 
-	this.TellSaved = function ()
+	function tellSaved()
 	{
-		var optionsManagerInstance = this;
-
-		optionsManagerInstance.GetSavingStatusLabel().className = "TR-Green";
+		savingStatusLabel.className = "TR-Green";
 		// hack for making animation run again. We first (re) apply not animated class and then run animated (again)
 		setTimeout(function ()
 		{
-			optionsManagerInstance.GetSavingStatusLabel().style.display = "block";
-			optionsManagerInstance.GetSavingStatusLabel().innerHTML = "Saved";
-			optionsManagerInstance.GetSavingStatusLabel().className = "TR-Green TR-Saved";
+			savingStatusLabel.style.display = "block";
+			savingStatusLabel.innerHTML = "Saved";
+			savingStatusLabel.className = "TR-Green TR-Saved";
 		}, 1);
 
 	};
 
-	this.TellNotSaved = function ()
+	function tellNotSaved()
 	{
-		this.GetSavingStatusLabel().style.display = "block";
-		this.GetSavingStatusLabel().className = "TR-Red";
-		this.GetSavingStatusLabel().innerHTML = "Not saved";
+		savingStatusLabel.style.display = "block";
+		savingStatusLabel.className = "TR-Red";
+		savingStatusLabel.innerHTML = "Not saved";
 	};
 
-	this.TellNothingToSave = function ()
+	function tellNothingToSave()
 	{
-		this.GetSavingStatusLabel().style.display = "none";
+		savingStatusLabel.style.display = "none";
 	};
 };
-
-var optionsManager = new OptionsManager();
 
 window.onload = function ()
 {
-	optionsManager.InitSettingsControls();
-};
-
-window.onkeydown = function ()
-{
-	if (event.keyCode === 13 && event.ctrlKey) // enter
-	{
-		new DB().UpdateSitesBlackList(optionsManager.GetSitesBlackListTextArea().value.split(";"), function ()
-		{
-			optionsManager.InitGeneralSettingsControls();
-			optionsManager.TellSaved();
-		});
-	}
+	var optionsManager = new OptionsManager();
+	optionsManager.Init();
 };

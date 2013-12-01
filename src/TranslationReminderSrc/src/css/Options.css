@@ -1,3 +1,5 @@
+body {
+}
 .TR-Options 
 {
 	width: 500px;
@@ -5,11 +7,23 @@
 	padding: 20px;
 	border: 1px solid #D8D8D8;
 	font-size: 0.8em;
+	background: #FFFFED;
+}
+.TR-Header 
+{
+	position: relative;
+	background: rgb(238, 238, 193);
+	padding: 10px;
+}
+
+#TR-SavingLabel 
+{
+	padding: 3px 0px;	
 }
 .TR-Settings 
 {
 	padding: 10px 20px;
-	background: rgb(241, 228, 203);
+	margin: 10px 0px;
 }
 
 .TR-Settings .TR-Section {

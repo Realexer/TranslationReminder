@@ -1,61 +1,5 @@
 var Frontend = function ()
 {
-	this.classNames =
-	{
-		highlightedText: "TR-HighlightedText",
-		common: {
-			base: "TR-Base",
-			green: "TR-Green",
-			red: "TR-Red",
-			clear: "TR-Clear",
-			word: "TR-Word",
-			translation: "TR-Translation",
-			knowIt: "TR-KnowIt",
-			wordData: "TR-WordData",
-			successful: "TR-Successful"
-		},
-		newWordForm: {
-			form: "TR-NewWordForm",
-			title: "TR-NewWordForm-TitleHandler",
-			titleText: "TR-NewWordForm-Title",
-			formBody: "TR-NewWordForm-Body",
-			selectedText: "TR-NewWordForm-CurrentSelection",
-			specifiedTranslation: "TR-NewWordForm-SpecifiedTranslation",
-			translationInput: "TR-NewWordForm-Translation",
-			closeButton: "TR-NewWordForm-CloseButton"
-		},
-		hint: {
-			handler: "TR-Hint",
-			wordBaseInfo: "TR-WordBaseInfo",
-			word: "TR-Hint-Word",
-			translation: "TR-Hint-Translation",
-			wordAdditionalInfo: "TR-WordAdditionalInfo",
-			deleteWord: "TR-Hint-DeleteWordButton"
-		}
-	};
-
-	this.IDs =
-	{
-		newWordForm:
-		{
-			form: "TR-NewWordForm",
-			title: "TR-NewWordForm-TitleHandler",
-			titleText: "TR-NewWordForm-Title",
-			closeButton: "TR-NewWordForm-CloseButton",
-			selectedText: "TR-NewWordForm-CurrentSelection",
-			specifiedTranslation: "TR-NewWordForm-SpecifiedTranslation",
-			translationInput: "TR-NewWordForm-Translation"
-		},
-		hint: {
-			handler: "TR-Hint",
-			deleteWord: "TR-Hint-DeleteWordButton"
-		}
-	};
-
-	this.BingIconBase64 = "iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAMAUExURQBt1A921hB21x9/2SB/2S+I3D+R3kCS30+a4VCb4WCk5HCt5/+mFf+8T//Me4C26o+/7JC/7J/I7qDJ77DS8v/Siv/YmP/dp//jtcDb9NDk99/s+f/oxP/u0+/1/P///wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAzKFFIAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAYdEVYdFNvZnR3YXJlAFBhaW50Lk5FVCB2My4zNqnn4iUAAACHSURBVChTjY/NEoIwDIQXKBaoWEXjXyX7/m9p0vEgntyZ5PBNdrsFfwQgbtCf4JnHGMf8cK9ZQrBVFc4VAM2xkGXpgKmCXrmKrNQeyA4Kb3vTlQq0DsjZwUzuPMgvxMHBL6rJMl4id3IAEjgB3aKk+iuRFnCqQY1Nm62Ht7ukaEpW6wO+v/sGO2ESLp22P5MAAAAASUVORK5CYII=";
-
-	this.restrictedTags = ["style", "script", "object", "embed", "textarea"];
-
 	this.selectedText = null;
 
 	this.textNodes = new Array();
@@ -65,18 +9,21 @@ var Frontend = function ()
 	var newWordAddingFormElement;
 
 
-	this.GetWordAddingForm = function () { return document.getElementById(this.IDs.newWordForm.form); };
+	this.GetWordAddingForm = function () { return document.getElementById(Props.IDs.newWordForm.form); };
 
-	this.GetWordAddingFormCurrentSelection = function () { return document.getElementById(this.IDs.newWordForm.selectedText); };
+	this.GetWordAddingFormCurrentSelection = function () { return document.getElementById(Props.IDs.newWordForm.selectedText); };
 
-	this.GetWordAddingFormTranslationInput = function () { return document.getElementById(this.IDs.newWordForm.translationInput); };
+	this.GetWordAddingFormTranslationInput = function () { return document.getElementById(Props.IDs.newWordForm.translationInput); };
 
-	this.GetWordAddingFormSpecifiedTranslation = function () { return document.getElementById(this.IDs.newWordForm.specifiedTranslation); };
+	this.GetWordAddingFormSpecifiedTranslation = function () { return document.getElementById(Props.IDs.newWordForm.specifiedTranslation); };
 
-	this.GetWordAddingFormSubmitButton = function () { return document.getElementById(this.IDs.newWordForm.submitButton); };
+	this.GetWordAddingFormSubmitButton = function () { return document.getElementById(Props.IDs.newWordForm.submitButton); };
 
-	this.GetWordAddingFormCloseButton = function () { return document.getElementById(this.IDs.newWordForm.closeButton); };
+	this.GetWordAddingFormCloseButton = function () { return document.getElementById(Props.IDs.newWordForm.closeButton); };
 
+	this.GetLoadingAnimationImage = function () { return document.getElementById(Props.IDs.newWordForm.loadingAnimation); };
+	this.ShowLoadingAnimation = function () { this.GetLoadingAnimationImage().style.display = "block"; };
+	this.HideLoadingAnimation = function () { this.GetLoadingAnimationImage().style.display = "none"; };
 
 	this.ShowHightlights = function ()
 	{
@@ -109,7 +56,7 @@ var Frontend = function ()
 						});
 					}
 
-					var allHightlightTexts = document.getElementsByClassName(frontendInstance.classNames.highlightedText);
+					var allHightlightTexts = document.getElementsByClassName(Props.classNames.highlightedText);
 
 					for (var i = 0; i < allHightlightTexts.length; i++)
 					{
@@ -153,9 +100,9 @@ var Frontend = function ()
 			{
 				var resultInnerHTML = node.parentNode.innerHTML;
 
-				if (node.parentNode.hasInParents(this.classNames.newWordForm.form) ||
-					node.parentNode.hasInParents(this.classNames.highlightedText) ||
-					this.restrictedTags.indexOf(node.parentNode.tagName.toLowerCase()) !== -1)
+				if (node.parentNode.hasInParents(Props.classNames.newWordForm.form) ||
+					node.parentNode.hasInParents(Props.classNames.highlightedText) ||
+					Props.restrictedTags.indexOf(node.parentNode.tagName.toLowerCase()) !== -1)
 				{
 					return;
 				}
@@ -206,8 +153,6 @@ var Frontend = function ()
 
 	this.ReplaceHTMLWithHightlightedTexts = function (resultInnerHTML, wordItem)
 	{
-		var frontendInstance = this;
-
 		resultInnerHTML = resultInnerHTML.replace(new RegExp("\\b" + wordItem.word + "\\b", "mgi"), function (match, offset, string)
 		{
 			return "<trtag"
@@ -216,7 +161,7 @@ var Frontend = function ()
 				+ " hits='" + wordItem.hits + "'"
 				+ " date='" + wordItem.date + "'"
 				+ " title='" + wordItem.translation + "'"
-				+ " class='" + frontendInstance.classNames.highlightedText + "'>"
+				+ " class='" + Props.classNames.highlightedText + "'>"
 				+ match + "</trtag>";
 		});
 
@@ -245,7 +190,7 @@ var Frontend = function ()
 		/// </summary>
 		/// <param name="word"></param>
 
-		var highlightedElements = document.getElementsByClassName(this.classNames.highlightedText);
+		var highlightedElements = document.getElementsByClassName(Props.classNames.highlightedText);
 
 		for (var i = 0; i < highlightedElements.length; i++)
 		{
@@ -266,8 +211,7 @@ var Frontend = function ()
 
 	this.SelectWordAction = function (event)
 	{
-
-		if (event.target.hasInParents(this.classNames.newWordForm.form) || event.target.hasInParents(this.classNames.hint.handler))
+		if (event.target.hasInParents(Props.classNames.newWordForm.form) || event.target.hasInParents(Props.classNames.hint.handler))
 			return false;
 
 		this.RemoveHints();
@@ -354,20 +298,23 @@ var Frontend = function ()
 		{
 			newWordAddingFormElement = document.createElement("div");
 			newWordAddingFormElement.innerHTML =
-				"<div class='" + this.classNames.newWordForm.title + "' id='" + this.IDs.newWordForm.title + "'>"
-					+ "<span class='" + this.classNames.newWordForm.titleText + "' id='" + this.IDs.newWordForm.titleText + "'>add translaton to the word</span>"
-					+ "<button class='" + this.classNames.common.red + " " + this.classNames.newWordForm.closeButton + "' id='" + this.IDs.newWordForm.closeButton + "'>close</button>"
-					+ "<div class='" + this.classNames.common.clear + "'></div> "
+				"<div class='" + Props.classNames.newWordForm.title + "' id='" + Props.IDs.newWordForm.title + "'>"
+					+ "<span class='" + Props.classNames.newWordForm.titleText + "' id='" + Props.IDs.newWordForm.titleText + "'>add translaton to the word</span>"
+					+ "<button class='" + Props.classNames.common.red + " " + Props.classNames.newWordForm.closeButton + "' id='" + Props.IDs.newWordForm.closeButton + "'>close</button>"
+					+ "<div class='" + Props.classNames.common.clear + "'></div> "
 				+ "</div> "
-				+ "<div class='" + this.classNames.newWordForm.formBody + "'>"
-				+ "<div class='" + this.classNames.newWordForm.selectedText + "'>"
-					+ "<span class='" + this.classNames.common.word + "' id='" + this.IDs.newWordForm.selectedText + "'>word</span>"
-					+ " - "
-					+ "<span class='" + this.classNames.common.translation + " " + this.classNames.newWordForm.specifiedTranslation + "' id='" + this.IDs.newWordForm.specifiedTranslation + "'></span>"
-				+ "</div>"
-				+ "<div><button class='' id='BingBing'><img src='data:image/png;base64," + this.BingIconBase64 + "'/></button>"
-				+ "</div>"
-				+ "<input class='" + this.classNames.common.translation + " " + this.classNames.newWordForm.translationInput + "' id='" + this.IDs.newWordForm.translationInput + "' value='' type='text' placeholder='translation (press enter)'/>"
+				+ "<div class='" + Props.classNames.newWordForm.formBody + "'>"
+					+ "<div class='" + Props.classNames.newWordForm.selectedText + "'>"
+						+ "<span class='" + Props.classNames.common.word + "' id='" + Props.IDs.newWordForm.selectedText + "'>word</span>"
+						+ " - "
+						+ "<span class='" + Props.classNames.common.translation + " " + Props.classNames.newWordForm.specifiedTranslation + "' id='" + Props.IDs.newWordForm.specifiedTranslation + "'></span>"
+					+ "</div>"
+					+ "<div class='" + Props.classNames.newWordForm.buttonsPanel + "'>"
+						+ "<span>Translate with: </span>"
+						+ "<button class='" + Props.classNames.newWordForm.bingButton + "' id='" + Props.IDs.newWordForm.bingButton + "'><img src='data:image/png;base64," + Props.BingIconBase64 + "'/></button>"
+						+ "<img class='" + Props.classNames.newWordForm.loadingAnimation + " " + Props.classNames.common.loadingAnimation + "' id='" + Props.classNames.newWordForm.loadingAnimation + "' src='data:image/gif;base64," + Props.LoadingAnimationBase64 + "'/>"
+					+ "</div>"
+					+ "<input class='" + Props.classNames.common.translation + " " + Props.classNames.newWordForm.translationInput + "' id='" + Props.IDs.newWordForm.translationInput + "' value='' type='text' placeholder='translation (press enter)'/>"
 				+ "</div>";
 		}
 
@@ -375,8 +322,8 @@ var Frontend = function ()
 		{
 			var frontendInstance = this;
 
-			newWordAddingFormElement.id = this.IDs.newWordForm.form;
-			newWordAddingFormElement.className = this.classNames.common.base + " " + this.classNames.newWordForm.form;
+			newWordAddingFormElement.id = Props.IDs.newWordForm.form;
+			newWordAddingFormElement.className = Props.classNames.common.base + " " + Props.classNames.newWordForm.form;
 			document.body.appendChild(newWordAddingFormElement);
 
 			this.GetWordAddingFormTranslationInput().oninput = function ()
@@ -397,8 +344,8 @@ var Frontend = function ()
 				}
 			};
 
-			var bing = document.getElementById("BingBing");
-			bing.onclick = function ()
+			var bingButton = document.getElementById(Props.IDs.newWordForm.bingButton);
+			bingButton.onclick = function ()
 			{
 				frontendInstance.PerformWordTranslation();
 			};
@@ -410,13 +357,15 @@ var Frontend = function ()
 	this.PerformWordTranslation = function ()
 	{
 		var frontendInstance = this;
-
+		
+		frontendInstance.ShowLoadingAnimation();
 		new BingClient().Translate(frontendInstance.selectedText,
 			function (result)
 			{
 				frontendInstance.GetWordAddingFormTranslationInput().value = result.trim("\"");
 				frontendInstance.GetWordAddingFormSpecifiedTranslation().innerHTML = result.trim("\"");
 				frontendInstance.GetWordAddingFormTranslationInput().focus();
+				frontendInstance.HideLoadingAnimation();
 			}
 		);
 	};
@@ -435,12 +384,12 @@ var Frontend = function ()
 				function ()
 				{
 					frontendInstance.ShowHightlights();
-					frontendInstance.GetWordAddingForm().classList.add(frontendInstance.classNames.common.successful);
+					frontendInstance.GetWordAddingForm().classList.add(Props.classNames.common.successful);
 
 					setTimeout(function ()
 					{
 						frontendInstance.HideNewWordAddingForm();
-						frontendInstance.GetWordAddingForm().classList.remove(frontendInstance.classNames.common.successful);
+						frontendInstance.GetWordAddingForm().classList.remove(Props.classNames.common.successful);
 					}, 50);
 				});
 			}
@@ -451,10 +400,10 @@ var Frontend = function ()
 	this.ShowHintAction = function (event)
 	{
 		var highlightedTextElement = event.target;
-		if (highlightedTextElement.className !== this.classNames.highlightedText)
+		if (highlightedTextElement.className !== Props.classNames.highlightedText)
 			return false;
 
-		if (event.target.hasInChildren(this.classNames.hint.handler)) // hint already displaied
+		if (event.target.hasInChildren(Props.classNames.hint.handler)) // hint already displaied
 			return false;
 
 		var word = highlightedTextElement.getAttribute("word");
@@ -463,17 +412,17 @@ var Frontend = function ()
 		var date = parseInt(highlightedTextElement.getAttribute("date"));
 
 		var hint = document.createElement("div");
-		hint.innerHTML = "<div class='" + this.classNames.hint.wordBaseInfo + "'>"
-							+ "<span class='" + this.classNames.common.word + " " + this.classNames.hint.word + "'>" + word + "</span> <span class='" + this.classNames.common.translation + " " + this.classNames.hint.translation + "'>" + translation + "</span>"
+		hint.innerHTML = "<div class='" + Props.classNames.hint.wordBaseInfo + "'>"
+							+ "<span class='" + Props.classNames.common.word + " " + Props.classNames.hint.word + "'>" + word + "</span> <span class='" + Props.classNames.common.translation + " " + Props.classNames.hint.translation + "'>" + translation + "</span>"
 						+ "</div>"
-						+ "<div class='" + this.classNames.hint.wordAdditionalInfo + "'>"
-							+ "<div class='" + this.classNames.common.wordData + "'>" + hits + " times met<br/>" + new Date(date).Ago() + "</div>"
-							+ "<button class='" + this.classNames.common.knowIt + " " + this.classNames.hint.deleteWord + "' id='" + this.IDs.hint.deleteWord + "' word='" + word + "'>I already know this word!</button>"
-							+ "<div class='" + this.classNames.common.clear + "'></div>"
+						+ "<div class='" + Props.classNames.hint.wordAdditionalInfo + "'>"
+							+ "<div class='" + Props.classNames.common.wordData + "'>" + hits + " times met<br/>" + new Date(date).Ago() + "</div>"
+							+ "<button class='" + Props.classNames.common.knowIt + " " + Props.classNames.hint.deleteWord + "' id='" + Props.IDs.hint.deleteWord + "' word='" + word + "'>I already know this word!</button>"
+							+ "<div class='" + Props.classNames.common.clear + "'></div>"
 						+ "</div>";
 
-		hint.setAttribute("class", this.classNames.common.base + " " + this.classNames.hint.handler);
-		hint.id = this.IDs.hint.handler;
+		hint.setAttribute("class", Props.classNames.common.base + " " + Props.classNames.hint.handler);
+		hint.id = Props.IDs.hint.handler;
 
 		document.body.appendChild(hint);
 
@@ -484,7 +433,7 @@ var Frontend = function ()
 
 		var frontendInstance = this;
 
-		document.getElementById(this.IDs.hint.deleteWord).onclick = function (e)
+		document.getElementById(Props.IDs.hint.deleteWord).onclick = function (e)
 		{
 			frontendInstance.DeleteWord(e.target.getAttribute("word"));
 		};
@@ -493,7 +442,7 @@ var Frontend = function ()
 
 	this.RemoveHints = function ()
 	{
-		var allHints = document.getElementsByClassName(this.classNames.hint.handler);
+		var allHints = document.getElementsByClassName(Props.classNames.hint.handler);
 
 		for (var i = 0; i < allHints.length; i++)
 		{

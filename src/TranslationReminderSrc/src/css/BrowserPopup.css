@@ -25,20 +25,31 @@
 /*
 	Header
 */
-.TR-Header {}
+.TR-Header 
+{
+	border-bottom: 2px solid #D6D6D6;
+}
+.TR-Header .TR-LoadingAnimation {
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	display: none;
+}
 .TR-Header h4
 {
 	margin: 0.7em 0em 0.6em 0em;
 	text-transform: capitalize;
 	text-indent: 0.5em;
-	float: left;
+	text-align: center;
+	width: 100%;
 }
 .TR-ListControls 
 {
-	margin: 1.1em 0em 0.6em 0em;
 	color: #888;
-	float: right;
 	font-size: 0.8em;
+	position: absolute;
+	top: 0;
+	right: 0;	
 }
 
 .TR-SelectWordsOrder 
@@ -106,7 +117,7 @@
 }
 
 .TR-WordsList tbody tr:nth-child(even) {background: rgb(255, 255, 237);}
-.TR-WordsList tbody tr:nth-child(odd) {background: rgb(241, 228, 203);}
+.TR-WordsList tbody tr:nth-child(odd) {background: rgb(238, 238, 193);}
 
 .TR-WordsList td
 {

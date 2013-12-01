@@ -267,7 +267,7 @@ var DB = function ()
 	{
 		getAllSettings(function (settings)
 		{
-			var lang = Config.defaults.TranslationLanguage;
+			var lang = Props.defaults.TranslationLanguage;
 
 			if (settings[settingsKeys.TranslationLanguage])
 				lang = settings[settingsKeys.TranslationLanguage];

@@ -13,7 +13,8 @@
 	z-index: 2147483647;
 	display: none;
 	position: absolute;
-	width: 270px;
+	min-width: 270px;
+	max-width: 400px;
 	border: 1px solid rgb(216, 199, 190);
 	font-size: 1.5em;
 	overflow: hidden;
@@ -44,9 +45,8 @@
 }
 .TR-NewWordForm-CurrentSelection
 {
-	font-weight: bold;
-	margin-bottom: 10px;
-	padding-left: 6px;
+	background: rgb(238, 238, 193);
+	padding: 10px;
 }
 
 .TR-NewWordForm-SpecifiedTranslation 
@@ -64,6 +64,36 @@
 	border-width: 1px;
 	box-sizing: border-box;
 	text-indent: 0.3em;
+}
+
+.TR-NewWordForm-ButtonsPanel
+{
+	margin-top: 10px;
+	font-size: 0.5em;
+	color: rgb(119, 119, 119);
+	clear: both;
+}
+
+.TR-NewWordForm-ButtonsPanel span
+{
+	
+}
+
+.TR-NewWordForm-BingButton 
+{
+	
+}
+
+.TR-NewWordForm-BingButton img
+{
+	width: 13px;
+	height: 13px;
+}
+
+.TR-NewWordForm-LoadingAnimation 
+{
+	float: right;
+	display: none;	
 }
 /* END [NEW WORD ADDING FORM] */
 
@@ -84,7 +114,7 @@
 
 .TR-Hint .TR-WordBaseInfo 
 {
-	background: #F1E4CB;
+	background: rgb(238, 238, 193);
 	padding: 7px;
 }
 

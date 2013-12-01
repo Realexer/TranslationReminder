@@ -5,17 +5,13 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<link rel="stylesheet" type="text/css" href="css/common.css" />
 	<link rel="stylesheet" type="text/css" href="css/BrowserPopup.css" />
+	<script type='text/javascript' src='scripts/Props.js'></script>
 	<script type='text/javascript' src='scripts/Extensions.js'></script>
 	<script type='text/javascript' src='scripts/DB.js'></script>
 	<script type='text/javascript' src='scripts/BrowserPopup.js'></script>
 </head>
 
 <body class="TR-Base TR-Popup">
-	<!-- LOADING VIEW -->
-	<div id="TR-LoadingView" class="TR-Blur TR-InfoMessage">
-		<span>PLEASE WAIT</span>
-	</div>
-	
 	<!-- NO WORDS VIEW  -->
 	<div id="TR-NoWordsView" class="TR-Blur TR-InfoMessage" style="display: none;">
 		<span>YOU HAVE NO WORDS YET</span>
@@ -24,7 +20,8 @@
 	<!-- WORDS LIST  -->
 	<div class="TR-WordsView" id="TR-WordsView">	
 		<div class="TR-Header">
-			<h4>Words I need to remember</h4>
+			<img id="TR-LoadingAnimation" class="TR-LoadingAnimation" src="img/loading.gif"/>
+			<h4>Your Words</h4>
 			<div class="TR-ListControls">Order by: 
 				<button class="TR-SelectWordsOrder TR-SelectedWordsOrder" id="TR-OrderWordsByDate">date</button> 
 				<button class="TR-SelectWordsOrder" id="TR-OrderWordsByHits">hits</button>

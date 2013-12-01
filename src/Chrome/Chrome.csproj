@@ -67,6 +67,10 @@
       <Link>img\icon_18.png</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="..\TranslationReminderSrc\src\imgs\loading.gif">
+      <Link>img\loading.gif</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="..\TranslationReminderSrc\src\scripts\Ajax.js">
       <Link>scripts\Ajax.js</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -77,10 +81,6 @@
     </Content>
     <Content Include="..\TranslationReminderSrc\src\scripts\BrowserPopup.js">
       <Link>scripts\BrowserPopup.js</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\TranslationReminderSrc\src\scripts\Config.js">
-      <Link>scripts\Config.js</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="..\TranslationReminderSrc\src\scripts\DB.js">
@@ -103,14 +103,15 @@
       <Link>scripts\OptionsManager.js</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="..\TranslationReminderSrc\src\scripts\Props.js">
+      <Link>scripts\Props.js</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="..\TranslationReminderSrc\src\scripts\WebClient.js">
       <Link>scripts\WebClient.js</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="background.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PagePopup.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="foreground.js">

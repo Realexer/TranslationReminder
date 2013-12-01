@@ -2,7 +2,7 @@ var frontend = new Frontend();
 
 frontend.ShowHightlights();
 
-document.onmouseup = function (event)
+document.body.onmouseup = function (event)
 {
 	frontend.SelectWordAction(event);
 };
