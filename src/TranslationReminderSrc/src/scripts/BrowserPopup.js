@@ -3,23 +3,22 @@
 	var wordsTable = document.getElementById("TR-WordsList");
 	var loadingAnimation = document.getElementById("TR-LoadingAnimation");
 	var noWordsView = document.getElementById("TR-NoWordsView");
-	
-	this.WordsOrder = {
+
+	var wordsOrder = 
+	{
 		by: "date",
 		direction: "DESC"
 	};
 
 
-	this.ShowLoadingAnimation = function () { loadingAnimation.style.display = "block"; },
-	this.HideLoadingAnimation = function () { loadingAnimation.style.display = "none"; };
+	function showLoadingAnimation() { loadingAnimation.style.display = "block"; };
+	function hideLoadingAnimation() { loadingAnimation.style.display = "none"; };
 
-	this.ShowNoWordsView = function () { noWordsView.style.display = "block"; };
-	this.HideNoWordsView = function () { noWordsView.style.display = "none";};
+	function showNoWordsView() { noWordsView.style.display = "block"; };
+	function hideNoWordsView() { noWordsView.style.display = "none"; };
 
 	this.Init = function ()
 	{
-		var poppupInstance = this;
-
 		var orderByDateButton = document.getElementById("TR-OrderWordsByDate");
 		var orderByHitsButton = document.getElementById("TR-OrderWordsByHits");
 
@@ -27,28 +26,29 @@
 		{
 			orderByHitsButton.classList.remove("TR-SelectedWordsOrder");
 			orderByDateButton.classList.add("TR-SelectedWordsOrder");
-			poppupInstance.WordsOrder.by = "date";
-			poppupInstance.WordsOrder.direction = poppupInstance.WordsOrder.direction == "DESC" ? "ASC" : "DESC";
-			
-			poppupInstance.ShowUserWords();
+			wordsOrder.by = "date";
+			wordsOrder.direction = wordsOrder.direction == "DESC" ? "ASC" : "DESC";
+
+			showUserWords();
 		};
 
 		orderByHitsButton.onclick = function ()
 		{
 			orderByDateButton.classList.remove("TR-SelectedWordsOrder");
 			orderByHitsButton.classList.add("TR-SelectedWordsOrder");
-			poppupInstance.WordsOrder.by = "hits";
-			poppupInstance.WordsOrder.direction = poppupInstance.WordsOrder.direction == "DESC" ? "ASC" : "DESC";
+			wordsOrder.by = "hits";
+			wordsOrder.direction = wordsOrder.direction == "DESC" ? "ASC" : "DESC";
 
-			poppupInstance.ShowUserWords();
+			showUserWords();
 		};
+
+		showUserWords();
 	};
 
 
-	this.ShowUserWords = function ()
+	function showUserWords ()
 	{
-		var browserPopup = this;
-		browserPopup.ShowLoadingAnimation();
+		showLoadingAnimation();
 		wordsTable.innerHTML = "";
 
 		var db = new DB();
@@ -59,13 +59,13 @@
 			{
 				document.getElementById("TR-WordsCount").innerHTML = words.length + " word" + (words.length > 1 ? "s" : "");
 
-				browserPopup.HideNoWordsView();
+				hideNoWordsView();
 
 				for (var i = 0; i < words.length; i++)
 				{
 					var wordItem = words[i];
 
-					var wordRow = "<tr class='" +((i % 2 == 0) ? "TR-BG-Dark" : "TR-BG-Light")+ "'>"
+					var wordRow = "<tr class='" + ((i % 2 == 0) ? "TR-BG-Dark" : "TR-BG-Light") + "'>"
 									+ "<td class='TR-Word-Cell'>"
 										+ "<div class='TR-WordHandler'><span class='TR-Word'>" + wordItem.word + "</span></div>"
 										+ "<div class='TR-WordData'>" + wordItem.hits + " times met<br/>" + new Date(wordItem.date).Ago() + "</div>"
@@ -85,30 +85,25 @@
 				for (var y = 0; y < deleteButtonsList.length; y++)
 				{
 					var deleteButton = deleteButtonsList[y];
-					deleteButton.addEventListener("click", function (event) { browserPopup.DeleteWordFromTable(event); }, false);
+					deleteButton.addEventListener("click", function (event) { deleteWordFromTable(event.target.getAttribute("word")); }, false);
 				}
 			}
 			else
 			{
-				browserPopup.ShowNoWordsView();
+				showNoWordsView();
 			}
 
-			browserPopup.HideLoadingAnimation();
-		}, this.WordsOrder.by, this.WordsOrder.direction);
+			hideLoadingAnimation();
+		}, this.wordsOrder.by, this.wordsOrder.direction);
 	};
 
 
 
-	this.DeleteWordFromTable = function (event)
+	function deleteWordFromTable (word)
 	{
-		var word = event.target.getAttribute("word");
-
-		var db = new DB();
-		var frontendInstance = this;
-
-		db.DeleteWord(word, function ()
+		new DB().DeleteWord(word, function ()
 		{
-			frontendInstance.ShowUserWords();
+			showUserWords();
 		});
 	};
 };
@@ -117,5 +112,4 @@ window.onload = function ()
 {
 	var browserPopup = new BrowserPopup();
 	browserPopup.Init();
-	browserPopup.ShowUserWords();
 };
