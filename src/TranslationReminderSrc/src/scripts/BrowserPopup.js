@@ -94,7 +94,7 @@
 			}
 
 			hideLoadingAnimation();
-		}, this.wordsOrder.by, this.wordsOrder.direction);
+		}, wordsOrder.by, wordsOrder.direction);
 	};
 
 

@@ -1,11 +1,7 @@
 var frontend = new Frontend();
 
-frontend.ShowHightlights();
+frontend.Init();
 
-document.body.onmouseup = function (event)
-{
-	frontend.SelectWordAction(event);
-};
 
 chrome.runtime.onMessage.addListener(function (message, sender, callback)
 {

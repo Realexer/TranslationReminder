@@ -1,38 +1,32 @@
 var Frontend = function ()
 {
-	this.selectedText = null;
+	var _this = this;
 
-	this.textNodes = new Array();
-	this.globalWords = new Array();
-	this.wordsHits = {};
+	var selectedText = null;
+
+	var textNodes = new Array();
+	var globalWords = new Array();
+	var wordsHits = {};
 
 	var newWordAddingFormElement;
 
+	var wordAddingForm = function() { return document.getElementById(Props.IDs.newWordForm.form); };
+	var wordAddingFormCurrentSelection = function () { return document.getElementById(Props.IDs.newWordForm.selectedText); };
+	var wordAddingFormTranslationInput = function () { return document.getElementById(Props.IDs.newWordForm.translationInput); };
+	var wordAddingFormSpecifiedTranslation = function () { return document.getElementById(Props.IDs.newWordForm.specifiedTranslation); };
+	var wordAddingFormCloseButton = function () { return document.getElementById(Props.IDs.newWordForm.closeButton); };
+	var loadingAnimationImage = function () { return document.getElementById(Props.IDs.newWordForm.loadingAnimation); };
 
-	this.GetWordAddingForm = function () { return document.getElementById(Props.IDs.newWordForm.form); };
+	function showLoadingAnimation() { loadingAnimationImage().style.display = "block"; };
+	function hideLoadingAnimation() { loadingAnimationImage().style.display = "none"; };
 
-	this.GetWordAddingFormCurrentSelection = function () { return document.getElementById(Props.IDs.newWordForm.selectedText); };
-
-	this.GetWordAddingFormTranslationInput = function () { return document.getElementById(Props.IDs.newWordForm.translationInput); };
-
-	this.GetWordAddingFormSpecifiedTranslation = function () { return document.getElementById(Props.IDs.newWordForm.specifiedTranslation); };
-
-	this.GetWordAddingFormSubmitButton = function () { return document.getElementById(Props.IDs.newWordForm.submitButton); };
-
-	this.GetWordAddingFormCloseButton = function () { return document.getElementById(Props.IDs.newWordForm.closeButton); };
-
-	this.GetLoadingAnimationImage = function () { return document.getElementById(Props.IDs.newWordForm.loadingAnimation); };
-	this.ShowLoadingAnimation = function () { this.GetLoadingAnimationImage().style.display = "block"; };
-	this.HideLoadingAnimation = function () { this.GetLoadingAnimationImage().style.display = "none"; };
-
-	this.ShowHightlights = function ()
+	function showHightlights()
 	{
-		this.textNodes = new Array();
-		this.globalWords = new Array();
+		textNodes = new Array();
+		globalWords = new Array();
 
-		this.FindTexts(document.body);
+		findTexts(document.body);
 
-		var frontendInstance = this;
 		chrome.runtime.sendMessage({ name: "DB.GetWords", data: null },
 		function (words)
 		{
@@ -40,16 +34,16 @@ var Frontend = function ()
 			{
 				if (sites.indexOf(document.domain) == -1)
 				{
-					frontendInstance.globalWords = words;
+					globalWords = words;
 
-					for (var i = 0; i < frontendInstance.textNodes.length; i++)
+					for (var i = 0; i < textNodes.length; i++)
 					{
-						frontendInstance.HighlightTexts(frontendInstance.textNodes[i]);
+						highlightTexts(textNodes[i]);
 					}
 
-					for (var key in frontendInstance.wordsHits)
+					for (var key in wordsHits)
 					{
-						var wordHits = frontendInstance.wordsHits[key];
+						var wordHits = wordsHits[key];
 						chrome.runtime.sendMessage({ name: "DB.UpdateWordHitCount", data: { word: key, hits: wordHits} }, function ()
 						{
 							console.log("Word hit counts updated");
@@ -61,14 +55,15 @@ var Frontend = function ()
 					for (var i = 0; i < allHightlightTexts.length; i++)
 					{
 						var highlightedText = allHightlightTexts[i];
-						highlightedText.onclick = function (e) { frontendInstance.ShowHintAction(e); };
+						highlightedText.onclick = function (e) { showHintAction(e); };
 					}
 				}
 			});
 		});
 	};
 
-	this.FindTexts = function (node)
+
+	function findTexts(node)
 	{
 		for (var i = 0; i < node.childNodes.length; i++)
 		{
@@ -80,22 +75,20 @@ var Frontend = function ()
 
 				if (nodeValue !== undefined && nodeValue.length > 0)
 				{
-					this.textNodes.push(childNode);
+					textNodes.push(childNode);
 				}
 			}
 			else
 			{
-				this.FindTexts(childNode);
+				findTexts(childNode);
 			}
 		}
 	};
 
-	this.HighlightTexts = function (node)
+	function highlightTexts(node)
 	{
 		try
 		{
-			var frontendInstance = this;
-
 			if (node.parentNode)
 			{
 				var resultInnerHTML = node.parentNode.innerHTML;
@@ -109,9 +102,9 @@ var Frontend = function ()
 
 				var replacementRequired = false;
 
-				for (var i = 0; i < this.globalWords.length; i++)
+				for (var i = 0; i < globalWords.length; i++)
 				{
-					var wordItem = this.globalWords[i];
+					var wordItem = globalWords[i];
 
 					if (wordItem.word.trim().length == 0)
 						continue;
@@ -123,9 +116,9 @@ var Frontend = function ()
 					{
 						if (resultInnerHTMLSplitted[j].search("<trtag"))
 						{
-							if (frontendInstance.IsHTMLContainsWord(resultInnerHTMLSplitted[j], wordItem))
+							if (isHTMLContainsWord(resultInnerHTMLSplitted[j], wordItem))
 							{
-								resultInnerHTMLSplitted[j] = frontendInstance.ReplaceHTMLWithHightlightedTexts(resultInnerHTMLSplitted[j], wordItem);
+								resultInnerHTMLSplitted[j] = replaceHTMLWithHightlightedTexts(resultInnerHTMLSplitted[j], wordItem);
 								replacementRequired = true;
 							}
 						}
@@ -146,12 +139,12 @@ var Frontend = function ()
 		}
 	};
 
-	this.IsHTMLContainsWord = function (resultInnerHTML, wordItem)
+	function isHTMLContainsWord(resultInnerHTML, wordItem)
 	{
 		return (resultInnerHTML.search(new RegExp("\\b" + wordItem.word + "\\b", "mgi")) !== -1);
 	};
 
-	this.ReplaceHTMLWithHightlightedTexts = function (resultInnerHTML, wordItem)
+	function replaceHTMLWithHightlightedTexts(resultInnerHTML, wordItem)
 	{
 		resultInnerHTML = resultInnerHTML.replace(new RegExp("\\b" + wordItem.word + "\\b", "mgi"), function (match, offset, string)
 		{
@@ -165,46 +158,20 @@ var Frontend = function ()
 				+ match + "</trtag>";
 		});
 
-		this.IncreaseWordHitsCount(wordItem);
+		increaseWordHitsCount(wordItem);
 
 		return resultInnerHTML;
 	};
 
-	this.IncreaseWordHitsCount = function (wordItem)
+	function increaseWordHitsCount(wordItem)
 	{
-		if (!this.wordsHits[wordItem.word])
+		if (!wordsHits[wordItem.word])
 		{
-			this.wordsHits[wordItem.word] = parseInt(wordItem.hits) + 1;
+			wordsHits[wordItem.word] = parseInt(wordItem.hits) + 1;
 		}
 		else
 		{
-			this.wordsHits[wordItem.word] += 1;
-		}
-	};
-
-
-	this.RemoveHighLights = function (word)
-	{
-		/// <summary>
-		/// if word is null - all highlights will be removed
-		/// </summary>
-		/// <param name="word"></param>
-
-		var highlightedElements = document.getElementsByClassName(Props.classNames.highlightedText);
-
-		for (var i = 0; i < highlightedElements.length; i++)
-		{
-			var highlightedElem = highlightedElements[i];
-
-			if (word == null || highlightedElem.firstChild.nodeValue.toLowerCase() == word.toLowerCase())
-			{
-				if (highlightedElem.parentNode)
-				{
-					var textNode = document.createTextNode(highlightedElem.firstChild.nodeValue);
-					highlightedElem.parentNode.replaceChild(textNode, highlightedElem);
-					i--;
-				}
-			}
+			wordsHits[wordItem.word] += 1;
 		}
 	};
 
@@ -214,85 +181,46 @@ var Frontend = function ()
 		if (event.target.hasInParents(Props.classNames.newWordForm.form) || event.target.hasInParents(Props.classNames.hint.handler))
 			return false;
 
-		this.RemoveHints();
+		removeHints();
 
 		if (!event.ctrlKey)
 		{
-			this.HideNewWordAddingForm();
-			this.selectedText = null;
+			hideNewWordAddingForm();
+			selectedText = null;
 			return false;
 		}
 
 		this.SetupNewWordAddingForm();
 	};
 
-	this.SetupNewWordAddingForm = function ()
+	function showNewWordAddingForm()
 	{
-		var selection = window.getSelection();
-		this.selectedText = selection.toString().trim();
+		wordAddingForm().style.display = "table";
+		wordAddingFormTranslationInput().value = "";
+		wordAddingFormSpecifiedTranslation().innerHTML = "";
 
-		if (this.selectedText.length === 0)
-		{
-			this.HideNewWordAddingForm();
-			this.selectedText = null;
-			return false;
-		}
+		wordAddingFormCurrentSelection().firstChild.nodeValue = selectedText;
 
-		this.CreateWordAddingForm();
-		this.ShowNewWordAddingForm();
-
-		var range = selection.getRangeAt(0);
-		var selectionRect = range.getBoundingClientRect();
-
-		// in Google Translate selectionRect is filled with zeros. Reason unknown. 
-		// Trying to solve by using event coordiates to find out where to show the form
-		if (selectionRect.left == 0 && selectionRect.top == 0)
-		{
-			selectionRect =
-			{
-				left: event.x,
-				top: event.y,
-				width: 0,
-				height: 0
-			};
-		}
-
-		var formRect = this.GetWordAddingForm().getBoundingClientRect();
-		this.GetWordAddingForm().style.left = (window.scrollX + selectionRect.right - selectionRect.width / 2) + "px";
-		this.GetWordAddingForm().style.top = (window.scrollY + selectionRect.top - formRect.height) + "px";
-
-		this.GetWordAddingFormTranslationInput().focus();
-	};
-
-	this.ShowNewWordAddingForm = function ()
-	{
-		this.GetWordAddingForm().style.display = "table";
-		this.GetWordAddingFormTranslationInput().value = "";
-		this.GetWordAddingFormSpecifiedTranslation().innerHTML = "";
-
-		this.GetWordAddingFormCurrentSelection().firstChild.nodeValue = this.selectedText;
-
-		var frontendInstance = this;
 		chrome.runtime.sendMessage({ name: "DB.IsAutotranslationEnabled" }, function (isEnabled)
 		{
 			if (isEnabled)
 			{
-				frontendInstance.PerformWordTranslation();
+				performWordTranslation();
 			}
 		});
 	};
 
-	this.HideNewWordAddingForm = function ()
+	function hideNewWordAddingForm()
 	{
-		if (this.GetWordAddingForm())
+		if (wordAddingForm())
 		{
-			this.GetWordAddingForm().style.display = "none";
-			this.GetWordAddingFormCurrentSelection().firstChild.nodeValue = "";
+			wordAddingForm().style.display = "none";
+			wordAddingFormCurrentSelection().firstChild.nodeValue = "";
 		}
 	};
 
 
-	this.CreateWordAddingForm = function ()
+	function createWordAddingForm()
 	{
 		if (!newWordAddingFormElement)
 		{
@@ -318,78 +246,74 @@ var Frontend = function ()
 				+ "</div>";
 		}
 
-		if (!this.GetWordAddingForm())
+		if (!wordAddingForm())
 		{
-			var frontendInstance = this;
-
 			newWordAddingFormElement.id = Props.IDs.newWordForm.form;
 			newWordAddingFormElement.className = Props.classNames.common.base + " " + Props.classNames.common.bgLight + " " + Props.classNames.newWordForm.form;
 			document.body.appendChild(newWordAddingFormElement);
 
-			this.GetWordAddingFormTranslationInput().oninput = function ()
+			wordAddingFormTranslationInput().oninput = function ()
 			{
-				frontendInstance.GetWordAddingFormSpecifiedTranslation().innerHTML = frontendInstance.GetWordAddingFormTranslationInput().value;
+				wordAddingFormSpecifiedTranslation().innerHTML = wordAddingFormTranslationInput().value;
 			};
 
-			this.GetWordAddingFormTranslationInput().onkeydown = function (event)
+			wordAddingFormTranslationInput().onkeydown = function (event)
 			{
 				if (event.keyCode === 13) // enter
 				{
-					frontendInstance.AddWord();
+					addWord();
 				}
 
 				if (event.keyCode === 27) // escape
 				{
-					frontendInstance.HideNewWordAddingForm();
+					hideNewWordAddingForm();
 				}
 			};
 
 			var bingButton = document.getElementById(Props.IDs.newWordForm.bingButton);
 			bingButton.onclick = function ()
 			{
-				frontendInstance.PerformWordTranslation();
+				performWordTranslation();
 			};
 
-			this.GetWordAddingFormCloseButton().onclick = function () { frontendInstance.HideNewWordAddingForm(); };
+			wordAddingFormCloseButton().onclick = function () { hideNewWordAddingForm(); };
 		}
 	};
 
-	this.PerformWordTranslation = function ()
+	function performWordTranslation()
 	{
 		var frontendInstance = this;
-		
-		frontendInstance.ShowLoadingAnimation();
-		new BingClient().Translate(frontendInstance.selectedText,
+
+		showLoadingAnimation();
+		new BingClient().Translate(selectedText,
 			function (result)
 			{
-				frontendInstance.GetWordAddingFormTranslationInput().value = result.trim("\"");
-				frontendInstance.GetWordAddingFormSpecifiedTranslation().innerHTML = result.trim("\"");
-				frontendInstance.GetWordAddingFormTranslationInput().focus();
-				frontendInstance.HideLoadingAnimation();
+				wordAddingFormTranslationInput().value = result.trim("\"");
+				wordAddingFormSpecifiedTranslation().innerHTML = result.trim("\"");
+				wordAddingFormTranslationInput().focus();
+				hideLoadingAnimation();
 			}
 		);
 	};
 
-	this.AddWord = function ()
+	function addWord()
 	{
-		if (this.selectedText.length > 0)
+		if (selectedText.length > 0)
 		{
-			var translation = this.GetWordAddingFormTranslationInput().value;
+			var translation = wordAddingFormTranslationInput().value;
 
 			if (translation.trim().length > 0)
 			{
-				var frontendInstance = this;
-
-				chrome.runtime.sendMessage({ name: "DB.AddWord", data: { word: frontendInstance.selectedText, translation: translation} },
+				chrome.runtime.sendMessage({ name: "DB.AddWord", data: { word: selectedText, translation: translation} },
 				function ()
 				{
-					frontendInstance.ShowHightlights();
-					frontendInstance.GetWordAddingForm().classList.add(Props.classNames.common.successful);
+					showHightlights();
+					wordAddingForm().classList.add(Props.classNames.common.successful);
 
 					setTimeout(function ()
 					{
-						frontendInstance.HideNewWordAddingForm();
-						frontendInstance.GetWordAddingForm().classList.remove(Props.classNames.common.successful);
+						hideNewWordAddingForm();
+						wordAddingForm().classList.remove(Props.classNames.common.successful);
 					}, 50);
 				});
 			}
@@ -397,7 +321,7 @@ var Frontend = function ()
 	};
 
 
-	this.ShowHintAction = function (event)
+	function showHintAction(event)
 	{
 		var highlightedTextElement = event.target;
 		if (highlightedTextElement.className !== Props.classNames.highlightedText)
@@ -431,16 +355,14 @@ var Frontend = function ()
 		hint.style.left = (window.scrollX + highlightedTextElementRect.right - highlightedTextElementRect.width / 2) + "px";
 		hint.style.top = (window.scrollY + highlightedTextElementRect.top - hintRect.height) + "px";
 
-		var frontendInstance = this;
-
 		document.getElementById(Props.IDs.hint.deleteWord).onclick = function (e)
 		{
-			frontendInstance.DeleteWord(e.target.getAttribute("word"));
+			deleteWord(e.target.getAttribute("word"));
 		};
 	};
 
 
-	this.RemoveHints = function ()
+	function removeHints()
 	{
 		var allHints = document.getElementsByClassName(Props.classNames.hint.handler);
 
@@ -453,16 +375,86 @@ var Frontend = function ()
 	};
 
 
-	this.DeleteWord = function (word)
+	function deleteWord(word)
 	{
-		var frontendInstance = this;
-
 		chrome.runtime.sendMessage({ name: "DB.DeleteWord", data: { word: word} },
 		function ()
 		{
-			frontendInstance.RemoveHighLights(word);
-			frontendInstance.ShowHightlights();
-			frontendInstance.RemoveHints();
+			_this.RemoveHighLights(word);
+			showHightlights();
+			removeHints();
 		});
+	};
+
+	this.Init = function ()
+	{
+		showHightlights();
+		document.body.onmouseup = function (event)
+		{
+			_this.SelectWordAction(event);
+		};
+	};
+
+	this.SetupNewWordAddingForm = function ()
+	{
+		var selection = window.getSelection();
+		selectedText = selection.toString().trim();
+
+		if (selectedText.length === 0)
+		{
+			hideNewWordAddingForm();
+			selectedText = null;
+			return false;
+		}
+
+		createWordAddingForm();
+		showNewWordAddingForm();
+
+		var range = selection.getRangeAt(0);
+		var selectionRect = range.getBoundingClientRect();
+
+		// in Google Translate selectionRect is filled with zeros. Reason unknown. 
+		// Trying to solve by using event coordiates to find out where to show the form
+		if (selectionRect.left == 0 && selectionRect.top == 0)
+		{
+			selectionRect =
+			{
+				left: event.x,
+				top: event.y,
+				width: 0,
+				height: 0
+			};
+		}
+
+		var formRect = wordAddingForm().getBoundingClientRect();
+		wordAddingForm().style.left = (window.scrollX + selectionRect.right - selectionRect.width / 2) + "px";
+		wordAddingForm().style.top = (window.scrollY + selectionRect.top - formRect.height) + "px";
+
+		wordAddingFormTranslationInput().focus();
+	};
+
+	this.RemoveHighLights = function (word)
+	{
+		/// <summary>
+		/// if word is null - all highlights will be removed
+		/// </summary>
+		/// <param name="word"></param>
+
+		var highlightedElements = document.getElementsByClassName(Props.classNames.highlightedText);
+
+		for (var i = 0; i < highlightedElements.length; i++)
+		{
+			var highlightedElem = highlightedElements[i];
+
+			if (word == null || highlightedElem.firstChild.nodeValue.toLowerCase() == word.toLowerCase())
+			{
+				if (highlightedElem.parentNode)
+				{
+					var textNode = document.createTextNode(highlightedElem.firstChild.nodeValue);
+					highlightedElem.parentNode.replaceChild(textNode, highlightedElem);
+					i--;
+				}
+			}
+		}
 	};
 };
