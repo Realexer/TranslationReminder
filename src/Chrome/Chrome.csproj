@@ -125,12 +125,6 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <None Include="deploy\deploy.cmd">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="deploy\deploy_x64.cmd">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Include="manifest.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

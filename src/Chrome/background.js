@@ -76,7 +76,7 @@ chrome.contextMenus.onClicked.addListener(function (info, tab)
 		case "TR-DisableWordHighlightingOnTheSite":
 			chrome.tabs.query({ active: true, currentWindow: true }, function (tabs)
 			{
-				chrome.tabs.sendMessage(tabs[0].id, { name: "AddSiteToBlackList", word: info.selectionText }, function () {});
+				chrome.tabs.sendMessage(tabs[0].id, { name: "Foreground.AddSiteToBlackList", word: info.selectionText }, function () {});
 			});
 			break;
 

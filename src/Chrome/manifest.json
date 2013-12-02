@@ -2,7 +2,7 @@
 	"manifest_version": 2,
 
 	"name": "Translation Reminder",
-	"description": "Extension to remind you translation",
+	"description": "Extension that helps you to remember new words.",
 	"version": "1.0",
 
 	"permissions": [

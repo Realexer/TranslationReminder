@@ -4,7 +4,7 @@
 	var loadingAnimation = document.getElementById("TR-LoadingAnimation");
 	var noWordsView = document.getElementById("TR-NoWordsView");
 
-	var wordsOrder = 
+	var wordsOrder =
 	{
 		by: "date",
 		direction: "DESC"
@@ -46,7 +46,7 @@
 	};
 
 
-	function showUserWords ()
+	function showUserWords()
 	{
 		showLoadingAnimation();
 		wordsTable.innerHTML = "";
@@ -99,7 +99,7 @@
 
 
 
-	function deleteWordFromTable (word)
+	function deleteWordFromTable(word)
 	{
 		new DB().DeleteWord(word, function ()
 		{

@@ -162,23 +162,29 @@
 	position: fixed;
 	left: 0;
 	right: 0;
-	font-size: 1.2em;
 	z-index: 2;
 	text-align: center;
-	text-transform: uppercase;
+	color: #888;
 }
+
 .TR-Blur
 {
 	width: 100%;
 	height: 100%;
 	background: #fff;
 }
+.TR-InfoMessage h1
+{
+	text-transform: uppercase;
+	font-weight: bold;
+	font-size: 1em;
+	letter-spacing: 0.3em;
+	margin: 0.5em;
+}
+
 .TR-InfoMessage span
 {
-	color: #888;
-	font-weight: bold;
-	font-size: 0.8em;
-	letter-spacing: 0.3em;
+	font-size: 0.75em;
 }
 
 .TR-WordsCount 

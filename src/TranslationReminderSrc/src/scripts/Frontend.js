@@ -282,8 +282,6 @@ var Frontend = function ()
 
 	function performWordTranslation()
 	{
-		var frontendInstance = this;
-
 		showLoadingAnimation();
 		new BingClient().Translate(selectedText,
 			function (result)
@@ -413,8 +411,8 @@ var Frontend = function ()
 		var range = selection.getRangeAt(0);
 		var selectionRect = range.getBoundingClientRect();
 
-		// in Google Translate selectionRect is filled with zeros. Reason unknown. 
-		// Trying to solve by using event coordiates to find out where to show the form
+		// In textareas selectionRect is filled with zeros. Reason unknown. 
+		// Trying to solve by using mouse coordiates to find the place where to show the form
 		if (selectionRect.left == 0 && selectionRect.top == 0)
 		{
 			selectionRect =

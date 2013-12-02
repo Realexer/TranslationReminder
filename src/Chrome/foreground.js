@@ -12,7 +12,7 @@ chrome.runtime.onMessage.addListener(function (message, sender, callback)
 			callback();
 			break;
 
-		case "AddSiteToBlackList":
+		case "Foreground.AddSiteToBlackList":
 			chrome.runtime.sendMessage({ name: "DB.AddSiteToBlackList", data: { site: document.domain} }, function () {
 				callback();
 			});
