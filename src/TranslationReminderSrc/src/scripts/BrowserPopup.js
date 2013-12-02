@@ -65,7 +65,7 @@
 				{
 					var wordItem = words[i];
 
-					var wordRow = "<tr>"
+					var wordRow = "<tr class='" +((i % 2 == 0) ? "TR-BG-Dark" : "TR-BG-Light")+ "'>"
 									+ "<td class='TR-Word-Cell'>"
 										+ "<div class='TR-WordHandler'><span class='TR-Word'>" + wordItem.word + "</span></div>"
 										+ "<div class='TR-WordData'>" + wordItem.hits + " times met<br/>" + new Date(wordItem.date).Ago() + "</div>"

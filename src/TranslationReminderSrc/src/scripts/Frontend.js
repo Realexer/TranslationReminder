@@ -304,7 +304,7 @@ var Frontend = function ()
 					+ "<div class='" + Props.classNames.common.clear + "'></div> "
 				+ "</div> "
 				+ "<div class='" + Props.classNames.newWordForm.formBody + "'>"
-					+ "<div class='" + Props.classNames.newWordForm.selectedText + "'>"
+					+ "<div class='" + Props.classNames.common.bgDark + " " + Props.classNames.newWordForm.selectedText + "'>"
 						+ "<span class='" + Props.classNames.common.word + "' id='" + Props.IDs.newWordForm.selectedText + "'>word</span>"
 						+ " - "
 						+ "<span class='" + Props.classNames.common.translation + " " + Props.classNames.newWordForm.specifiedTranslation + "' id='" + Props.IDs.newWordForm.specifiedTranslation + "'></span>"
@@ -323,7 +323,7 @@ var Frontend = function ()
 			var frontendInstance = this;
 
 			newWordAddingFormElement.id = Props.IDs.newWordForm.form;
-			newWordAddingFormElement.className = Props.classNames.common.base + " " + Props.classNames.newWordForm.form;
+			newWordAddingFormElement.className = Props.classNames.common.base + " " + Props.classNames.common.bgLight + " " + Props.classNames.newWordForm.form;
 			document.body.appendChild(newWordAddingFormElement);
 
 			this.GetWordAddingFormTranslationInput().oninput = function ()
@@ -412,7 +412,7 @@ var Frontend = function ()
 		var date = parseInt(highlightedTextElement.getAttribute("date"));
 
 		var hint = document.createElement("div");
-		hint.innerHTML = "<div class='" + Props.classNames.hint.wordBaseInfo + "'>"
+		hint.innerHTML = "<div class='" + Props.classNames.common.bgDark + " " + Props.classNames.hint.wordBaseInfo + "'>"
 							+ "<span class='" + Props.classNames.common.word + " " + Props.classNames.hint.word + "'>" + word + "</span> <span class='" + Props.classNames.common.translation + " " + Props.classNames.hint.translation + "'>" + translation + "</span>"
 						+ "</div>"
 						+ "<div class='" + Props.classNames.hint.wordAdditionalInfo + "'>"
@@ -421,8 +421,8 @@ var Frontend = function ()
 							+ "<div class='" + Props.classNames.common.clear + "'></div>"
 						+ "</div>";
 
-		hint.setAttribute("class", Props.classNames.common.base + " " + Props.classNames.hint.handler);
 		hint.id = Props.IDs.hint.handler;
+		hint.className = Props.classNames.common.bgLight + " " + Props.classNames.common.base + " " + Props.classNames.hint.handler;
 
 		document.body.appendChild(hint);
 

@@ -7,12 +7,10 @@ body {
 	padding: 20px;
 	border: 1px solid #D8D8D8;
 	font-size: 0.8em;
-	background: #FFFFED;
 }
 .TR-Header 
 {
 	position: relative;
-	background: rgb(238, 238, 193);
 	padding: 10px;
 }
 

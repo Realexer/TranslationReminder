@@ -87,3 +87,13 @@
 	width: 15px;
 	height: 15px;
 }
+
+.TR-BG-Dark
+{
+	background: rgb(238, 220, 193);
+}
+
+.TR-BG-Light 
+{
+	background: #FAF2E4;
+}

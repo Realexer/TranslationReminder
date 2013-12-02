@@ -116,9 +116,6 @@
 	
 }
 
-.TR-WordsList tbody tr:nth-child(even) {background: rgb(255, 255, 237);}
-.TR-WordsList tbody tr:nth-child(odd) {background: rgb(238, 238, 193);}
-
 .TR-WordsList td
 {
 	padding: 0.65em 0.4em;

@@ -18,7 +18,9 @@ var Props = new function ()
 			knowIt: "TR-KnowIt",
 			wordData: "TR-WordData",
 			successful: "TR-Successful",
-			loadingAnimation: "TR-LoadingAnimation"
+			loadingAnimation: "TR-LoadingAnimation",
+			bgDark: "TR-BG-Dark",
+			bgLight: "TR-BG-Light"
 		},
 		newWordForm: {
 			form: "TR-NewWordForm",
