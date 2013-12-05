@@ -59,12 +59,16 @@
       <Link>img\bing_icon.png</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\translationremindersrc\src\icons\icon.png">
-      <Link>img\icon.png</Link>
+    <Content Include="..\TranslationReminderSrc\src\icons\icon-128.png">
+      <Link>img\icons\icon-128.png</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\translationremindersrc\src\icons\icon_18.png">
-      <Link>img\icon_18.png</Link>
+    <Content Include="..\TranslationReminderSrc\src\icons\icon-16.png">
+      <Link>img\icons\icon-16.png</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\TranslationReminderSrc\src\icons\icon-48.png">
+      <Link>img\icons\icon-48.png</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="..\TranslationReminderSrc\src\imgs\loading.gif">
