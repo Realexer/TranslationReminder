@@ -10,12 +10,14 @@ var Frontend = function ()
 
 	var newWordAddingFormElement;
 
-	var wordAddingForm = function() { return document.getElementById(Props.IDs.newWordForm.form); };
+	var wordAddingForm = function () { return document.getElementById(Props.IDs.newWordForm.form); };
 	var wordAddingFormCurrentSelection = function () { return document.getElementById(Props.IDs.newWordForm.selectedText); };
 	var wordAddingFormTranslationInput = function () { return document.getElementById(Props.IDs.newWordForm.translationInput); };
 	var wordAddingFormSpecifiedTranslation = function () { return document.getElementById(Props.IDs.newWordForm.specifiedTranslation); };
 	var wordAddingFormCloseButton = function () { return document.getElementById(Props.IDs.newWordForm.closeButton); };
 	var loadingAnimationImage = function () { return document.getElementById(Props.IDs.newWordForm.loadingAnimation); };
+	var bingButton = function () { return document.getElementById(Props.IDs.newWordForm.bingButton); };
+	var translationLanguageSpan = function () { return document.getElementById(Props.IDs.newWordForm.translationLanguageSpan); };
 
 	function showLoadingAnimation() { loadingAnimationImage().style.display = "block"; };
 	function hideLoadingAnimation() { loadingAnimationImage().style.display = "none"; };
@@ -201,6 +203,11 @@ var Frontend = function ()
 
 		wordAddingFormCurrentSelection().firstChild.nodeValue = selectedText;
 
+		chrome.runtime.sendMessage({ name: "DB.GetTranslationLanguage" }, function (lang)
+		{
+			translationLanguageSpan().innerHTML = "'" + lang.toUpperCase() + "'";
+		});
+
 		chrome.runtime.sendMessage({ name: "DB.IsAutotranslationEnabled" }, function (isEnabled)
 		{
 			if (isEnabled)
@@ -238,8 +245,10 @@ var Frontend = function ()
 						+ "<span class='" + Props.classNames.common.translation + " " + Props.classNames.newWordForm.specifiedTranslation + "' id='" + Props.IDs.newWordForm.specifiedTranslation + "'></span>"
 					+ "</div>"
 					+ "<div class='" + Props.classNames.newWordForm.buttonsPanel + "'>"
-						+ "<span>Translate with: </span>"
-						+ "<button class='" + Props.classNames.newWordForm.bingButton + "' id='" + Props.IDs.newWordForm.bingButton + "'><img src='data:image/png;base64," + Props.BingIconBase64 + "'/></button>"
+						+ "<button class='" + Props.classNames.common.action + " " + Props.classNames.newWordForm.bingButton + "' id='" + Props.IDs.newWordForm.bingButton + "'>"
+						+ "Translate to <span id='" + Props.IDs.newWordForm.translationLanguageSpan + "'></span> with "
+						+ "<img src='data:image/png;base64," + Props.BingIconBase64 + "'/>"
+						+ "</button>"
 						+ "<img class='" + Props.classNames.newWordForm.loadingAnimation + " " + Props.classNames.common.loadingAnimation + "' id='" + Props.classNames.newWordForm.loadingAnimation + "' src='data:image/gif;base64," + Props.LoadingAnimationBase64 + "'/>"
 					+ "</div>"
 					+ "<input class='" + Props.classNames.common.translation + " " + Props.classNames.newWordForm.translationInput + "' id='" + Props.IDs.newWordForm.translationInput + "' value='' type='text' placeholder='translation (press enter)'/>"
@@ -270,8 +279,7 @@ var Frontend = function ()
 				}
 			};
 
-			var bingButton = document.getElementById(Props.IDs.newWordForm.bingButton);
-			bingButton.onclick = function ()
+			bingButton().onclick = function ()
 			{
 				performWordTranslation();
 			};

@@ -46,6 +46,10 @@
       <Link>css\common.css</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="..\TranslationReminderSrc\src\css\Options.css">
+      <Link>css\Options.css</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="..\TranslationReminderSrc\src\css\page-inject.css">
       <Link>css\page-inject.css</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -54,12 +58,20 @@
       <Link>img\bing_icon.png</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\translationremindersrc\src\icons\icon.png">
-      <Link>img\icon.png</Link>
+    <Content Include="..\translationremindersrc\src\icons\icon-128.png">
+      <Link>img\icons\icon-128.png</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\translationremindersrc\src\icons\icon_18.png">
-      <Link>img\icon_18.png</Link>
+    <Content Include="..\translationremindersrc\src\icons\icon-16.png">
+      <Link>img\icons\icon-16.png</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\translationremindersrc\src\icons\icon-48.png">
+      <Link>img\icons\icon-48.png</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\TranslationReminderSrc\src\imgs\loading.gif">
+      <Link>img\loading.gif</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="..\TranslationReminderSrc\src\scripts\Ajax.js">
@@ -90,6 +102,10 @@
       <Link>scripts\Helper.js</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="..\TranslationReminderSrc\src\scripts\OptionsManager.js">
+      <Link>scripts\OptionsManager.js</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="..\TranslationReminderSrc\src\scripts\Props.js">
       <Link>scripts\Props.js</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -105,12 +121,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="foreground.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="index.html">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="popup.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

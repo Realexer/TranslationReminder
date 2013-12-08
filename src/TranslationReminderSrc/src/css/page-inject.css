@@ -79,13 +79,13 @@
 
 .TR-NewWordForm-BingButton 
 {
-	
+	font-size: 0.85em;
 }
 
 .TR-NewWordForm-BingButton img
 {
-	width: 13px;
-	height: 13px;
+	width: 11px;
+	height: 11px;
 }
 
 .TR-NewWordForm-LoadingAnimation 

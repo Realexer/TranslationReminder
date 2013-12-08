@@ -38,6 +38,12 @@
 	color: #999;
 }
 
+.TR-Action 
+{
+	color: rgb(160, 125, 94);
+	border-bottom: 1px dotted !important;
+}
+
 .TR-Green 
 {
 	color: #289328;

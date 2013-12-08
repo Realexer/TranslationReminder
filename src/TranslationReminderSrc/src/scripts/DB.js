@@ -244,7 +244,7 @@ var DB = function ()
 	{
 		getAllSettings(function (settings)
 		{
-			var result = false;
+			var result = Props.defaults.AutoTranslationEnabledByDefault;
 
 			if (settings[settingsKeys.AutoTranslatioinEnabled])
 				result = parseInt(settings[settingsKeys.AutoTranslatioinEnabled]) == 1;
