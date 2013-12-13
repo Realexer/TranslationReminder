@@ -5,7 +5,7 @@
 
 	"name": "Translation Reminder",
 	"description": "Extension that helps you to remember new words.",
-	"version": "1.0.1",
+	"version": "1.0.3",
 
 	"permissions": [
 		"contextMenus",
