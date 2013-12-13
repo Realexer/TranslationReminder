@@ -53,6 +53,11 @@
 	font-size: 0.7em;
 }
 
+.TR-NewWordForm-Translation-Handler 
+{
+	position: relative;
+}
+
 .TR-NewWordForm-Translation
 {
 	width: 100%;
@@ -62,6 +67,14 @@
 	border-width: 1px;
 	box-sizing: border-box;
 	text-indent: 0.3em;
+	padding-right: 22px;
+}
+
+.TR-NewWordForm-EnterKeyImage 
+{
+	position: absolute;
+	right: 1.5%;
+	top: 35%;
 }
 
 .TR-NewWordForm-ButtonsPanel

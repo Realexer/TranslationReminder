@@ -14,6 +14,7 @@ var Frontend = function ()
 	var wordAddingFormCurrentSelection = function () { return document.getElementById(Props.IDs.newWordForm.selectedText); };
 	var wordAddingFormTranslationInput = function () { return document.getElementById(Props.IDs.newWordForm.translationInput); };
 	var wordAddingFormSpecifiedTranslation = function () { return document.getElementById(Props.IDs.newWordForm.specifiedTranslation); };
+	var wordAddingFormEnterKeyButton = function () { return document.getElementById(Props.IDs.newWordForm.enterKeyButton); };
 	var wordAddingFormCloseButton = function () { return document.getElementById(Props.IDs.newWordForm.closeButton); };
 	var loadingAnimationImage = function () { return document.getElementById(Props.IDs.newWordForm.loadingAnimation); };
 	var bingButton = function () { return document.getElementById(Props.IDs.newWordForm.bingButton); };
@@ -199,7 +200,7 @@ var Frontend = function ()
 	{
 		wordAddingForm().style.display = "table";
 		wordAddingFormTranslationInput().value = "";
-		wordAddingFormSpecifiedTranslation().innerHTML = "";
+		wordAddingFormSpecifiedTranslation().innerText = "";
 
 		wordAddingFormCurrentSelection().firstChild.nodeValue = selectedText;
 
@@ -251,7 +252,12 @@ var Frontend = function ()
 						+ "</button>"
 						+ "<img class='" + Props.classNames.newWordForm.loadingAnimation + " " + Props.classNames.common.loadingAnimation + "' id='" + Props.classNames.newWordForm.loadingAnimation + "' src='data:image/gif;base64," + Props.LoadingAnimationBase64 + "'/>"
 					+ "</div>"
+					+ "<div class='" + Props.classNames.newWordForm.translationInputHandler + "'>"
 					+ "<input class='" + Props.classNames.common.translation + " " + Props.classNames.newWordForm.translationInput + "' id='" + Props.IDs.newWordForm.translationInput + "' value='' type='text' placeholder='translation (press enter)'/>"
+					+ "<button title='Add word' id='" + Props.IDs.newWordForm.enterKeyButton + "'>"
+						+ "<img class='" + Props.classNames.newWordForm.enterKeyImg + "' src='data:image/png;base64," + Props.EnterIconBase64 + "'/>"
+					+ "</button>"
+					+ "</div>"
 				+ "</div>";
 		}
 
@@ -263,7 +269,7 @@ var Frontend = function ()
 
 			wordAddingFormTranslationInput().oninput = function ()
 			{
-				wordAddingFormSpecifiedTranslation().innerHTML = wordAddingFormTranslationInput().value;
+				wordAddingFormSpecifiedTranslation().innerText = wordAddingFormTranslationInput().value;
 			};
 
 			wordAddingFormTranslationInput().onkeydown = function (event)
@@ -277,6 +283,11 @@ var Frontend = function ()
 				{
 					hideNewWordAddingForm();
 				}
+			};
+
+			wordAddingFormEnterKeyButton().onclick = function(event)
+			{
+				addWord();
 			};
 
 			bingButton().onclick = function ()
@@ -295,7 +306,7 @@ var Frontend = function ()
 			function (result)
 			{
 				wordAddingFormTranslationInput().value = result.trim("\"");
-				wordAddingFormSpecifiedTranslation().innerHTML = result.trim("\"");
+				wordAddingFormSpecifiedTranslation().innerText = result.trim("\"");
 				wordAddingFormTranslationInput().focus();
 				hideLoadingAnimation();
 			}

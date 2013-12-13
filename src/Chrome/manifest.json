@@ -18,7 +18,7 @@
 	"content_scripts": [
 		{
 			"matches": ["*://*/*"],
-			"js": ["scripts/Props.js", "scripts/Extensions.js", "scripts/Helper.js", "scripts/DB.js", "scripts/Ajax.js", "scripts/BingClient.js", "scripts/Frontend.js", "foreground.js"],
+			"js": ["scripts/Props.js", "scripts/Extensions.js", "scripts/Helper.js", "scripts/Ajax.js", "scripts/BingClient.js", "scripts/Frontend.js", "foreground.js"],
 			"css": ["css/common.css", "css/page-inject.css"]
 		}
 	],
@@ -35,7 +35,6 @@
 			"scripts/Props.js",
 			"scripts/Extensions.js",
 			"scripts/Helper.js",
-			"scripts/WebClient.js",
 			"scripts/DB.js",
 			"background.js"
 		]
