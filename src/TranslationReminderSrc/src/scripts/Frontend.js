@@ -253,10 +253,8 @@ var Frontend = function ()
 						+ "<img class='" + Props.classNames.newWordForm.loadingAnimation + " " + Props.classNames.common.loadingAnimation + "' id='" + Props.classNames.newWordForm.loadingAnimation + "' src='data:image/gif;base64," + Props.LoadingAnimationBase64 + "'/>"
 					+ "</div>"
 					+ "<div class='" + Props.classNames.newWordForm.translationInputHandler + "'>"
-					+ "<input class='" + Props.classNames.common.translation + " " + Props.classNames.newWordForm.translationInput + "' id='" + Props.IDs.newWordForm.translationInput + "' value='' type='text' placeholder='translation (press enter)'/>"
-					+ "<button title='Add word' id='" + Props.IDs.newWordForm.enterKeyButton + "'>"
-						+ "<img class='" + Props.classNames.newWordForm.enterKeyImg + "' src='data:image/png;base64," + Props.EnterIconBase64 + "'/>"
-					+ "</button>"
+						+ "<input class='" + Props.classNames.common.translation + " " + Props.classNames.newWordForm.translationInput + "' id='" + Props.IDs.newWordForm.translationInput + "' value='' type='text' placeholder='translation'/>"
+						+ "<button title='Add word' class='" + Props.classNames.newWordForm.enterKeyButton + "' id='" + Props.IDs.newWordForm.enterKeyButton + "'>&nbsp;</button>"
 					+ "</div>"
 				+ "</div>";
 		}

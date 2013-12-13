@@ -68,13 +68,17 @@
 	box-sizing: border-box;
 	text-indent: 0.3em;
 	padding-right: 22px;
+	background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABEAAAAQCAYAAADwMZRfAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3QwNCykMFEusrAAAALNJREFUOMvt0yFOw1EMB+BvYwoEEgzBkOCQKE6AJWmYJbsCtyEIQP0UCouGwAG4AHoTCMSymf/cXsZYgqJJRUW/NH2v/EeSxyRvi7r/S2cXO5siE3ytRJJsJTn7idhvAXjAc5LjVcigAdzjEtdV9bEW0gF3GOIV4ySjJX2HmLYm2esAOO2yFe9Ld1JVnxhhhhcc4aCR54u+XmOxV7jBEy6q6nvt16mq226iE+xv+r23/+yW5u6UMAFSB67SAAAAAElFTkSuQmCC);
+	background-position: 99% 50%;
+	background-repeat: no-repeat;
 }
 
-.TR-NewWordForm-EnterKeyImage 
+.TR-NewWordForm-EnterKeyButton 
 {
 	position: absolute;
-	right: 1.5%;
-	top: 35%;
+	width: 22px;
+	top: 11px;
+	right: 0;
 }
 
 .TR-NewWordForm-ButtonsPanel
