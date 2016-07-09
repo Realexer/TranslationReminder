@@ -3,22 +3,26 @@ var frontend = new Frontend();
 frontend.Init();
 
 
-chrome.runtime.onMessage.addListener(function (message, sender, callback)
+Messanger.onMessage(function (message, sender, callback)
 {
 	switch (message.name)
 	{
-		case "Frontend.SetupNewWordAddingForm":
-			frontend.SetupNewWordAddingForm();
+		case Messages.TR.SetupNewWordAddingForm:
+			Register.translationsAddingForm.SetupNewWordAddingForm();
 			callback();
 			break;
 
-		case "Foreground.AddSiteToBlackList":
-			chrome.runtime.sendMessage({ name: "DB.AddSiteToBlackList", data: { site: document.domain} }, function () {
+		case Messages.TR.AddSiteToBlackList:
+			Messanger.sendMessage({ 
+				name: Messages.DB.AddSiteToBlackList, 
+				data: { 
+					site: document.domain
+				}
+			},
+			function () {
 				callback();
 			});
-			frontend.RemoveHighLights(null);
+			Register.translationsHighlighter.RemoveHighLights(null)
 			break;
 	}
-
-	return true;
 });

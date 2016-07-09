@@ -3,12 +3,21 @@
 <head>
 	<title>Words I need to remember</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel="stylesheet" type="text/css" href="css/helpers.css" />
 	<link rel="stylesheet" type="text/css" href="css/common.css" />
 	<link rel="stylesheet" type="text/css" href="css/BrowserPopup.css" />
-	<script type='text/javascript' src='scripts/Props.js'></script>
-	<script type='text/javascript' src='scripts/Extensions.js'></script>
-	<script type='text/javascript' src='scripts/DB.js'></script>
-	<script type='text/javascript' src='scripts/BrowserPopup.js'></script>
+	<script type='text/javascript' src='scripts/config.js'></script>
+	<script type='text/javascript' src='scripts/general/Essentials.js'></script>
+	<script type='text/javascript' src='scripts/general/Templater.js'></script>
+	<script type='text/javascript' src='scripts/general/UIManager.js'></script>
+	<script type='text/javascript' src='scripts/general/common.js'></script>
+	<script type='text/javascript' src='scripts/general/Ajax.js'></script>
+	<script type='text/javascript' src='scripts/utilites/Helper.js'></script>
+	<script type='text/javascript' src='scripts/utilites/Extensions.js'></script>
+	<script type='text/javascript' src='scripts/components/DB.js'></script>
+	<script type='text/javascript' src='scripts/components/WordsManager.js'></script>
+	<script type='text/javascript' src='scripts/components/SettingsManager.js'></script>
+	<script type='text/javascript' src='scripts/components/BrowserPopup.js'></script>
 </head>
 
 <body class="TR-Base TR-Popup">
@@ -21,7 +30,7 @@
 	<!-- WORDS LIST  -->
 	<div class="TR-WordsView" id="TR-WordsView">	
 		<div class="TR-Header">
-			<img id="TR-LoadingAnimation" class="TR-LoadingAnimation" src="img/loading.gif"/>
+			<img id="TR-LoadingAnimation" class="TR-LoadingAnimation" src="imgs/loading.gif"/>
 			<h4>Your Words</h4>
 			<div class="TR-ListControls">Order by: 
 				<button class="TR-Action TR-SelectWordsOrder TR-SelectedWordsOrder" id="TR-OrderWordsByDate">date</button> 

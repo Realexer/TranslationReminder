@@ -3,15 +3,23 @@
 <head>
 	<title>Translation Reminder : Options</title>
 	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
-	<link rel="shortcut icon" href="img/icons/icon-16.png">
+	<link rel="shortcut icon" href="icons/icon-16.png">
+	<link rel="stylesheet" type="text/css" href="css/helpers.css" />
 	<link rel="stylesheet" type="text/css" href="css/common.css" />
 	<link rel="stylesheet" type="text/css" href="css/Options.css" />
-	<script type='text/javascript' src='scripts/Props.js'></script>
-	<script type='text/javascript' src='scripts/Extensions.js'></script>
-	<script type='text/javascript' src='scripts/Ajax.js'></script>
-	<script type='text/javascript' src='scripts/BingClient.js'></script>
-	<script type='text/javascript' src='scripts/DB.js'></script>
-	<script type='text/javascript' src='scripts/OptionsManager.js'></script>
+	<script type='text/javascript' src='scripts/config.js'></script>
+	<script type='text/javascript' src='scripts/general/Essentials.js'></script>
+	<script type='text/javascript' src='scripts/general/Templater.js'></script>
+	<script type='text/javascript' src='scripts/general/UIManager.js'></script>
+	<script type='text/javascript' src='scripts/general/common.js'></script>
+	<script type='text/javascript' src='scripts/general/Ajax.js'></script>
+	<script type='text/javascript' src='scripts/utilites/Helper.js'></script>
+	<script type='text/javascript' src='scripts/utilites/Extensions.js'></script>
+	<script type='text/javascript' src='scripts/components/DB.js'></script>
+	<script type='text/javascript' src='scripts/components/BingClient.js'></script>
+	<script type='text/javascript' src='scripts/components/WordsManager.js'></script>
+	<script type='text/javascript' src='scripts/components/SettingsManager.js'></script>
+	<script type='text/javascript' src='scripts/components/OptionsPage.js'></script>
 </head>
 <body class="TR-Base">
 	<div class="TR-BG-Light TR-Options">
@@ -25,7 +33,7 @@
 			<hr />
 
 			<div class="TR-Section">
-				<label for="TR-SitesBlackList">Sites without words highlighting: <b title="Extension may break layout of some pages. You can add such sites to exceptions and words won't be highlighted on these sites.">(?)</b></label>
+				<label for="TR-SitesBlackList"><b>Don't</b> highlight words on these sites: <b title="Extension may break layout of some pages. You can add such sites to exceptions and words won't be highlighted on these sites.">(?)</b></label>
 				<div class="TR-Clear"></div>
 				<textarea id="TR-SitesBlackList" rows="5" placeholder=""></textarea>
 				<span class="TR-MinorInfo">Specify domains separated by ';'. Ctrl+Enter to save</span>

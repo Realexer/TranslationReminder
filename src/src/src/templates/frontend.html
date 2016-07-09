@@ -1,0 +1,52 @@
+<div class="displayNone" id='tr-templates' style='display: none;'>
+	
+	<div class="InvisibleTemplate" data-js-template="TranslationHighlight">
+		<trtag
+			data-tr-word='{{word}}'
+			data-tr-translation='{{translation}}'
+			data-tr-hits='{{hits}}'
+			data-tr-date='{{date}}'
+			title='{{translation}}'
+			class=''>{{match}}</trtag>
+	</div>
+
+	<div class="InvisibleTemplate" data-js-template="AddingTranslationForm">
+		<div class="TR-Base TR-BG-Light TR-NewWordForm">
+			<div class="TR-NewWordForm-TitleHandler">
+				<span class="TR-NewWordForm-Title">add translaton to the word</span>
+				<button class="_tr_close TR-Red TR-NewWordForm-CloseButton">close</button>
+				<div class="TR-Clear"></div>
+			</div>
+			<div class="TR-NewWordForm-Body">
+				<div class="TR-BG-Dark TR-NewWordForm-CurrentSelection">
+					<span class="_tr_textToTranslate TR-Word">{{text}}</span>
+					- 
+					<span class="_tr_textTranslation TR-Translation TR-NewWordForm-SpecifiedTranslation"></span>
+				</div>
+				<div class="TR-NewWordForm-ButtonsPanel">
+					<button class="_tr_bingButton TR-Action TR-NewWordForm-BingButton">
+						Translate to <span class="_tr_translateTo">'{{langTo}}'</span> 
+						with 
+						<img src="" data-src="{{config.bingIcon}}">
+					</button>
+					<img class="_tr_loading TR-NewWordForm-LoadingAnimation TR-LoadingAnimation" data-src="{{config.loadingAnimation}}">
+				</div>
+				<div class="TR-NewWordForm-Translation-Handler">
+					<input class="_tr_translationInput TR-Translation TR-NewWordForm-Translation" value="" type="text" placeholder="translation">
+					<button title="Add word" class="_tr_setTranslationButton TR-NewWordForm-EnterKeyButton">&nbsp;</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="InvisibleTemplate" data-js-template="WordHint">
+		<div class='  '>
+			<span class=''>{{word}}</span> <span class=''>{{translation}}</span>
+		</div>
+		<div class=''>
+			<div class=''> {{hits}}  times met<br/>{{Tempalter.UI.print.dataAgo | date}}</div>
+			<button class='' id='' data-tr-word='{{word}}'>I already know this word!</button>
+			<div class=''></div>
+		</div>
+	</div>
+</div>
