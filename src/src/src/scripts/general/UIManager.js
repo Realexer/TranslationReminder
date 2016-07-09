@@ -108,6 +108,11 @@ var UIManager = new function()
 		el.focus();
 	};
 	
+	this.getClass = function(el) 
+	{
+		return el.className;
+	};
+	
 	this.setClass = function(el, className) 
 	{
 		el.className = className;
@@ -142,9 +147,11 @@ var UIManager = new function()
 	
 	this.addNodeFromHTML = function(el, html, atTop) 
 	{
-		var newNode = document.createElement('span');
-		UIManager.setHTML(newNode, html);
+		var tmpNode = document.createElement('span');
+		UIManager.setHTML(tmpNode, html.trim()); // trimming so that first child will not be text
+		el.appendChild(tmpNode);
 		
+		var newNode = tmpNode.firstChild;
 		if(atTop) 
 		{
 			el.insertBefore(newNode, el.firstChild);
@@ -153,6 +160,8 @@ var UIManager = new function()
 		{
 			el.appendChild(newNode);
 		}
+		
+		UIManager.removeEl(tmpNode);
 		
 		EventsManager.fire(Events.htmlChanged, el);
 		
@@ -169,6 +178,11 @@ var UIManager = new function()
 		
 		EventsManager.fire(Events.htmlChanged, el);
 	};
+	
+	this.removeEl = function(el) 
+	{
+		el.parentNode.removeChild(el);
+	}
 	
 	this.clearEl = function(el) 
 	{

@@ -15,7 +15,7 @@ var WordsManager = function ()
 		if (!direction)
 			direction = WordsOrder.direction.DESC;
 		
-		Messanger.sendMessage(Messages.DB.GetWords, 
+		Messanger.sendMessage(Messages.BE.DB.GetWords, 
 		{
 			order: order,
 			direction: direction
@@ -25,7 +25,7 @@ var WordsManager = function ()
 
 	this.AddWord = function (word, translation, date, callback)
 	{
-		Messanger.sendMessage(Messages.DB.AddWord, 
+		Messanger.sendMessage(Messages.BE.DB.AddWord, 
 		{
 			word: prepareWordForDB(word),
 			translation: translation,
@@ -35,7 +35,7 @@ var WordsManager = function ()
 
 	this.UpdateWordHitCount = function (word, hits, callback)
 	{
-		Messanger.sendMessage(Messages.DB.UpdateWordHitCount, 
+		Messanger.sendMessage(Messages.BE.DB.UpdateWordHitCount, 
 		{
 			word: prepareWordForDB(word),
 			hits: hits
@@ -45,7 +45,7 @@ var WordsManager = function ()
 
 	this.DeleteWord = function (word, callback)
 	{
-		Messanger.sendMessage(Messages.DB.DeleteWord, 
+		Messanger.sendMessage(Messages.BE.DB.DeleteWord, 
 		{
 			word: prepareWordForDB(word)
 		}, callback);
@@ -53,7 +53,7 @@ var WordsManager = function ()
 
 	this.DeleteAllWords = function (callback)
 	{
-		Messanger.sendMessage(Messages.DB.DeleteAllWords, callback);
+		Messanger.sendMessage(Messages.BE.DB.DeleteAllWords, callback);
 	};
 	
 	function prepareWordForDB(word) 

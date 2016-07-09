@@ -19,7 +19,7 @@ var Templater = function()
 			
 			if(this.loadedTemplates[templateName] === undefined) 
 			{
-				this.loadedTemplates[templateName] = templateItem;
+				this.loadedTemplates[templateName] = templateItem.innerHTML;
 			}
 		}
 	};
@@ -39,7 +39,7 @@ var Templater = function()
 		});
 	};
 
-	this.getTemplate = function(templateName) 
+	this.getTemplateHtml = function(templateName) 
 	{
 		if(this.loadedTemplates[templateName] != undefined) 
 		{
@@ -49,12 +49,6 @@ var Templater = function()
 		{
 			throw "Cannot find template "+templateName;
 		}
-	};
-
-	this.getTemplateHtml = function(templateName) 
-	{
-		var template = this.getTemplate(templateName);
-		return template.innerHTML;
 	};
 
 	this.formatTemplate = function(templateName, data) 

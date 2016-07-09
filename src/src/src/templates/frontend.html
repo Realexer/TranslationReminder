@@ -7,7 +7,7 @@
 			data-tr-hits='{{hits}}'
 			data-tr-date='{{date}}'
 			title='{{translation}}'
-			class=''>{{match}}</trtag>
+			class='TR-HighlightedText'>{{original}}</trtag>
 	</div>
 
 	<div class="InvisibleTemplate" data-js-template="AddingTranslationForm">
@@ -39,14 +39,18 @@
 		</div>
 	</div>
 
-	<div class="InvisibleTemplate" data-js-template="WordHint">
-		<div class='  '>
-			<span class=''>{{word}}</span> <span class=''>{{translation}}</span>
-		</div>
-		<div class=''>
-			<div class=''> {{hits}}  times met<br/>{{Tempalter.UI.print.dataAgo | date}}</div>
-			<button class='' id='' data-tr-word='{{word}}'>I already know this word!</button>
-			<div class=''></div>
+	<div class="InvisibleTemplate" data-js-template="TranslationDetails">
+		<div class="TR-BG-Light TR-Base TR-Hint" style="">
+			<div class="TR-BG-Dark TR-WordBaseInfo">
+				<span class="TR-Word TR-Hint-Word">{{word}}</span> 
+				<span class="TR-Translation TR-Hint-Translation">{{translation}}</span>
+			</div>
+			<div class="TR-WordAdditionalInfo">
+				<div class="TR-WordData">{{hits}} times met<br/>{{Templater.UI.print.dateAgo | date}}</div>
+				<button class="_tr_markAsLearnedButton TR-KnowIt TR-Hint-DeleteWordButton" data-tr-word="{{word}}">I already know this word!
+				</button>
+				<div class="TR-Clear"></div>
+			</div>
 		</div>
 	</div>
 </div>

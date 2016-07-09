@@ -1,82 +1,40 @@
-Messanger.onMessage(function(message, sender, callback) 
+var BEMessagesHandler = [];
+BEMessagesHandler[Messages.BE.DB.GetWords] = function(message, data, callback, sender) {
+	Register.DB.GetWords(data.order, data.direction, callback);
+};
+BEMessagesHandler[Messages.BE.DB.AddWord] = function(message, data, callback, sender) {
+	Register.DB.AddWord(data.word, data.translation, data.date, callback);
+};
+BEMessagesHandler[Messages.BE.DB.UpdateWordHitCount] = function(message, data, callback, sender) {
+	Register.DB.UpdateWordHitCount(data.word, data.hits, callback);
+};
+BEMessagesHandler[Messages.BE.DB.DeleteWord] = function(message, data, callback, sender) {
+	Register.DB.DeleteWord(data.word, callback);
+};
+BEMessagesHandler[Messages.BE.DB.DeleteAllWords] = function(message, data, callback, sender) {
+	Register.DB.DeleteAllWords(callback);
+};
+BEMessagesHandler[Messages.BE.DB.GetAllSettings] = function(message, data, callback, sender) {
+	Register.DB.GetAllSettings(callback);
+};
+BEMessagesHandler[Messages.BE.DB.SetSetting] = function(message, data, callback, sender) {
+	Register.DB.SetSetting(data.key, data.value, callback);
+};
+
+Messanger.onMessage(function(message, data, callback, sender) 
 {
-	switch (message.name)
-	{
-		case Messages.DB.GetWords:
-			Register.DB.GetWords(message.data.order, message.data.direction, function (words)
-			{
-				callback(words);
-			});
-			break;
-
-		case Messages.DB.AddWord:
-			Register.DB.AddWord(message.data.word, message.data.translation, message.data.date, function ()
-			{
-				callback();
-			});
-			break;
-
-		case Messages.DB.UpdateWordHitCount:
-			Register.DB.UpdateWordHitCount(message.data.word, message.data.hits, function ()
-			{
-				callback();
-			});
-			break;
-
-		case Messages.DB.DeleteWord:
-			Register.DB.DeleteWord(message.data.word, function ()
-			{
-				callback();
-			});
-			break;
-		
-		case Messages.DB.DeleteAllWords:
-			Register.DB.DeleteAllWords(function ()
-			{
-				callback();
-			});
-			break;
-
-		case Messages.DB.GetSitesBlackList:
-			Register.DB.GetSitesBlackList(function (sites)
-			{
-				callback(sites);
-			});
-			break;
-
-		case Messages.DB.AddSiteToBlackList:
-			Register.DB.AddSiteToBlackList(message.data.site, function ()
-			{
-				callback();
-			});
-			break;
-
-		case Messages.DB.GetAllSettings:
-			Register.DB.GetAllSettings(function (settings)
-			{
-				callback(settings);
-			});
-			break;
-
-		case Messages.DB.SetSetting:
-			Register.DB.SetSetting(message.data.key, message.data.value, function (value)
-			{
-				callback(value);
-			});
-			break;
+	if(BEMessagesHandler[message]) {
+		BEMessagesHandler[message](message, data, callback, sender);
 	}
 });
 
 chrome.contextMenus.onClicked.addListener(function (info, tab)
 {
-//	chrome.getCurrent(function (tab)
-//	{
-		Messanger.sendMessageToTab(tab.id,
-		{
-			name: info.menuItemId, 
-			word: info.selectionText 
-		}, function() {});
-//	});
+	Messanger.sendMessageToTab(tab.id,
+	{
+		name: info.menuItemId, 
+		word: info.selectionText 
+	}, function() {});
 });
 
 chrome.runtime.onInstalled.addListener(function ()
@@ -84,12 +42,12 @@ chrome.runtime.onInstalled.addListener(function ()
 	chrome.contextMenus.create({
 		title: "Highlight text...",
 		contexts: ["selection"],
-		id: Messages.TR.SetupNewWordAddingForm,
+		id: Messages.FE.DisplayTranslationForm,
 	}, function () { console.log("Couldn't create context menu for 'Add New Word'"); });
 	
 	chrome.contextMenus.create({
 		title: "Don't highlight text on this site",
 		contexts: ["all"],
-		id: Messages.TR.AddSiteToBlackList,
+		id: Messages.FE.AddSiteToBlackList,
 	}, function () { console.log("Couldn't create context menu for 'Disable Highlighting function'"); });
 });

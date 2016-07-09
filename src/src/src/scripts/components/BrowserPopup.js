@@ -42,7 +42,10 @@ var BrowserPopup = function ()
 			showUserWords();
 		});
 
-		showUserWords();
+		TemplatesLoader.loadTemplates("templates/popup.html", function() 
+		{
+			showUserWords();
+		});
 	};
 
 
@@ -59,30 +62,15 @@ var BrowserPopup = function ()
 
 				UIManager.hideEl(noWordsView);
 
-				for (var i = 0; i < words.length; i++)
-				{
-					var wordItem = words[i];
-
-					var wordRow = "<tr class='" + ((i % 2 == 0) ? "TR-BG-Dark" : "TR-BG-Light") + "'>"
-									+ "<td class='TR-Word-Cell'>"
-										+ "<div class='TR-WordHandler'><span class='TR-Word'>" + wordItem.word + "</span></div>"
-										+ "<div class='TR-WordData'>" + wordItem.hits + " times met<br/>" + new Date(wordItem.date).Ago() + "</div>"
-									+ "</td>"
-									+ "<td class='TR-Translation-Cell'>"
-										+ "<span class='TR-Translation'>" + wordItem.translation + "</span>"
-									+ "</td>"
-									+ "<td class='TR-DeleteButton-Cell'>"
-										+ "<button class='TR-KnowIt' word='" + wordItem.word + "'>Know it!</button>"
-									+ "</td>"
-								+ "</tr>";
-
-					wordsTable.innerHTML += wordRow;
-				}
+				performOnElsList(words, function(word, i) {
+					word.rowClass = (i % 2 == 0) ? "TR-BG-Dark" : "TR-BG-Light";
+					UIManager.addHTML(wordsTable, Register.templater.formatTemplate("WordRowItem", word));
+				});
 
 				performOnElsList(document.querySelectorAll(".TR-KnowIt"), function(button) 
 				{
 					UIManager.addEventNoDefault(button, "click", function() {
-						deleteWordFromTable(UIManager.getElData(button, "data-word")); 
+						deleteWordFromTable(UIManager.getElData(button, "tr-word")); 
 					});
 				});
 			}
@@ -94,7 +82,6 @@ var BrowserPopup = function ()
 			UIManager.hideEl(loadingAnimation);
 		}, currentWordsOrder.by, currentWordsOrder.direction);
 	};
-
 
 
 	function deleteWordFromTable(word)

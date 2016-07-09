@@ -18,7 +18,17 @@ var Props = new function ()
 		AutoTranslationEnabledByDefault: true
 	};
 
-	this.restrictedTags = ["style", "script", "object", "embed", "textarea"];
+	this.restrictedTags = [
+		"style", 
+		"script", 
+		"object", 
+		"embed", 
+		"textarea", 
+		"button", 
+		"select", 
+		"option",
+		"input", 
+		"checkbox"];
 
 	this.classNames =
 	{
@@ -92,20 +102,23 @@ var Props = new function ()
 
 var Messages = 
 {
-	TR: {
-		SetupNewWordAddingForm: "TR.SetupNewWordAddingForm",
-		AddSiteToBlackList: "TR.AddSiteToBlackList"
+	FE: {
+		DisplayTranslationForm: "FE.DisplayTranslationForm",
+		AddSiteToBlackList: "FE.AddSiteToBlackList"
 	},
-	DB: {
-		GetWords: "DB.GetWords",
-		AddWord: "DB.AddWord",
-		UpdateWordHitCount: "DB.UpdateWordHitCount",
-		DeleteWord: "DB.DeleteWord",
-		DeleteAllWords: "DB.DeleteAllWords",
-		GetSitesBlackList: "DB.GetSitesBlackList",
-		AddSiteToBlackList: "DB.AddSiteToBlackList",
-		GetAllSettings: "DB.GetAllSettings",
-		SetSetting: "DB.SetSetting"
+	BE: {
+		DB: 
+		{
+			GetWords: "BE.DB.GetWords",
+			AddWord: "BE.DB.AddWord",
+			UpdateWordHitCount: "BE.DB.UpdateWordHitCount",
+			DeleteWord: "BE.DB.DeleteWord",
+			DeleteAllWords: "BE.DB.DeleteAllWords",
+			GetSitesBlackList: "BE.DB.GetSitesBlackList",
+			AddSiteToBlackList: "BE.DB.AddSiteToBlackList",
+			GetAllSettings: "BE.DB.GetAllSettings",
+			SetSetting: "BE.DB.SetSetting"
+		}
 	}
 };
 
@@ -126,8 +139,32 @@ var Messanger =
 	{
 		chrome.runtime.onMessage.addListener(function (message, sender, callback)
 		{
-			handler(message, sender, callback);
+			handler(message.name, message.data, callback, sender);
 			return true;
 		});
 	}
 };
+
+var TemplatesLoader = 
+{
+	loadTemplates: function(url, callback) 
+	{
+		Ajax.Invoke({
+			type: "GET",
+			url: chrome.extension.getURL(url)
+		},
+		function(html) 
+		{
+			UIManager.addNodeFromHTML(document.body, html);
+			Initer.whenTrue(function() {
+				return getEl("tr-templates") != null;
+			}, function() 
+			{
+				Register.templater = new Templater();
+				Register.templater.prepareUI();
+				
+				callback();
+			});
+		});
+	}
+}

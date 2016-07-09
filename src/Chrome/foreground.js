@@ -1,28 +1,30 @@
-var frontend = new Frontend();
-
-frontend.Init();
-
-
-Messanger.onMessage(function (message, sender, callback)
+var FEMessageHandlers = [];
+FEMessageHandlers[Messages.FE.DisplayTranslationForm] = function(message, data, callback, sender) 
 {
-	switch (message.name)
-	{
-		case Messages.TR.SetupNewWordAddingForm:
-			Register.translationsAddingForm.SetupNewWordAddingForm();
-			callback();
-			break;
+	Register.translationsForm.display();
+	callback();
+};
 
-		case Messages.TR.AddSiteToBlackList:
-			Messanger.sendMessage({ 
-				name: Messages.DB.AddSiteToBlackList, 
-				data: { 
-					site: document.domain
-				}
-			},
-			function () {
-				callback();
-			});
-			Register.translationsHighlighter.RemoveHighLights(null)
-			break;
+FEMessageHandlers[Messages.FE.AddSiteToBlackList] = function(message, data, callback, sender) 
+{
+	Messanger.sendMessage({ 
+		name: Messages.BE.DB.AddSiteToBlackList, 
+		data: { 
+			site: document.domain
+		}
+	},
+	function () {
+		callback();
+	});
+	Register.translationsHighlighter.RemoveHighLights(null)
+};
+
+Messanger.onMessage(function (message, data, callback, sender)
+{
+	if(FEMessageHandlers[message]) {
+		FEMessageHandlers[message](message, data, callback, sender);
 	}
 });
+
+var frontend = new Frontend();
+frontend.Init();

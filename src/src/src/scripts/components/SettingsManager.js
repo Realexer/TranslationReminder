@@ -16,7 +16,7 @@ var SettingsManager = function()
 	
 	function getSetting(key, _default, callback) 
 	{
-		Messanger.sendMessage(Messages.DB.GetAllSettings, null, function (settings)
+		Messanger.sendMessage(Messages.BE.DB.GetAllSettings, null, function (settings)
 		{
 			if (settings[key])
 				_default = settings[key];
@@ -27,7 +27,7 @@ var SettingsManager = function()
 	
 	function saveSetting(key, value, callback) 
 	{
-		Messanger.sendMessage(Messages.DB.SetSetting, {
+		Messanger.sendMessage(Messages.BE.DB.SetSetting, {
 			key: key,
 			value: value
 		}, callback);
@@ -37,6 +37,17 @@ var SettingsManager = function()
 	{
 		getSetting(settingsKeys.SitesBlackList, "", function(value) {
 			callback(value.split(";"));
+		});
+	};
+	
+	this.ifSiteNotInBlackList = function(domain, callback) 
+	{
+		Register.settingsManager.GetSitesBlackList(function(sites) 
+		{
+			if (sites.indexOf(domain) === -1)
+			{
+				callback();
+			}
 		});
 	};
 

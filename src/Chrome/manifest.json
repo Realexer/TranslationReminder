@@ -30,6 +30,8 @@
 				"scripts/components/BingClient.js", 
 				"scripts/components/WordsManager.js", 
 				"scripts/components/SettingsManager.js", 
+				"scripts/components/TranslationsHighlighter.js", 
+				"scripts/components/TranslationsForm.js", 
 				"scripts/components/Frontend.js", 
 				"foreground.js"],
 			"css": [

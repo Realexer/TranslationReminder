@@ -1,14 +1,16 @@
-<table class="InvisibleTemplate" data-js-template="WordRowItem">
-	<tr class=''>
-		<td class='TR-Word-Cell'>
-			<div class='TR-WordHandler'><span class='TR-Word'>{{word}}</span></div>
-			<div class='TR-WordData'>{{hits}} times met<br/>{{Tempalter.UI.print.dataAgo | date}}</div>
-		</td>
-		<td class='TR-Translation-Cell'>
-			<span class='TR-Translation'>{{translation}}</span>
-		</td>
-		<td class='TR-DeleteButton-Cell'>
-			<button class='TR-KnowIt' word='{{word}}'>Know it!</button>
-		</td>
-	</tr>
-</table>
+<div class="displayNone" id='tr-templates' style='display: none;'>
+	<table class="InvisibleTemplate" data-js-template="WordRowItem">
+		<tr class='{{rowClass}}'>
+			<td class='TR-Word-Cell'>
+				<div class='TR-WordHandler'><span class='TR-Word'>{{word}}</span></div>
+				<div class='TR-WordData'>{{hits}} times met<br/>{{Templater.UI.print.dateAgo | date}}</div>
+			</td>
+			<td class='TR-Translation-Cell'>
+				<span class='TR-Translation'>{{translation}}</span>
+			</td>
+			<td class='TR-DeleteButton-Cell'>
+				<button class='TR-KnowIt' data-tr-word='{{word}}'>Know it!</button>
+			</td>
+		</tr>
+	</table>
+</div>

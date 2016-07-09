@@ -105,7 +105,6 @@ var OptionsPage = function ()
 
 window.onload = function ()
 {
-	Register.settingsManager = new SettingsManager();
 	Register.optionsPage = new OptionsPage();
 	Register.optionsPage.init();
 };

@@ -108,6 +108,11 @@ Date.prototype.Ago = function ()
 	}
 };
 
+Templater.UI.print.dateAgo = function(time) 
+{
+	return new Date(time).Ago();
+};
+
 Array.prototype.RemoveDuplicates = function ()
 {
 	return this.filter(function (v, i, a) { return a.indexOf(v) == i; });
