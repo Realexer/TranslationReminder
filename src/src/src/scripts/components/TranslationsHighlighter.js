@@ -28,7 +28,7 @@ var TranslationsHighlighter = function()
 				});
 
 				performOnElsList(document.querySelectorAll(".TR-HighlightedText"), function(highlightedText) {
-					UIManager.addEvent(highlightedText, "click", function(event) {
+					UIManager.addEventNoDefault(highlightedText, "click", function(event) {
 						showTranslationDetails(event);
 					});
 				});
@@ -73,11 +73,10 @@ var TranslationsHighlighter = function()
 
 				if (textNode.textContent != modifiedText) // changes were made
 				{
-					UIManager.addNodeFromHTML(textHandler, "<trhandler>"+modifiedText+"<trhandler>", false, textNode);
+					UIManager.addNodeFromHTML(textHandler, 
+						Register.templater.formatTemplate("TranslationsHighlightsHandler", {text: modifiedText}), 
+						false, textNode);
 					UIManager.removeEl(textNode);
-//					UIManager.setHTML(textHandler, 
-//						UIManager.getHTML(textHandler).replaceAll(textNode.textContent, modifiedText));
-					//textNode.textContent = textNodeContent;
 				}
 			}
 		}
