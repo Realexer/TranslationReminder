@@ -55,12 +55,15 @@ var DB = function ()
 			var words = [];
 			for (var i = 0; i < results.rows.length; i++)
 			{
-				words.push({
-					word: results.rows.item(i).word,
-					translation: results.rows.item(i).translation,
-					date: results.rows.item(i).date,
-					hits: results.rows.item(i).hits
-				});
+				if(results.rows.item(i).word) 
+				{
+					words.push({
+						word: results.rows.item(i).word,
+						translation: results.rows.item(i).translation,
+						date: results.rows.item(i).date,
+						hits: results.rows.item(i).hits
+					});
+				}
 			}
 
 			if (callback) {
@@ -72,11 +75,30 @@ var DB = function ()
 
 	this.AddWord = function (word, translation, date, callback)
 	{
-		performTransaction('INSERT INTO words (word, translation, date, hits) VALUES (?, ?, ?, ?)', [word, translation, date, 1],
+		this.isWordExists(word, function(exists) 
+		{
+			if(!exists) 
+			{
+				performTransaction('INSERT INTO words (word, translation, date, hits) VALUES (?, ?, ?, ?)', [word, translation, date, 1],
+				function (results)
+				{
+					if (callback) {
+						callback();
+					}
+				});
+			} else {
+				callback();
+			}
+		});
+	};
+	
+	this.isWordExists = function(word, callback) 
+	{
+		performTransaction('SELECT * FROM words WHERE word=?', [word],
 		function (results)
 		{
 			if (callback) {
-				callback();
+				callback(results.rows.length > 0);
 			}
 		});
 	};
