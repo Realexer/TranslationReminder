@@ -14,8 +14,8 @@ var Frontend = function ()
 			
 			UIManager.addEvent(document.body, "mouseup", function(event, el) 
 			{
-				if (event.target.hasInParents(Props.classNames.newWordForm.form) 
-				|| event.target.hasInParents(Props.classNames.hint.handler))
+				if (event.target.hasInParents("TR-NewWordForm") 
+				|| event.target.hasInParents("TR-Hint"))
 					return false;
 
 				Register.translationsHighlighter.hideAllTranslationDetails();

@@ -145,16 +145,20 @@ var UIManager = new function()
 		EventsManager.fire(Events.htmlChanged, el);
 	};
 	
-	this.addNodeFromHTML = function(el, html, atTop) 
+	this.addNodeFromHTML = function(el, html, atTop, beforeEl) 
 	{
 		var tmpNode = document.createElement('span');
 		UIManager.setHTML(tmpNode, html.trim()); // trimming so that first child will not be text
 		el.appendChild(tmpNode);
 		
 		var newNode = tmpNode.firstChild;
-		if(atTop) 
+		if(atTop || beforeEl) 
 		{
-			el.insertBefore(newNode, el.firstChild);
+			if(atTop) {
+				beforeEl = el.firstChild;
+			}
+			
+			el.insertBefore(newNode, beforeEl);
 		}
 		else 
 		{

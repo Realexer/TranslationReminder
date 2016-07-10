@@ -19,6 +19,7 @@ var Props = new function ()
 	};
 
 	this.restrictedTags = [
+		"trtag",
 		"style", 
 		"script", 
 		"object", 

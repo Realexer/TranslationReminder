@@ -20,7 +20,7 @@ var TranslationsHighlighter = function()
 				performOnElsList(textNodes, function(textNode) {
 					_this.highlightTextsInNode(textNode, words);
 				});
-
+				
 				performOnEveryKey(wordsHits, function(word, hits) {
 					Register.wordsManager.UpdateWordHitCount(word, hits, function() {
 						console.log("Word hit counts updated");
@@ -40,38 +40,44 @@ var TranslationsHighlighter = function()
 	{
 		try
 		{
-			if (textNode.parentNode)
+			var textHandler = textNode.parentNode;
+			if (textHandler)
 			{
-				var resultInnerHTML = textNode.parentNode.innerHTML;
+				var modifiedText = textNode.textContent;
 
-				if (textNode.parentNode.hasInParents("TR-NewWordForm") ||
-					textNode.parentNode.hasInParents("TR-HighlightedText"))
+				if (textHandler.hasInParents("TR-NewWordForm") ||
+					textHandler.hasInParents("TR-HighlightedText"))
 				{
 					return;
 				}
 
 
-				performOnElsList(words, function(wordItem) {
+				performOnElsList(words, function(wordItem) 
+				{
 					// split by trtags in order to prevent replacing content insdie of trtags
-					var resultInnerHTMLSplitted = resultInnerHTML.split(new RegExp("(<trtag[^<]*)", "mgi"));
-
-					performOnElsList(resultInnerHTMLSplitted, function(splitPart, i) 
+					var modifiedTextSplit = modifiedText.split(new RegExp("(<trtag[^<]*</trtag>)", "mgi"));
+					
+					performOnElsList(modifiedTextSplit, function(splitPart, i) 
 					{
-						if (splitPart.search("<trtag"))
+						if(splitPart.search("<trtag") === -1) 
 						{
 							if (isHTMLContainsWord(splitPart, wordItem))
 							{
-								resultInnerHTMLSplitted[i] = replaceHTMLWithHightlightedTexts(splitPart, wordItem);
+								modifiedTextSplit[i] = replaceTextWithHightlights(splitPart, wordItem);
 							}
 						}
 					});
 
-					resultInnerHTML = resultInnerHTMLSplitted.join("");
+					modifiedText = modifiedTextSplit.join("");
 				});
 
-				if (textNode.parentNode.innerHTML != resultInnerHTML) // changes were made
+				if (textNode.textContent != modifiedText) // changes were made
 				{
-					textNode.parentNode.innerHTML = resultInnerHTML;
+					UIManager.addNodeFromHTML(textHandler, "<trhandler>"+modifiedText+"<trhandler>", false, textNode);
+					UIManager.removeEl(textNode);
+//					UIManager.setHTML(textHandler, 
+//						UIManager.getHTML(textHandler).replaceAll(textNode.textContent, modifiedText));
+					//textNode.textContent = textNodeContent;
 				}
 			}
 		}
@@ -107,23 +113,23 @@ var TranslationsHighlighter = function()
 		return textNodes;
 	};
 
-	function isHTMLContainsWord(resultInnerHTML, wordItem)
+	function isHTMLContainsWord(textContent, wordItem)
 	{
-		return (resultInnerHTML.search(new RegExp("\\b" + wordItem.word + "\\b", "mgi")) !== -1);
+		return (textContent.search(new RegExp("\\b" + wordItem.word + "\\b", "mgi")) !== -1);
 	};
 
-	function replaceHTMLWithHightlightedTexts(resultInnerHTML, wordItem)
+	function replaceTextWithHightlights(textContent, wordItem)
 	{
-		resultInnerHTML = resultInnerHTML.replace(new RegExp("\\b" + wordItem.word + "\\b", "mgi"), 
+		textContent = textContent.replace(new RegExp("\\b" + wordItem.word + "\\b", "mgi"), 
 		function (match, offset, string)
 		{
 			wordItem.original = match;
-			return Register.templater.formatTemplate("TranslationHighlight", wordItem).replaceAll("\"", "'");
+			return Register.templater.formatTemplate("TranslationHighlight", wordItem).replaceAll("\"", "'").trim();
 		});
 
 		increaseWordHitsCount(wordItem);
 
-		return resultInnerHTML;
+		return textContent;
 	};
 
 	function increaseWordHitsCount(wordItem)
@@ -142,10 +148,10 @@ var TranslationsHighlighter = function()
 	function showTranslationDetails(event)
 	{
 		var highlightedTextElement = event.target;
-		if (UIManager.getClass(highlightedTextElement) !== Props.classNames.highlightedText)
+		if (UIManager.getClass(highlightedTextElement) !== "TR-HighlightedText")
 			return false;
 
-		if (event.target.hasInChildren(Props.classNames.hint.handler)) // hint already displaied
+		if (event.target.hasInChildren("TR-Hint")) // hint already displaied
 			return false;
 
 		var hint = UIManager.addNodeFromHTML(document.body, Register.templater.formatTemplate("TranslationDetails", 
