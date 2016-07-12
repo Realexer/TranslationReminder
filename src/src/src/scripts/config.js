@@ -15,7 +15,7 @@ var Props = new function ()
 	this.defaults =
 	{
 		TranslationLanguage: "en",
-		AutoTranslationEnabledByDefault: true
+		AutoTranslationEnabled: true
 	};
 
 	this.restrictedTags = [

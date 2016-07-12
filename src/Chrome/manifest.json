@@ -8,6 +8,7 @@
 	"version": "4.0.0",
 
 	"permissions": [
+		"storage",
 		"contextMenus",
 		"activeTab",
 		"tabs",
@@ -60,6 +61,8 @@
 		"scripts": [
 			"scripts/config.js",
 			"scripts/general/Essentials.js", 
+			"scripts/general/Templater.js", 
+			"scripts/general/common.js", 
 			"scripts/utilites/Extensions.js",
 			"scripts/utilites/Helper.js",
 			"scripts/components/DB.js",

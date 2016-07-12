@@ -67,7 +67,7 @@ var SettingsManager = function()
 
 	this.IsAutotranslationEnabled = function (callback)
 	{
-		getSetting(settingsKeys.AutoTranslatioinEnabled, Props.defaults.AutoTranslationEnabledByDefault, 
+		getSetting(settingsKeys.AutoTranslatioinEnabled, Props.defaults.AutoTranslationEnabled, 
 		function(value) {
 			return callback(getBool(value));
 		});
