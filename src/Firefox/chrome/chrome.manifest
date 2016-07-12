@@ -1,0 +1,8 @@
+﻿content		translationreminder		chrome/content/
+content		translationreminder		chrome/content/ contentaccessible=yes
+overlay chrome://browser/content/browser.xul chrome://translationreminder/content/browser.xul
+
+locale	translationreminder		en-US	locale/en-US/
+
+skin	translationreminder		classic/1.0	skin/
+style	chrome://global/content/customizeToolbar.xul	chrome://translationreminder/skin/skin.css
