@@ -123,3 +123,8 @@ Array.prototype.TrimAllElements = function ()
 	this.forEach(function (el, i, a) { a[i] = el.trim(); });
 	return this;
 };
+
+function OR(value, _default) 
+{
+	return value ? value : _default;
+}

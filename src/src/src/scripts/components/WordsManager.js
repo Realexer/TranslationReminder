@@ -29,7 +29,8 @@ var WordsManager = function ()
 		{
 			word: prepareWordForDB(word),
 			translation: translation,
-			date: dateToTimestamp(date)
+			date: dateToTimestamp(date),
+			hits: 1
 		}, callback);
 	};
 
@@ -69,19 +70,6 @@ var WordsManager = function ()
 
 		return parseInt(date);
 	};
-};
-
-var WordsOrder = 
-{
-	order: {
-		word: "word",
-		date: "date",
-		hits: "hits",
-	},
-	direction: {
-		ASC: "ASC",
-		DESC: "DESC"
-	}
 };
 
 Register.wordsManager = new WordsManager();

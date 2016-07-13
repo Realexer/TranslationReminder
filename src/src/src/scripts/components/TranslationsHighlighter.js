@@ -96,7 +96,7 @@ var TranslationsHighlighter = function()
 		performOnElsList(node.childNodes, function(node) 
 		{
 			if (node.nodeType === 3 // 3 - is text node
-			&& Props.restrictedTags.indexOf(node.parentNode.tagName.toLowerCase()) === -1) 
+			&& AppConfig.initialSettings.restrictedTags.indexOf(node.parentNode.tagName.toLowerCase()) === -1) 
 			{
 				if(!UIFormat.isEmptyString(node.nodeValue)) 
 				{

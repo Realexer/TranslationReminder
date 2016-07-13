@@ -3,7 +3,7 @@ BEMessagesHandler[Messages.BE.DB.GetWords] = function(message, data, callback, s
 	Register.DB.GetWords(data.order, data.direction, callback);
 };
 BEMessagesHandler[Messages.BE.DB.AddWord] = function(message, data, callback, sender) {
-	Register.DB.AddWord(data.word, data.translation, data.date, callback);
+	Register.DB.AddWord(data.word, data.translation, data.date, data.hits, callback);
 };
 BEMessagesHandler[Messages.BE.DB.UpdateWordHitCount] = function(message, data, callback, sender) {
 	Register.DB.UpdateWordHitCount(data.word, data.hits, callback);
@@ -13,12 +13,6 @@ BEMessagesHandler[Messages.BE.DB.DeleteWord] = function(message, data, callback,
 };
 BEMessagesHandler[Messages.BE.DB.DeleteAllWords] = function(message, data, callback, sender) {
 	Register.DB.DeleteAllWords(callback);
-};
-BEMessagesHandler[Messages.BE.DB.GetAllSettings] = function(message, data, callback, sender) {
-	Register.DB.GetAllSettings(callback);
-};
-BEMessagesHandler[Messages.BE.DB.SetSetting] = function(message, data, callback, sender) {
-	Register.DB.SetSetting(data.key, data.value, callback);
 };
 
 Messanger.onMessage(function(message, data, callback, sender) 

@@ -1,3 +1,7 @@
+.TR-InvisibleTemplate
+{
+	display: none;
+}
 .TR-Base
 {
 	color: #333;

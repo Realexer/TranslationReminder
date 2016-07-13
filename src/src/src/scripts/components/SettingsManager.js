@@ -11,11 +11,38 @@ var SettingsManager = function()
 	
 	this.init = function() 
 	{
-		
+		inportOrSetDefaultSettings();
+	};
+	
+	function inportOrSetDefaultSettings() 
+	{
+		Register.synchStorage.getSettings(function(res) 
+		{
+			if(!res) 
+			{
+				Register.sqlStorage.GetAllSettings(function(settings) // get settings from previous version
+				{
+					var defaultSettings = {
+						SitesBlackList: OR(settings[settingsKeys.SitesBlackList], AppConfig.initialSettings.SitesBlackList),
+						AutoTranslatioinEnabled: OR(settings[settingsKeys.AutoTranslationEnabled], AppConfig.initialSettings.AutoTranslationEnabled),
+						TranslationLanguage: OR(settings[settingsKeys.TranslationLanguage], AppConfig.initialSettings.TranslationLanguage),
+					};
+					
+					Register.setSettings(defaultSettings);
+				});
+			}
+		});
 	};
 	
 	function getSetting(key, _default, callback) 
 	{
+		return Register.synchStorage.getSettings(function(settings) {
+			if (settings[key])
+				_default = settings[key];
+			
+			callback(_default);
+		});
+		
 		Messanger.sendMessage(Messages.BE.DB.GetAllSettings, null, function (settings)
 		{
 			if (settings[key])
@@ -27,6 +54,11 @@ var SettingsManager = function()
 	
 	function saveSetting(key, value, callback) 
 	{
+		return Register.synchStorage.updateSetting(key, value, function() {
+			if (callback) {
+				callback();
+			}
+		});
 		Messanger.sendMessage(Messages.BE.DB.SetSetting, {
 			key: key,
 			value: value
@@ -35,7 +67,7 @@ var SettingsManager = function()
 	
 	this.GetSitesBlackList = function (callback)
 	{
-		getSetting(settingsKeys.SitesBlackList, "", function(value) {
+		getSetting(settingsKeys.SitesBlackList, function(value) {
 			callback(value.split(";"));
 		});
 	};
@@ -67,7 +99,7 @@ var SettingsManager = function()
 
 	this.IsAutotranslationEnabled = function (callback)
 	{
-		getSetting(settingsKeys.AutoTranslatioinEnabled, Props.defaults.AutoTranslationEnabled, 
+		getSetting(settingsKeys.AutoTranslatioinEnabled, 
 		function(value) {
 			return callback(getBool(value));
 		});
@@ -80,7 +112,7 @@ var SettingsManager = function()
 
 	this.GetTranslationLanguage = function (callback)
 	{
-		getSetting(settingsKeys.TranslationLanguage, Props.defaults.TranslationLanguage, 
+		getSetting(settingsKeys.TranslationLanguage, 
 		function(lang) {
 			return callback(lang);
 		});
