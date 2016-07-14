@@ -34,7 +34,7 @@ var SettingsManager = function()
 		});
 	};
 	
-	function getSetting(key, _default, callback) 
+	function getSetting(key, callback) 
 	{
 		return Register.synchStorage.getSettings(function(settings) {
 			if (settings[key])
@@ -68,13 +68,13 @@ var SettingsManager = function()
 	this.GetSitesBlackList = function (callback)
 	{
 		getSetting(settingsKeys.SitesBlackList, function(value) {
-			callback(value.split(";"));
+			callback(value);
 		});
 	};
 	
 	this.ifSiteNotInBlackList = function(domain, callback) 
 	{
-		Register.settingsManager.GetSitesBlackList(function(sites) 
+		this.GetSitesBlackList(function(sites) 
 		{
 			if (sites.indexOf(domain) === -1)
 			{
@@ -85,7 +85,7 @@ var SettingsManager = function()
 
 	this.UpdateSitesBlackList = function (sites, callback)
 	{
-		saveSetting(settingsKeys.SitesBlackList, sites.RemoveDuplicates().TrimAllElements().join(";"), callback);
+		saveSetting(settingsKeys.SitesBlackList, sites.RemoveDuplicates(), callback);
 	};
 
 	this.AddSiteToBlackList = function (site, callback)

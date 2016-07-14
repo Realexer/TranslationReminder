@@ -7,30 +7,36 @@ var WordsManager = function ()
 		
 	};
 	
-	this.GetWords = function (callback, order, direction)
+	this.GetWords = function (callback, request)
 	{
-		if (!order)
-			order = WordsOrder.order.date;
+		var request = OR(request, {});
+		request.order = OR(request.order, {});
+		request.condition = OR(request.condition, {});
 
-		if (!direction)
-			direction = WordsOrder.direction.DESC;
-		
 		Messanger.sendMessage(Messages.BE.DB.GetWords, 
 		{
-			order: order,
-			direction: direction
+			order: {
+				field: OR(request.order.field, WordsOrder.order.date),
+				direction: OR(request.order.direction, WordsOrder.direction.DESC)
+			},
+			condition: {
+				learned: request.condition.learned,
+				lang: request.condition.lang
+			}
 		}, callback);
 	};
 
 
-	this.AddWord = function (word, translation, date, callback)
+	this.AddWord = function (word, translation, callback)
 	{
 		Messanger.sendMessage(Messages.BE.DB.AddWord, 
 		{
 			word: prepareWordForDB(word),
 			translation: translation,
-			date: dateToTimestamp(date),
-			hits: 1
+			date: dateToTimestamp(),
+			hits: 1,
+			learned: false,
+			learnedAt: null
 		}, callback);
 	};
 
@@ -40,6 +46,26 @@ var WordsManager = function ()
 		{
 			word: prepareWordForDB(word),
 			hits: hits
+		}, callback);
+	};
+	
+	this.setWordLearned = function(word, callback) 
+	{
+		Messanger.sendMessage(Messages.BE.DB.SetWordLearned, 
+		{
+			word: prepareWordForDB(word),
+			learned: true,
+			learnedAt: dateToTimestamp()
+		}, callback);
+	};
+	
+	this.setWordLearning = function(word, callback) 
+	{
+		Messanger.sendMessage(Messages.BE.DB.SetWordLearned, 
+		{
+			word: prepareWordForDB(word),
+			learned: false,
+			learnedAt: null
 		}, callback);
 	};
 

@@ -1,12 +1,13 @@
 var BrowserPopup = function ()
 {
-	var wordsTable = getEl("TR-WordsList");
+	var wordsTableLearning = getEl("TR-WordsListLearning");
+	var wordsTableLearned = getEl("TR-WordsListLearned");
 	var loadingAnimation = getEl("TR-LoadingAnimation");
 	var noWordsView = getEl("TR-NoWordsView");
 
 	var currentWordsOrder =
 	{
-		by: WordsOrder.order.date,
+		field: WordsOrder.order.date,
 		direction: WordsOrder.direction.DESC,
 		
 		switchDirection: function() 
@@ -25,7 +26,7 @@ var BrowserPopup = function ()
 			UIManager.removeClassFromEl(orderByHitsButton, "TR-SelectedWordsOrder");
 			UIManager.addClassToEl(orderByDateButton, "TR-SelectedWordsOrder");
 
-			currentWordsOrder.by = WordsOrder.order.date;
+			currentWordsOrder.field = WordsOrder.order.date;
 			currentWordsOrder.switchDirection();
 
 			showUserWords();
@@ -36,7 +37,7 @@ var BrowserPopup = function ()
 			UIManager.removeClassFromEl(orderByDateButton, "TR-SelectedWordsOrder");
 			UIManager.addClassToEl(orderByHitsButton, "TR-SelectedWordsOrder");
 			
-			currentWordsOrder.by = WordsOrder.order.hits;
+			currentWordsOrder.field = WordsOrder.order.hits;
 			currentWordsOrder.switchDirection();
 
 			showUserWords();
@@ -52,7 +53,8 @@ var BrowserPopup = function ()
 	function showUserWords()
 	{
 		UIManager.showEl(loadingAnimation);
-		UIManager.clearEl(wordsTable);
+		UIManager.clearEl(wordsTableLearning);
+		UIManager.clearEl(wordsTableLearned);
 
 		Register.wordsManager.GetWords(function (words)
 		{
@@ -62,15 +64,31 @@ var BrowserPopup = function ()
 
 				UIManager.hideEl(noWordsView);
 
-				performOnElsList(words, function(word, i) {
-					word.rowClass = (i % 2 == 0) ? "TR-BG-Dark" : "TR-BG-Light";
-					UIManager.addHTML(wordsTable, Register.templater.formatTemplate("WordRowItem", word));
+				performOnElsList(words.filter(function(word) {
+					return !word.learned;
+				}), function(word, i) {
+						word.rowClass = (i % 2 == 0) ? "TR-BG-Dark" : "TR-BG-Light";
+						UIManager.addHTML(wordsTableLearning, Register.templater.formatTemplate("WordLearningRowItem", word));
+				});
+
+				performOnElsList(words.filter(function(word) {
+					return word.learned;
+				}), function(word, i) {
+						word.rowClass = (i % 2 == 0) ? "TR-BG-Grey-Dark" : "TR-BG-Grey-Light";
+						UIManager.addHTML(wordsTableLearned, Register.templater.formatTemplate("WordLearnedRowItem", word));
 				});
 
 				performOnElsList(document.querySelectorAll(".TR-KnowIt"), function(button) 
 				{
 					UIManager.addEventNoDefault(button, "click", function() {
-						deleteWordFromTable(UIManager.getElData(button, "tr-word")); 
+						markWordAsLearned(UIManager.getElData(button, "tr-word")); 
+					});
+				});
+				
+				performOnElsList(document.querySelectorAll(".TR-BackToLearning"), function(button) 
+				{
+					UIManager.addEventNoDefault(button, "click", function() {
+						moveBackToLearning(UIManager.getElData(button, "tr-word")); 
 					});
 				});
 			}
@@ -80,13 +98,22 @@ var BrowserPopup = function ()
 			}
 
 			UIManager.hideEl(loadingAnimation);
-		}, currentWordsOrder.by, currentWordsOrder.direction);
+		}, {
+			order: currentWordsOrder
+		});
 	};
 
 
-	function deleteWordFromTable(word)
+	function markWordAsLearned(word)
 	{
-		Register.wordsManager.DeleteWord(word, function() {
+		Register.wordsManager.setWordLearned(word, function() {
+			showUserWords();
+		});
+	};
+	
+	function moveBackToLearning(word)
+	{
+		Register.wordsManager.setWordLearning(word, function() {
 			showUserWords();
 		});
 	};

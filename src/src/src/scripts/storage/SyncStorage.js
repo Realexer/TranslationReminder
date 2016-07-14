@@ -47,7 +47,7 @@ var SynchStorage = function()
 	
 	this.synchWords = function(callback) 
 	{
-		Register.indexedStorage.GetWords(null, null, function(words) {
+		Register.wordsManager.GetWords(function(words) {
 			_this.setWords(words, callback);
 		});
 	};

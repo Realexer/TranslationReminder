@@ -41,9 +41,9 @@ var IndexedStorage = function()
 			}
 			
 			var objectStore = tr.objectStore(DBObjects.Translations);
-			_this.updateIndex(objectStore, "word", { unique: false });
-			_this.updateIndex(objectStore, "date", { unique: false });
-			_this.updateIndex(objectStore, "hits", { unique: false });
+			_this.updateIndex(objectStore, "word", "word", { unique: true });
+			_this.updateIndex(objectStore, "date", "date", { unique: false });
+			_this.updateIndex(objectStore, "hits", "hits", { unique: false });
 		};
 
 		openRequest.onsuccess = function (e) {
@@ -56,13 +56,13 @@ var IndexedStorage = function()
 		};
 	};
 	
-	this.updateIndex = function(store, index, value) 
+	this.updateIndex = function(store, index, keypath, value) 
 	{
 		try{
 			store.deleteIndex(index);
 		} catch(e) {}
 		
-		store.createIndex(index, index, value);
+		store.createIndex(index, keypath, value);
 	};
 	
 	this.runTransaction = function(dbObject, type, requestFunc, oncomplete, onsuccess, onerror) 
@@ -92,12 +92,12 @@ var IndexedStorage = function()
 		};
 	};
 	
-	this.GetWords = function (field, direction, callback)
+	this.GetWords = function (request, callback)
 	{
 		var words = [];
 		this.runTransaction(DBObjects.Translations, DBTransactionTypes.rw, function(tr, store) 
 		{
-			return store.index(field).openCursor(null, DBOrderDirection[direction]); 
+			return store.index(request.order.field).openCursor(null, DBOrderDirection[request.order.direction]); 
 		},
 		function(e) 
 		{
@@ -109,29 +109,28 @@ var IndexedStorage = function()
 		{
 			var cursor = e.target.result;
 			if(cursor) {
-				words.push(cursor.value);
+				var word = cursor.value;
+				
+				if((request.condition.learned === undefined || word.learned == request.condition.learned) 
+				&& (request.condition.lang === undefined || word.lang == request.condition.lang)) 
+				{
+					words.push(cursor.value);
+				}
 				cursor.continue();
 			}
 		});
 	};
 
 
-	this.AddWord = function (word, translation, date, hits, callback)
+	this.AddWord = function (request, callback)
 	{
-		this.isWordExists(word, function(isExists) 
+		this.isWordExists(request.word, function(isExists) 
 		{
 			if(!isExists) 
 			{
 				_this.runTransaction(DBObjects.Translations, DBTransactionTypes.rw, function(tr, store) 
 				{
-					var translationItem = {
-						word: word,
-						translation: translation,
-						date: date,
-						hits: hits,
-					};
-
-					return store.add(translationItem);
+					return store.add(request);
 				},
 				function() 
 				{
@@ -182,25 +181,40 @@ var IndexedStorage = function()
 		});
 	};
 
-	this.UpdateWordHitCount = function (word, hits, callback)
+	this.UpdateWordHitCount = function (request, callback)
 	{
-		this.getTranslationByText(word, function(translation, tr, store) 
+		this.getTranslationByText(request.word, function(translation, tr, store) 
 		{
 			callback();
 		},
 		function(translation, tr, store, cursor) 
 		{
 			if(translation && cursor) {
-				translation.hits = hits;
+				translation.hits = request.hits;
 				cursor.update(translation);
 			}
 		});
 	};
 
-
-	this.DeleteWord = function (word, callback)
+	this.SetWordLearned = function(request, callback) 
 	{
-		this.getTranslationByText(word, function(translation, tr, store) 
+		this.getTranslationByText(request.word, function(translation, tr, store) 
+		{
+			callback();
+		},
+		function(translation, tr, store, cursor) 
+		{
+			if(translation && cursor) {
+				translation.learned = request.learned;
+				translation.learnedAt = request.learnedAt;
+				cursor.update(translation);
+			}
+		});
+	};
+
+	this.DeleteWord = function (request, callback)
+	{
+		this.getTranslationByText(request.word, function(translation, tr, store) 
 		{
 			Register.synchStorage.synchWords(function() {
 				callback();
@@ -240,11 +254,10 @@ var IndexedStorage = function()
 
 			function putNextWord() 
 			{
-				if (i<words.length) {
+				if (i < words.length) {
 					store.put(words[i]).onsuccess = putNextWord;
 					++i;
-				} else {   // complete
-					console.log('populate complete');
+				} else {
 					callback();
 				}
 			}

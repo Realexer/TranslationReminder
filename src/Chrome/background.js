@@ -1,15 +1,18 @@
 var BEMessagesHandler = [];
 BEMessagesHandler[Messages.BE.DB.GetWords] = function(message, data, callback, sender) {
-	Register.DB.GetWords(data.order, data.direction, callback);
+	Register.DB.GetWords(data, callback);
 };
 BEMessagesHandler[Messages.BE.DB.AddWord] = function(message, data, callback, sender) {
-	Register.DB.AddWord(data.word, data.translation, data.date, data.hits, callback);
+	Register.DB.AddWord(data, callback);
 };
 BEMessagesHandler[Messages.BE.DB.UpdateWordHitCount] = function(message, data, callback, sender) {
-	Register.DB.UpdateWordHitCount(data.word, data.hits, callback);
+	Register.DB.UpdateWordHitCount(data, callback);
 };
 BEMessagesHandler[Messages.BE.DB.DeleteWord] = function(message, data, callback, sender) {
-	Register.DB.DeleteWord(data.word, callback);
+	Register.DB.DeleteWord(data, callback);
+};
+BEMessagesHandler[Messages.BE.DB.SetWordLearned] = function(message, data, callback, sender) {
+	Register.DB.SetWordLearned(data, callback);
 };
 BEMessagesHandler[Messages.BE.DB.DeleteAllWords] = function(message, data, callback, sender) {
 	Register.DB.DeleteAllWords(callback);

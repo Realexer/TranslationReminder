@@ -32,6 +32,10 @@ var TranslationsHighlighter = function()
 						showTranslationDetails(event);
 					});
 				});
+			}, {
+				condition: {
+					learned: false
+				}
 			});
 		});
 	};
@@ -96,7 +100,7 @@ var TranslationsHighlighter = function()
 		performOnElsList(node.childNodes, function(node) 
 		{
 			if (node.nodeType === 3 // 3 - is text node
-			&& AppConfig.initialSettings.restrictedTags.indexOf(node.parentNode.tagName.toLowerCase()) === -1) 
+			&& AppConfig.restrictedTags.indexOf(node.parentNode.tagName.toLowerCase()) === -1) 
 			{
 				if(!UIFormat.isEmptyString(node.nodeValue)) 
 				{
@@ -167,7 +171,7 @@ var TranslationsHighlighter = function()
 		hint.style.top = (window.scrollY + highlightedTextElementRect.top - hintRect.height) + "px";
 
 		UIManager.addEvent(hint.querySelector("._tr_markAsLearnedButton"), "click", function(event, el) {
-			deleteWord(UIManager.getElData(el, "tr-word"));
+			markWordAsLearned(UIManager.getElData(el, "tr-word"));
 		});
 	};
 
@@ -182,9 +186,9 @@ var TranslationsHighlighter = function()
 	};
 
 
-	function deleteWord(word)
+	function markWordAsLearned(word)
 	{
-		Register.wordsManager.DeleteWord(word, 
+		Register.wordsManager.setWordLearned(word, 
 		function ()
 		{
 			_this.removeHighLights(word);

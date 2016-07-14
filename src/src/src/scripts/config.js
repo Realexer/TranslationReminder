@@ -2,7 +2,7 @@ var AppConfig =
 {
 	initialSettings: 
 	{
-		SitesBlackList: "",
+		SitesBlackList: [],
 		TranslationLanguage: "en",
 		AutoTranslationEnabled: true
 	},
@@ -43,6 +43,7 @@ var Messages =
 			GetWords: "BE.DB.GetWords",
 			AddWord: "BE.DB.AddWord",
 			UpdateWordHitCount: "BE.DB.UpdateWordHitCount",
+			SetWordLearned: "BE.DB.SetWordLearned",
 			DeleteWord: "BE.DB.DeleteWord",
 			DeleteAllWords: "BE.DB.DeleteAllWords",
 			GetSitesBlackList: "BE.DB.GetSitesBlackList",

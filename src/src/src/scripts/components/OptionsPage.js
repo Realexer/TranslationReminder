@@ -14,7 +14,7 @@ var OptionsPage = function ()
 		
 		Register.settingsManager.GetSitesBlackList(function (sites)
 		{
-			sitesInitialValues = sites.join(";");
+			sitesInitialValues = sites.join("; ");
 			UIManager.setValue(sitesBlackListTextArea, sitesInitialValues);
 		});
 		
@@ -23,10 +23,11 @@ var OptionsPage = function ()
 			UIManager.setChecked(enableAutoTranslateCheckbox, result);
 		});
 		
-		UIManager.addEvent(sitesBlackListTextArea, "keydown", function() 
+		UIManager.addEvent(sitesBlackListTextArea, "keydown", function(e) 
 		{
 			if (event.keyCode === 13 && event.ctrlKey) // enter
 			{
+				e.preventDefault();
 				Register.settingsManager.UpdateSitesBlackList(sitesBlackListTextArea.value.split(";"), function ()
 				{
 					tellSaved();
