@@ -116,13 +116,6 @@ var Ajax = new function ()
 		};
 
 		xmlhttp.userData = params;
-		
-		if(params.headers) 
-		{
-			performOnElsList(params.headers, function(header) {
-				xmlhttp.setRequestHeader(header.key, header.value);	
-			});
-		}
 
 		if (params.type && params.type.toString().toUpperCase() == 'POST')
 		{
@@ -142,6 +135,13 @@ var Ajax = new function ()
 		else
 		{
 			xmlhttp.open(params.type, params.url + objectToHttpParam(params.data), true);
+		}
+		
+		if(params.headers) 
+		{
+			performOnEveryKey(params.headers, function(key, value) {
+				xmlhttp.setRequestHeader(key, value);	
+			});
 		}
 		
 		xmlhttp = Ajax.beforeSend(xmlhttp, params.type, dataToSend);

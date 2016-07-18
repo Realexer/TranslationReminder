@@ -7,13 +7,27 @@ var AppConfig =
 		AutoTranslationEnabled: true
 	},
 	
+	glosbeAPI: {
+		url: "https://glosbe.com/gapi/",
+		methods: {
+			translate: "translate"
+		}
+	},
+	
 	bingAPI: {
 		url: "https://api.microsofttranslator.com/V2/Ajax.svc/",
 		methods: {
 			Translate: "Translate",
 			GetLangsList: "GetLanguagesForTranslate"
 		},
-		appId: "8E54095330F0B7E7CB73527A50437E6110A64730"
+		appId: "8E54095330F0B7E7CB73527A50437E6110A64730",
+	},
+	bingAPIv2: {
+		url: "https://api.datamarket.azure.com/Bing/Search/",
+		methods: {
+			Image: "Image"
+		},
+		accountId: "uzo4aDuoHBH44J7X2kzXzU+ElWr+HbdxVyS6or56poQ="
 	},
 	
 	restrictedTags: [

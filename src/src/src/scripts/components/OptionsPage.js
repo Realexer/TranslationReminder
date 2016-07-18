@@ -60,7 +60,7 @@ var OptionsPage = function ()
 			Register.settingsManager.SetTranslationLanguage(languageSelect.value, function () { tellSaved(); });
 		})
 
-		new BingClient().GetSupportedLangs(function (langs)
+		BingClient.GetSupportedLangs(function (langs)
 		{
 			Register.settingsManager.GetTranslationLanguage(function (lang)
 			{

@@ -1,7 +1,7 @@
 var FEMessageHandlers = [];
 FEMessageHandlers[Messages.FE.DisplayTranslationForm] = function(message, data, callback, sender) 
 {
-	Register.translationsForm.display();
+	Register.translationForm.display();
 	callback();
 };
 

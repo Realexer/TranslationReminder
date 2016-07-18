@@ -44,7 +44,26 @@
 }
 .TR-NewWordForm-CurrentSelection
 {
-	padding: 10px;
+	padding: 0.5em;
+}
+
+.TR-Form-ImageSelectorHandler 
+{
+	padding: 0.5em;
+	text-align: center;
+}
+
+.TR-Form-ImageSelector 
+{
+	max-width: 12em;
+	display: inline-block;
+}
+
+.TR-Form-ImageSelector img 
+{
+	height: 2em;
+	width: 2em;
+	margin: 0.2em;
 }
 
 .TR-NewWordForm-SpecifiedTranslation 

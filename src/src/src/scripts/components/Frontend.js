@@ -9,8 +9,8 @@ var Frontend = function ()
 			Register.translationsHighlighter = new TranslationsHighlighter();
 			Register.translationsHighlighter.init();
 
-			Register.translationsForm = new TranslationsForm();
-			Register.translationsForm.init();
+			Register.translationForm = new TranslationFormHandler();
+			Register.translationForm.init();
 			
 			UIManager.addEvent(document.body, "mouseup", function(event, el) 
 			{
@@ -22,11 +22,11 @@ var Frontend = function ()
 
 				if (event.ctrlKey || event.metaKey)
 				{
-					Register.translationsForm.display(event);
+					Register.translationForm.display(event);
 				}
 				else 
 				{
-					Register.translationsForm.hideNewWordAddingForm();
+					Register.translationForm.dismiss();
 				}
 			});
 		});

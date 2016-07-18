@@ -23,9 +23,13 @@ function applyForEveryElOnList(elsList, _function)
 	return elsList;
 }
 
-function performOnElsList(elsList, _function) 
+function performOnElsList(elsList, _function, max) 
 {
-	for(var i = 0; i < elsList.length; i++) 
+	var _max = elsList.length;
+	if(max) {
+		_max = Math.min(_max, max);
+	}
+	for(var i = 0; i < _max; i++) 
 	{
 		var result = _function(elsList[i], i);
 		if(false === result) {

@@ -3,6 +3,7 @@
 	<div class="TR-InvisibleTemplate" data-js-template="TranslationsHighlightsHandler">
 		<trhandler>{{text}}</trhandler>
 	</div>
+	
 	<div class="TR-InvisibleTemplate" data-js-template="TranslationHighlight">
 		<trtag
 			data-tr-word='{{word}}'
@@ -13,31 +14,63 @@
 			class='TR-HighlightedText'>{{original}}</trtag>
 	</div>
 
-	<div class="TR-InvisibleTemplate" data-js-template="AddingTranslationForm">
+	<div class="TR-InvisibleTemplate" data-js-template="TranslationFormHandler">
 		<div class="TR-Base TR-BG-Light TR-NewWordForm">
 			<div class="TR-NewWordForm-TitleHandler">
 				<span class="TR-NewWordForm-Title">add translaton to the word</span>
 				<button class="_tr_close TR-Red TR-NewWordForm-CloseButton">close</button>
 				<div class="TR-Clear"></div>
 			</div>
-			<div class="TR-NewWordForm-Body">
-				<div class="TR-BG-Dark TR-NewWordForm-CurrentSelection">
+			<div class="_tr_body TR-NewWordForm-Body">
+				
+			</div>
+		</div>
+	</div>
+	
+	<div class="TR-InvisibleTemplate" data-js-template="TranslationForm">
+		<div class="TR-TranslationForm">
+			<div class="TR-BG-Dark TR-NewWordForm-CurrentSelection">
+				<div class="_tr_imageSelectorHandler TR-BG-Light TR-Form-ImageSelectorHandler" style="display: none;">
+					<div class="_tr_imageSelector TR-Form-ImageSelector">
+						<div class="TR-InvisibleTemplate" data-js-template="TranslationFromImageToSelectFrom">
+							<img class='_tr_imageSelectFrom' src="{{src}}" />
+						</div>
+					</div>
+					<div class="">
+						<button class="_tr_chooseImageButton">done</button>
+					</div>
+				</div>
+				<div style="height: 0.5em;"></div>
+				<div class="TR-Form-Image" style="float: left;">
+					<img class="_tr_textImage" 
+						  src="" 
+						  data-src="{{textImage}}" 
+						  style="width: 3em; height: 3em; cursor: pointer;">
+				</div>
+				<div class="TR-Form-Word" style="float: left; margin-left: 0.5em;">
 					<span class="_tr_textToTranslate TR-Word">{{text}}</span>
-					- 
-					<span class="_tr_textTranslation TR-Translation TR-NewWordForm-SpecifiedTranslation"></span>
+					- <span class="_tr_textToTranslateDefinition" style="font-size: 0.65em;">{{definition}}</span>
 				</div>
-				<div class="TR-NewWordForm-ButtonsPanel">
-					<button class="_tr_bingButton TR-Action TR-NewWordForm-BingButton">
-						Translate to <span class="_tr_translateTo">'{{langTo}}'</span> 
-						with 
-						<img src="" data-src="{{config.bingIcon}}">
-					</button>
-					<img stc="" class="_tr_loading TR-NewWordForm-LoadingAnimation TR-LoadingAnimation" data-src="{{config.loadingAnimation}}">
-				</div>
-				<div class="TR-NewWordForm-Translation-Handler">
-					<input class="_tr_translationInput TR-Translation TR-NewWordForm-Translation" value="" type="text" placeholder="translation">
-					<button title="Add word" class="_tr_setTranslationButton TR-NewWordForm-EnterKeyButton">&nbsp;</button>
-				</div>
+				<div class="TR-Clear"></div>
+			</div>
+			<div class="TR-BG-Ultralight" style="padding: 0.5em;">
+				<div class="_tr_textTranslation TR-Translation TR-NewWordForm-SpecifiedTranslation"></div>
+			</div>
+			<div class="TR-NewWordForm-ButtonsPanel">
+				<div>Translate to <span class="_tr_translateTo">'{{langTo}}'</span> </div>
+				<button class="_tr_bingButton TR-Action TR-NewWordForm-BingButton">
+					Using <img src="" data-src="{{config.bingIcon}}">
+				</button>
+				<div></div>
+				<button class="_tr_globseButton TR-Action TR-NewWordForm-GlobseButton">
+					Using Glosbe 
+					<img src="" data-src="{{config.glosbeIcon}}">
+				</button>
+				<img stc="" class="_tr_loading TR-NewWordForm-LoadingAnimation TR-LoadingAnimation" data-src="{{config.loadingAnimation}}">
+			</div>
+			<div class="TR-NewWordForm-Translation-Handler">
+				<input class="_tr_translationInput TR-Translation TR-NewWordForm-Translation" value="" type="text" placeholder="translation">
+				<button title="Add word" class="_tr_setTranslationButton TR-NewWordForm-EnterKeyButton">&nbsp;</button>
 			</div>
 		</div>
 	</div>
