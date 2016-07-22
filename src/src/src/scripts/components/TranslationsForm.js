@@ -1,115 +1,17 @@
-var TranslationFormHandler = function() 
-{
-	var _this = this;
-	
-	this.formHandler = null;
-	this.formHandlerBody = null;
-	this.formHandlerCloseButton = null;
-	
-	this.init = function() 
-	{
-		this.formHandler = UIManager.addNodeFromHTML(document.body, 
-			Register.templater.formatTemplate("TranslationFormHandler"));
-		
-		this.formHandlerBody = this.formHandler.querySelector("._tr_body");
-		this.formHandlerCloseButton = this.formHandler.querySelector("._tr_close");
-		
-		UIManager.addEvent(this.formHandlerCloseButton, "click", function () { 
-			_this.dismiss(); 
-		});
-		
-		UIManager.addEvent(window, "keydown", function(event) 
-		{
-			switch(event.keyCode) {
-				case 27:
-					_this.dismiss();
-					break;
-			}
-		});
-	};
-	
-	this.display = function (event)
-	{
-		var selection = window.getSelection();
-		var selectedText = selection.toString().trim();
-
-		if (selectedText.length === 0)
-		{
-			_this.dismiss();
-			return false;
-		}
-		
-		Register.settingsManager.GetTranslationLanguage(function (lang)
-		{
-			_this.form = new TranslationForm(_this.formHandlerBody, selection, selectedText, lang);
-			
-			_this.form.setup(function(result) 
-			{
-				if (result.translation.length > 0)
-				{
-					Register.wordsManager.AddWord(result.text, result.translation,
-					function ()
-					{
-						Register.translationsHighlighter.showHighlights();
-						UIManager.addClassToEl(_this.formHandler, "TR-Successful");
-
-						setTimeout(function ()
-						{
-							_this.dismiss();
-							UIManager.removeClassFromEl(_this.formHandler, "TR-Successful");
-						}, 50);
-					});
-				}
-			});
-			
-			_this.position(selection, event);
-			UIManager.showEl(_this.formHandler);
-			
-			//UIManager.setHTML(_this.formHandler.translationLanguageSpan, "'" + lang.toUpperCase() + "'");
-		});
-	};
-	
-	this.position = function(selection, event) 
-	{
-		var range = selection.getRangeAt(0);
-		var selectionRect = range.getBoundingClientRect();
-
-		// In textareas selectionRect is filled with zeros. Reason unknown. 
-		// Trying to solve by using mouse coordiates to find the place where to show the form
-		if (selectionRect.left == 0 && selectionRect.top == 0)
-		{
-			selectionRect =
-			{
-				right: event.x,
-				top: event.y,
-				width: 0,
-				height: 0
-			};
-		}
-
-		var formRect = _this.formHandler.getBoundingClientRect();
-		UIManager.setStyle(_this.formHandler, "left", (window.scrollX + selectionRect.right - selectionRect.width / 2), "px");
-		UIManager.setStyle(_this.formHandler, "top", (window.scrollY + selectionRect.top - formRect.height), "px");
-	};
-	
-	this.dismiss = function()
-	{
-		UIManager.hideEl(this.formHandler);
-		UIManager.clearEl(this.formHandlerBody);
-	};
-};
-
-var TranslationForm = function(handler, selection, text, langTo)
+var TranslationForm = function(handler, data, langTo, autoTranslate)
 {
 	var _this = this;
 	
 	this.handler = handler;
-	this.selection = selection;
-	this.text = text;
+	this.text = data.text;
 	this.langTo = langTo;
+	this.autoTranslate = autoTranslate;
 	
 	this.form = UIManager.addNodeFromHTML(handler, Register.templater.formatTemplate("TranslationForm", {
-		text: text,
+		text: data.text,
+		translation: OR(data.translation, ""),
+		definition: OR(data.definition, ""),
+		image: OR(data.image, chrome.extension.getURL('imgs/select_image.png')),
 		langTo: langTo.toUpperCase(),
 		config: {
 			bingIcon: chrome.extension.getURL('imgs/bing_icon.png'),
@@ -123,7 +25,9 @@ var TranslationForm = function(handler, selection, text, langTo)
 	this.imageSelectorHandler = this.form.querySelector("._tr_imageSelectorHandler");
 	this.imageSelector = this.form.querySelector("._tr_imageSelector");
 	this.chooseImageButton = this.form.querySelector("._tr_chooseImageButton");
+	this.cancelImageButton = this.form.querySelector("._tr_cancelImageButton");
 	this.textImage = this.form.querySelector("._tr_textImage");
+	this.textDefinition = this.form.querySelector("._tr_textToTranslateDefinition");
 	this.specifiedTranslation = this.form.querySelector("._tr_textTranslation");
 	this.enterKeyButton = this.form.querySelector("._tr_setTranslationButton");
 	this.closeButton = this.form.querySelector("._tr_close");
@@ -140,12 +44,9 @@ var TranslationForm = function(handler, selection, text, langTo)
 		
 		UIManager.setFocus(_this.translationInput);
 		
-		Register.settingsManager.IsAutotranslationEnabled(function (isEnabled)
-		{
-			if (isEnabled) {
-				_this.translateWithBing();
-			}
-		});
+		if (_this.autoTranslate) {
+			_this.translateWithBing();
+		}
 		
 		UIManager.addEvent(this.translationInput, "input", function() {
 			UIManager.setHTML(_this.specifiedTranslation, UIManager.getValue(_this.translationInput));
@@ -155,14 +56,14 @@ var TranslationForm = function(handler, selection, text, langTo)
 		{
 			switch(event.keyCode) {
 				case 13:
-					_this.addWord();
+					_this.addTranslation();
 					break;
 			}
 		});
 
 		UIManager.addEvent(_this.enterKeyButton, "click", function() 
 		{
-			_this.addWord();
+			_this.addTranslation();
 		});
 
 		UIManager.addEvent(_this.bingTranslateButton, "click", function() {
@@ -180,17 +81,18 @@ var TranslationForm = function(handler, selection, text, langTo)
 		UIManager.addEvent(_this.chooseImageButton, "click", function() {
 			UIManager.hideEl(_this.imageSelectorHandler);
 		});
+		
+		UIManager.addEvent(_this.cancelImageButton, "click", function() {
+			_this.textImage.src = UIManager.getElData(_this.textImage, "tr-default-image");
+			UIManager.hideEl(_this.imageSelectorHandler);
+		});
 	};
 
 	this.showLoadingAnimation = function() { UIManager.showEl(this.loadingAnimationImage); };
 	this.hideLoadingAnimation = function() { UIManager.hideEl(this.loadingAnimationImage); };
 	
-	var imageNum = 0;
-	
 	this.getImages = function() 
 	{
-		imageNum = 0;
-		
 		_this.showLoadingAnimation();
 		UIManager.showEl(_this.imageSelectorHandler);
 		UIManager.clearEl(_this.imageSelector);
@@ -202,7 +104,7 @@ var TranslationForm = function(handler, selection, text, langTo)
 			var images = result.d.results;
 			performOnElsList(images, function(image, i) 
 			{
-				if(i == imageNum) {
+				if(i == 0) {
 					_this.textImage.src = image.MediaUrl;
 				}
 				UIManager.addNodeFromHTML(_this.imageSelector, 
@@ -210,9 +112,14 @@ var TranslationForm = function(handler, selection, text, langTo)
 					{
 						src: image.MediaUrl
 					})); 
-			}, 10);
+			}, AppConfig.translationForm.imagesToShow);
 			
-			imageNum = Math.min(10, ++imageNum);
+			performOnElsList(_this.imageSelector.querySelectorAll("._tr_imageSelectFrom"), function(el) {
+				UIManager.addEvent(el, "click", function(e, el) {
+					_this.textImage.src = el.src;
+					UIManager.setElData(_this.textImage, "tr-selected-image", _this.textImage.src);
+				});
+			});
 
 			_this.hideLoadingAnimation();
 		});
@@ -223,7 +130,7 @@ var TranslationForm = function(handler, selection, text, langTo)
 		_this.showLoadingAnimation();
 		Register.settingsManager.GetTranslationLanguage(function(toLang) 
 		{
-			BingClient.Translate(_this.text, document.documentElement.lang, toLang,
+			BingClient.Translate(_this.text, OR(document.documentElement.lang, 'en'), toLang,
 			function (result)
 			{
 				var translation = result.trim("\"");
@@ -242,13 +149,13 @@ var TranslationForm = function(handler, selection, text, langTo)
 		_this.showLoadingAnimation();
 		Register.settingsManager.GetTranslationLanguage(function(toLang) 
 		{
-			GlosbeClient.Translate(_this.text, document.documentElement.lang, toLang,
+			GlosbeClient.Translate(_this.text, OR(document.documentElement.lang, 'en'), toLang,
 			function (translation)
 			{
 				console.log(translation);
 				var result = {
-					definitionOrigin: '',
-					definitionTranslated: '',
+					definitionOrigin: [],
+					definitionTranslated: [],
 					translation: ''
 				};
 				if(translation.result == "ok") 
@@ -272,23 +179,32 @@ var TranslationForm = function(handler, selection, text, langTo)
 				} else {
 					console.log("Couldn't get translation from Glosbe.")
 				}
-//				var translation = result.trim("\"");
-				UIManager.setValue(_this.translationInput, JSON.stringify(result));
-				UIManager.setHTML(_this.specifiedTranslation, JSON.stringify(result));
-//
-//				UIManager.setFocus(_this.wordAddingFormTranslationInput);
-//
+				
+				console.log(result);
+
+				if(result.definitionOrigin.length > 0) {
+					UIManager.setHTML(_this.textDefinition, result.definitionOrigin[0].text);
+					UIManager.setElData(_this.textDefinition, "tr-selected-definition", result.definitionOrigin[0].text);
+				}
+				
+				UIManager.setValue(_this.translationInput, result.translation);
+				UIManager.setHTML(_this.specifiedTranslation, result.translation);
+
+				UIManager.setFocus(_this.translationInput);
+
 				_this.hideLoadingAnimation();
 			});
 		});
 		
 	};
 
-	this.addWord = function()
+	this.addTranslation = function()
 	{
 		this.doneCallback(
 		{
 			text: _this.text,
+			definition: UIManager.getElData(_this.textDefinition, "tr-selected-definition"),
+			image: UIManager.getElData(_this.textImage, "tr-selected-image"),
 			translation: UIManager.getValue(_this.translationInput)
 		});
 	};
@@ -296,8 +212,8 @@ var TranslationForm = function(handler, selection, text, langTo)
 
 EventsManager.subscribe(Events.htmlChanged, function(el) 
 {
-	performOnElsList(el.querySelectorAll("[data-src]"), function(el) 
+	performOnElsList(el.querySelectorAll("[data-tr-src]"), function(el) 
 	{
-		UIManager.setElAttr(el, "src", UIManager.getElData(el, "src"));
+		UIManager.setElAttr(el, "src", UIManager.getElData(el, "tr-src"));
 	});
 });

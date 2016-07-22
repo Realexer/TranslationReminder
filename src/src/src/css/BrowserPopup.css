@@ -20,6 +20,7 @@
 .TR-Popup
 {
 	width: 400px;
+	font-size: 1em;
 }
 
 /*
@@ -28,7 +29,9 @@
 .TR-Header 
 {
 	border-bottom: 2px solid #D6D6D6;
+	position: relative;
 }
+
 .TR-Header .TR-LoadingAnimation {
 	position: absolute;
 	left: 0px;
@@ -194,4 +197,16 @@
 	bottom: 0;
 	width: 100%;
 	background: #fff;
+}
+
+.TR-EditTranslation
+{
+	display: none;
+	width: 100%;
+	font-size: 1.5em;
+}
+
+.TR-EditTranslation .TR-Body 
+{
+	padding: 0.5em;
 }

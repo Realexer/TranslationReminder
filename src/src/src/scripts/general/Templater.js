@@ -3,39 +3,49 @@ var Templater = function()
 	var _this = this;
 	this.loadedTemplates = {};
 	
+	this.templatesDeclarationAttr = "data-js-template";
+	this.templatesUsageAttr = "data-js-use-template";
+	this.templatesUsageDataAttr = "data-js-template-data";
+	
+	function formatAttrSelector(attr) 
+	{
+		return "["+attr+"]";
+	}
+	
 	this.prepareUI = function() 
 	{
-		this.retrieveTemplates();
-		this.drawTemplates();
+		this.retrieveTemplates(document);
+		this.drawTemplates(document);
 	};
 
-	this.retrieveTemplates = function() 
+	this.retrieveTemplates = function(element) 
 	{
-		var templates = document.querySelectorAll("[data-js-template]");
+		var templates = element.querySelectorAll(formatAttrSelector(_this.templatesDeclarationAttr));
 		for(var i = 0; i < templates.length; i++) 
 		{
 			var templateItem = templates[i];
-			var templateName = UIManager.getElAttr(templateItem, "data-js-template");
+			var templateName = UIManager.getElAttr(templateItem, _this.templatesDeclarationAttr);
 			
 			if(this.loadedTemplates[templateName] === undefined) 
 			{
+				_this.drawTemplates(templateItem);
 				this.loadedTemplates[templateName] = templateItem.innerHTML;
 			}
 		}
 	};
 	
-	this.drawTemplates = function() 
+	this.drawTemplates = function(element) 
 	{
-		performOnElsList(document.querySelectorAll("[data-js-use-template]"), function(el) 
+		performOnElsList(element.querySelectorAll(formatAttrSelector(_this.templatesUsageAttr)), function(el) 
 		{
-			var templateName = UIManager.getElAttr(el, "data-js-use-template");
-			var data = UIManager.getElAttr(el, "data-js-template-data");
+			var templateName = UIManager.getElAttr(el, _this.templatesUsageAttr);
+			var data = UIManager.getElAttr(el, _this.templatesUsageDataAttr);
 			if(data) {
 				data = JSON.parse(data);
 			}
 			
 			UIManager.setHTML(el, _this.formatTemplate(templateName, data));
-			UIManager.removeElAttr(el, "data-js-use-template");
+			UIManager.removeElAttr(el, formatAttrSelector(_this.templatesUsageAttr));
 		});
 	};
 

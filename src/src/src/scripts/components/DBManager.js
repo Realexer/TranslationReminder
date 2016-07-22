@@ -17,10 +17,7 @@ var DBManager = function()
 				{
 					performOnElsList(words, function(word, i) 
 					{
-						word.learned = false;
-						word.lang = null;
-						
-						Register.indexedStorage.AddWord(word, function() 
+						Register.translationsManager.AddTranslation(word.word, word.translation, null, null, function() 
 						{
 							if(i == words.length-1) 
 							{

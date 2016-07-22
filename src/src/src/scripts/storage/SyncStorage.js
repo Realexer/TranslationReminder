@@ -1,7 +1,7 @@
 var SynchStorage = function() 
 {
 	var _keys = {
-		words: "words",
+		translations: "translations",
 		settings: "settings",
 		synchash: "synchash",
 		
@@ -15,20 +15,20 @@ var SynchStorage = function()
 	this.init = function() 
 	{
 		this.sync = chrome.storage.sync;
-		//this.sync.remove([_keys.words, _keys.settings]);
+		//this.sync.remove([_keys.translations, _keys.settings]);
 		this.local = chrome.storage.local;
 		
 		chrome.storage.onChanged.addListener(function(changes, namespace) 
 		{
 			for (var key in changes) 
 			{
-				if(key == _keys.words) 
+				if(key == _keys.translations) 
 				{
 					_this.local.get(_keys.synchash, function(localHash) {
 						_this.sync.get(_keys.synchash, function(syncHash) {
 							if(localHash[_keys.synchash] != syncHash[_keys.synchash]) 
 							{
-								console.log("Words sync required");
+								console.log("Translations sync required");
 							}
 						});
 					});
@@ -45,19 +45,19 @@ var SynchStorage = function()
 		return data;
 	};
 	
-	this.synchWords = function(callback) 
+	this.synchTranslations = function(callback) 
 	{
-		Register.wordsManager.GetWords(function(words) {
-			_this.setWords(words, callback);
+		Register.translationsManager.GetTranslations(function(translations) {
+			_this.setTranslations(translations, callback);
 		});
 	};
 	
-	this.setWords = function(words, callback) 
+	this.setTranslations = function(translations, callback) 
 	{
 		var syncHash = generateRundomString(10);
 		this.local.set(setData(_keys.synchash, syncHash), function() {
 			_this.sync.set(setData(_keys.synchash, syncHash), function() {
-				_this.sync.set(setData(_keys.words, JSON.stringify(words)), function() 
+				_this.sync.set(setData(_keys.translations, JSON.stringify(translations)), function() 
 				{
 					callback();
 				});
@@ -65,10 +65,10 @@ var SynchStorage = function()
 		});
 	};
 	
-	this.getWords = function(callback) 
+	this.getTranslations = function(callback) 
 	{
-		return this.sync.get(_keys.words, function(result) {
-			callback(JSON.parse(result[_keys.words]));
+		return this.sync.get(_keys.translations, function(result) {
+			callback(JSON.parse(result[_keys.translations]));
 		});
 	};
 	

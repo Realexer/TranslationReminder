@@ -1,29 +1,29 @@
 <div class="displayNone" id='tr-templates' style='display: none;'>
 	<table class="TR-InvisibleTemplate">
-		<tbody data-js-template="WordLearningRowItem">
+		<tbody data-tr-js-template="WordLearningRowItem">
 			<tr class='{{rowClass}}'>
 				<td class='TR-Word-Cell'>
-					<div class='TR-WordHandler'><span class='TR-Word'>{{word}}</span></div>
+					<div class='TR-WordHandler'><span class='TR-Word'>{{text}}</span></div>
 					<div class='TR-WordData'>{{hits}} times met<br/>{{Templater.UI.print.dateAgo | date}}</div>
 				</td>
 				<td class='TR-Translation-Cell'>
 					<span class='TR-Translation'>{{translation}}</span>
 				</td>
 				<td class='TR-DeleteButton-Cell'>
-					<button class='TR-KnowIt' data-tr-word='{{word}}'>Know it!</button>
+					<button class='TR-KnowIt' data-tr-text='{{text}}'>Know it!</button>
 				</td>
 			</tr>
 		</tbody>
-		<tbody data-js-template="WordLearnedRowItem">
+		<tbody data-tr-js-template="WordLearnedRowItem">
 			<tr class='{{rowClass}}'>
 				<td class='TR-Word-Cell'>
-					<div class='TR-WordHandler'><span class='TR-Word'>{{word}}</span></div>
+					<div class='TR-WordHandler'><span class='TR-Word'>{{text}}</span></div>
 					<div class='TR-WordData'>{{hits}} times met<br/>{{Templater.UI.print.dateAgo | date}}</div>
 				</td>
 				<td class='TR-Translation-Cell' colspan="2">
 					<div>Learned {{Templater.UI.print.dateAgo | learnedAt}}</div>
 					<div class='TR-Translation' style="display: none;">{{translation}}</div>	
-					<button class='TR-BackToLearning' data-tr-word='{{word}}'>back to learning</button>
+					<button class='TR-BackToLearning' data-tr-text='{{text}}'>back to learning</button>
 				</td>
 			</tr>
 		</tbody>

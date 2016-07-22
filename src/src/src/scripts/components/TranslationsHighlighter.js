@@ -2,7 +2,7 @@ var TranslationsHighlighter = function()
 {
 	var _this = this;
 	
-	var wordsHits = {};
+	var textsHits = {};
 	
 	this.init = function() 
 	{
@@ -15,15 +15,15 @@ var TranslationsHighlighter = function()
 		{
 			var textNodes = findTextNodes(document.body);
 			
-			Register.wordsManager.GetWords(function(words) 
+			Register.translationsManager.GetTranslations(function(translations) 
 			{
 				performOnElsList(textNodes, function(textNode) {
-					_this.highlightTextsInNode(textNode, words);
+					_this.highlightTextsInNode(textNode, translations);
 				});
 				
-				performOnEveryKey(wordsHits, function(word, hits) {
-					Register.wordsManager.UpdateWordHitCount(word, hits, function() {
-						console.log("Word hit counts updated");
+				performOnEveryKey(textsHits, function(text, hits) {
+					Register.translationsManager.SetTranslationHitsCount(text, hits, function() {
+						console.log("Text hit counts updated");
 					});
 				});
 
@@ -40,7 +40,7 @@ var TranslationsHighlighter = function()
 		});
 	};
 	
-	this.highlightTextsInNode = function(textNode, words)
+	this.highlightTextsInNode = function(textNode, translations)
 	{
 		try
 		{
@@ -56,7 +56,7 @@ var TranslationsHighlighter = function()
 				}
 
 
-				performOnElsList(words, function(wordItem) 
+				performOnElsList(translations, function(translationItem) 
 				{
 					// split by trtags in order to prevent replacing content insdie of trtags
 					var modifiedTextSplit = modifiedText.split(new RegExp("(<trtag[^<]*</trtag>)", "mgi"));
@@ -65,9 +65,9 @@ var TranslationsHighlighter = function()
 					{
 						if(splitPart.search("<trtag") === -1) 
 						{
-							if (isHTMLContainsWord(splitPart, wordItem))
+							if (isHTMLContainsText(splitPart, translationItem))
 							{
-								modifiedTextSplit[i] = replaceTextWithHightlights(splitPart, wordItem);
+								modifiedTextSplit[i] = replaceTextWithHightlights(splitPart, translationItem);
 							}
 						}
 					});
@@ -78,7 +78,7 @@ var TranslationsHighlighter = function()
 				if (textNode.textContent != modifiedText) // changes were made
 				{
 					UIManager.addNodeFromHTML(textHandler, 
-						Register.templater.formatTemplate("TranslationsHighlightsHandler", {text: modifiedText}), 
+						Register.templater.formatTemplate("TranslationsHighlightsHandler", {content: modifiedText}), 
 						false, textNode);
 					UIManager.removeEl(textNode);
 				}
@@ -116,42 +116,42 @@ var TranslationsHighlighter = function()
 		return textNodes;
 	};
 
-	function isHTMLContainsWord(textContent, wordItem)
+	function isHTMLContainsText(textContent, translationItem)
 	{
-		return (textContent.search(new RegExp("\\b" + wordItem.word + "\\b", "mgi")) !== -1);
+		return (textContent.search(new RegExp("\\b" + translationItem.text + "\\b", "mgi")) !== -1);
 	};
 
-	function replaceTextWithHightlights(textContent, wordItem)
+	function replaceTextWithHightlights(textContent, translationItem)
 	{
-		textContent = textContent.replace(new RegExp("\\b" + wordItem.word + "\\b", "mgi"), 
+		textContent = textContent.replace(new RegExp("\\b" + translationItem.text + "\\b", "mgi"), 
 		function (match, offset, string)
 		{
-			wordItem.original = match;
-			return Register.templater.formatTemplate("TranslationHighlight", wordItem).replaceAll("\"", "'").trim();
+			translationItem.originalText = match;
+			return Register.templater.formatTemplate("TranslationHighlight", translationItem).replaceAll("\"", "'").trim();
 		});
 
-		increaseWordHitsCount(wordItem);
+		increaseTextHitsCount(translationItem);
 
 		return textContent;
 	};
 
-	function increaseWordHitsCount(wordItem)
+	function increaseTextHitsCount(translationItem)
 	{
-		if (!wordsHits[wordItem.word])
+		if (!textsHits[translationItem.text])
 		{
-			wordsHits[wordItem.word] = parseInt(wordItem.hits) + 1;
+			textsHits[translationItem.text] = parseInt(translationItem.hits) + 1;
 		}
 		else
 		{
-			wordsHits[wordItem.word] += 1;
+			textsHits[translationItem.text] += 1;
 		}
 	};
 
 
 	function showTranslationDetails(event)
 	{
-		var highlightedTextElement = event.target;
-		if (UIManager.getClass(highlightedTextElement) !== "TR-HighlightedText")
+		var highlight = event.target;
+		if (UIManager.getClass(highlight) !== "TR-HighlightedText")
 			return false;
 
 		if (event.target.hasInChildren("TR-Hint")) // hint already displaied
@@ -159,19 +159,21 @@ var TranslationsHighlighter = function()
 
 		var hint = UIManager.addNodeFromHTML(document.body, Register.templater.formatTemplate("TranslationDetails", 
 		{
-			word: UIManager.getElData(highlightedTextElement, "tr-word"),
-			translation: UIManager.getElData(highlightedTextElement, "tr-translation"),
-			hits: UIManager.getElData(highlightedTextElement, "tr-hits"),
-			date: parseInt(UIManager.getElData(highlightedTextElement, "tr-date"))
+			text: UIManager.getElData(highlight, "tr-text"),
+			translation: UIManager.getElData(highlight, "tr-translation"),
+			image: UIManager.getElData(highlight, "tr-image"),
+			definition: UIManager.getElData(highlight, "tr-definition"),
+			hits: UIManager.getElData(highlight, "tr-hits"),
+			date: parseInt(UIManager.getElData(highlight, "tr-date"))
 		}));
 
-		var highlightedTextElementRect = highlightedTextElement.getBoundingClientRect();
+		var highlightedTextElementRect = highlight.getBoundingClientRect();
 		var hintRect = hint.getBoundingClientRect();
 		hint.style.left = (window.scrollX + highlightedTextElementRect.right - highlightedTextElementRect.width / 2) + "px";
 		hint.style.top = (window.scrollY + highlightedTextElementRect.top - hintRect.height) + "px";
 
 		UIManager.addEvent(hint.querySelector("._tr_markAsLearnedButton"), "click", function(event, el) {
-			markWordAsLearned(UIManager.getElData(el, "tr-word"));
+			markTextAsLearned(UIManager.getElData(el, "tr-text"));
 		});
 	};
 
@@ -186,12 +188,12 @@ var TranslationsHighlighter = function()
 	};
 
 
-	function markWordAsLearned(word)
+	function markTextAsLearned(text)
 	{
-		Register.wordsManager.setWordLearned(word, 
+		Register.translationsManager.setTextLearned(text, 
 		function ()
 		{
-			_this.removeHighLights(word);
+			_this.removeHighLights(text);
 			_this.showHighlights();
 			_this.hideAllTranslationDetails();
 		});
@@ -201,16 +203,16 @@ var TranslationsHighlighter = function()
 
 	
 	/**
-	 * If word is null all highlights will be removed
+	 * If text is null all highlights will be removed
 	 * 
-	 * @param {type} word
+	 * @param {type} text
 	 * @returns {undefined}
 	 */
-	this.removeHighLights = function (word)
+	this.removeHighLights = function (text)
 	{
 		performOnElsList(document.querySelectorAll(".TR-HighlightedText"), function(highlightEl) 
 		{
-			if (word == null || UIManager.getHTML(highlightEl).trim().toLowerCase() == word.toLowerCase())
+			if (text == null || UIManager.getHTML(highlightEl).trim().toLowerCase() == text.toLowerCase())
 			{
 				if (highlightEl.parentNode)
 				{

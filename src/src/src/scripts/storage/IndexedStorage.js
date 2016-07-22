@@ -41,7 +41,7 @@ var IndexedStorage = function()
 			}
 			
 			var objectStore = tr.objectStore(DBObjects.Translations);
-			_this.updateIndex(objectStore, "word", "word", { unique: true });
+			_this.updateIndex(objectStore, "text", "text", { unique: true });
 			_this.updateIndex(objectStore, "date", "date", { unique: false });
 			_this.updateIndex(objectStore, "hits", "hits", { unique: false });
 		};
@@ -92,9 +92,9 @@ var IndexedStorage = function()
 		};
 	};
 	
-	this.GetWords = function (request, callback)
+	this.GetTranslations = function (request, callback)
 	{
-		var words = [];
+		var translations = [];
 		this.runTransaction(DBObjects.Translations, DBTransactionTypes.rw, function(tr, store) 
 		{
 			return store.index(request.order.field).openCursor(null, DBOrderDirection[request.order.direction]); 
@@ -102,19 +102,19 @@ var IndexedStorage = function()
 		function(e) 
 		{
 			if (callback) {
-				callback(words);
+				callback(translations);
 			}
 		},
 		function(e) 
 		{
 			var cursor = e.target.result;
 			if(cursor) {
-				var word = cursor.value;
+				var translation = cursor.value;
 				
-				if((request.condition.learned === undefined || word.learned == request.condition.learned) 
-				&& (request.condition.lang === undefined || word.lang == request.condition.lang)) 
+				if((request.condition.learned === undefined || translation.learned == request.condition.learned) 
+				&& (request.condition.lang === undefined || translation.lang == request.condition.lang)) 
 				{
-					words.push(cursor.value);
+					translations.push(cursor.value);
 				}
 				cursor.continue();
 			}
@@ -122,9 +122,9 @@ var IndexedStorage = function()
 	};
 
 
-	this.AddWord = function (request, callback)
+	this.AddTranslation = function (request, callback)
 	{
-		this.isWordExists(request.word, function(isExists) 
+		this.isTextExists(request.text, function(isExists) 
 		{
 			if(!isExists) 
 			{
@@ -134,7 +134,7 @@ var IndexedStorage = function()
 				},
 				function() 
 				{
-					Register.synchStorage.synchWords(function() {
+					Register.synchStorage.synchTranslations(function() {
 						callback();
 					});
 				});
@@ -146,13 +146,32 @@ var IndexedStorage = function()
 		});
 	};
 	
-	this.getTranslationByText = function(word, callback, onSuccess) 
+	this.EditTranslation = function(request, callback) 
+	{
+		this.getTranslationByText(request.text, function(translation, tr, store) 
+		{
+			Register.synchStorage.synchTranslations(function() {
+				callback();
+			});
+		},
+		function(translation, tr, store, cursor) 
+		{
+			if(translation && cursor) {
+				translation.translation = request.translation;
+				translation.image = request.image;
+				translation.definition = request.definition;
+				cursor.update(translation);
+			}
+		});
+	};
+	
+	this.getTranslationByText = function(text, callback, onSuccess) 
 	{
 		var translation = null;
 		this.runTransaction(DBObjects.Translations, DBTransactionTypes.rw, function(tr, store) 
 		{
-			var index = store.index('word');
-			var keyRange = IDBKeyRange.only(word);
+			var index = store.index('text');
+			var keyRange = IDBKeyRange.only(text);
 
 			return index.openCursor(keyRange);
 		},
@@ -173,17 +192,17 @@ var IndexedStorage = function()
 		});
 	};
 	
-	this.isWordExists = function(word, callback) 
+	this.isTextExists = function(text, callback) 
 	{
-		this.getTranslationByText(word, function(translation) 
+		this.getTranslationByText(text, function(translation) 
 		{
 			callback(translation != null);
 		});
 	};
 
-	this.UpdateWordHitCount = function (request, callback)
+	this.SetTranslationHitsCount = function (request, callback)
 	{
-		this.getTranslationByText(request.word, function(translation, tr, store) 
+		this.getTranslationByText(request.text, function(translation, tr, store) 
 		{
 			callback();
 		},
@@ -196,9 +215,9 @@ var IndexedStorage = function()
 		});
 	};
 
-	this.SetWordLearned = function(request, callback) 
+	this.SetTextLearned = function(request, callback) 
 	{
-		this.getTranslationByText(request.word, function(translation, tr, store) 
+		this.getTranslationByText(request.text, function(translation, tr, store) 
 		{
 			callback();
 		},
@@ -212,11 +231,11 @@ var IndexedStorage = function()
 		});
 	};
 
-	this.DeleteWord = function (request, callback)
+	this.DeleteTranslation = function (request, callback)
 	{
-		this.getTranslationByText(request.word, function(translation, tr, store) 
+		this.getTranslationByText(request.text, function(translation, tr, store) 
 		{
-			Register.synchStorage.synchWords(function() {
+			Register.synchStorage.synchTranslations(function() {
 				callback();
 			});
 		},
@@ -228,20 +247,20 @@ var IndexedStorage = function()
 		});
 	};
 
-	this.DeleteAllWords = function (callback)
+	this.DeleteAllTranslations = function (callback)
 	{
 		this.runTransaction(DBObjects.Translations, DBTransactionTypes.rw, function(tr, store) 
 		{
 			return store.clear();
 		}, 
 		function() {
-			Register.synchStorage.synchWords(function() {
+			Register.synchStorage.synchTranslations(function() {
 				callback();
 			});
 		});
 	};
 	
-	this.setWords = function(words, callback) 
+	this.setTranslations = function(translations, callback) 
 	{
 		var i = 0;
 		this.runTransaction(DBObjects.Translations, DBTransactionTypes.rw, function(tr, store) 
@@ -250,12 +269,12 @@ var IndexedStorage = function()
 		}, function() {
 			
 		}, function(e, tr, store) {
-			putNextWord();
+			putNextTranslation();
 
-			function putNextWord() 
+			function putNextTranslation() 
 			{
-				if (i < words.length) {
-					store.put(words[i]).onsuccess = putNextWord;
+				if (i < translations.length) {
+					store.put(translations[i]).onsuccess = putNextTranslation;
 					++i;
 				} else {
 					callback();

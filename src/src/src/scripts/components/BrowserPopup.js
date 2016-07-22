@@ -1,20 +1,27 @@
 var BrowserPopup = function ()
 {
-	var wordsTableLearning = getEl("TR-WordsListLearning");
-	var wordsTableLearned = getEl("TR-WordsListLearned");
+	var _this = this;
+	
+	var translationsTableLearning = getEl("TR-WordsListLearning");
+	var translationsTableLearned = getEl("TR-WordsListLearned");
 	var loadingAnimation = getEl("TR-LoadingAnimation");
-	var noWordsView = getEl("TR-NoWordsView");
+	var noTranslationsView = getEl("TR-NoWordsView");
+	var translationEditingForm = getEl("TR-EditTranslation");
 
-	var currentWordsOrder =
+	var currentTablesOrder =
 	{
-		field: WordsOrder.order.date,
-		direction: WordsOrder.direction.DESC,
+		field: TranslationsOrder.order.date,
+		direction: TranslationsOrder.direction.DESC,
 		
 		switchDirection: function() 
 		{
-			this.direction = this.direction == WordsOrder.direction.DESC ? WordsOrder.direction.ASC : WordsOrder.direction.DESC;
+			this.direction = this.direction == TranslationsOrder.direction.DESC 
+								? TranslationsOrder.direction.ASC 
+								: TranslationsOrder.direction.DESC;
 		}
 	};
+	
+	this.translationsLearning = [];
 
 	this.Init = function ()
 	{
@@ -26,10 +33,10 @@ var BrowserPopup = function ()
 			UIManager.removeClassFromEl(orderByHitsButton, "TR-SelectedWordsOrder");
 			UIManager.addClassToEl(orderByDateButton, "TR-SelectedWordsOrder");
 
-			currentWordsOrder.field = WordsOrder.order.date;
-			currentWordsOrder.switchDirection();
+			currentTablesOrder.field = TranslationsOrder.order.date;
+			currentTablesOrder.switchDirection();
 
-			showUserWords();
+			showUserTranslations();
 		});
 
 		UIManager.addEventNoDefault(orderByHitsButton, "click", function ()
@@ -37,84 +44,137 @@ var BrowserPopup = function ()
 			UIManager.removeClassFromEl(orderByDateButton, "TR-SelectedWordsOrder");
 			UIManager.addClassToEl(orderByHitsButton, "TR-SelectedWordsOrder");
 			
-			currentWordsOrder.field = WordsOrder.order.hits;
-			currentWordsOrder.switchDirection();
+			currentTablesOrder.field = TranslationsOrder.order.hits;
+			currentTablesOrder.switchDirection();
 
-			showUserWords();
+			showUserTranslations();
+		});
+		
+		UIManager.addEvent(translationEditingForm.querySelector("._tr_close"), "click", function() {
+			finishEditing();
 		});
 
-		TemplatesLoader.loadTemplates("templates/popup.html", function() 
+		TemplatesLoader.loadTemplates("templates/all.html", function() 
 		{
-			showUserWords();
+			showUserTranslations();
 		});
 	};
 
 
-	function showUserWords()
+	function showUserTranslations()
 	{
 		UIManager.showEl(loadingAnimation);
-		UIManager.clearEl(wordsTableLearning);
-		UIManager.clearEl(wordsTableLearned);
+		UIManager.clearEl(translationsTableLearning);
+		UIManager.clearEl(translationsTableLearned);
 
-		Register.wordsManager.GetWords(function (words)
+		Register.translationsManager.GetTranslations(function (translations)
 		{
-			if (words.length > 0)
+			if (translations.length > 0)
 			{
-				UIManager.setHTML(getEl("TR-WordsCount"), words.length + " word" + (words.length > 1 ? "s" : ""));
+				UIManager.setHTML(getEl("TR-WordsCount"), translations.length + " word" + (translations.length > 1 ? "s" : ""));
 
-				UIManager.hideEl(noWordsView);
+				UIManager.hideEl(noTranslationsView);
 
-				performOnElsList(words.filter(function(word) {
-					return !word.learned;
-				}), function(word, i) {
-						word.rowClass = (i % 2 == 0) ? "TR-BG-Dark" : "TR-BG-Light";
-						UIManager.addHTML(wordsTableLearning, Register.templater.formatTemplate("WordLearningRowItem", word));
+				_this.translationsLearning = translations.filter(function(translationItem) {
+					return !translationItem.learned;
 				});
 
-				performOnElsList(words.filter(function(word) {
-					return word.learned;
-				}), function(word, i) {
-						word.rowClass = (i % 2 == 0) ? "TR-BG-Grey-Dark" : "TR-BG-Grey-Light";
-						UIManager.addHTML(wordsTableLearned, Register.templater.formatTemplate("WordLearnedRowItem", word));
+				performOnElsList(_this.translationsLearning, function(data, i) {
+					data.index = i;
+					data.image = OR(data.image, chrome.extension.getURL('imgs/select_image.png'));
+					data.rowClass = (i % 2 == 0) ? "TR-BG-Light" : "TR-BG-Dark";
+					UIManager.addHTML(translationsTableLearning, Register.templater.formatTemplate("WordLearningRowItem", data));
+				});
+
+				performOnElsList(translations.filter(function(translationItem) {
+					return translationItem.learned;
+				}), function(data, i) {
+						data.image = OR(data.image, chrome.extension.getURL('imgs/select_image.png'));
+						data.rowClass = (i % 2 == 0) ? "TR-BG-Grey-Light" : "TR-BG-Grey-Dark";
+						UIManager.addHTML(translationsTableLearned, Register.templater.formatTemplate("WordLearnedRowItem", data));
 				});
 
 				performOnElsList(document.querySelectorAll(".TR-KnowIt"), function(button) 
 				{
 					UIManager.addEventNoDefault(button, "click", function() {
-						markWordAsLearned(UIManager.getElData(button, "tr-word")); 
+						markTranslationAsLearned(UIManager.getElData(button, "tr-text")); 
+					});
+				});
+				
+				performOnElsList(document.querySelectorAll(".TR-EditTranslationButton"), function(button) 
+				{
+					UIManager.addEventNoDefault(button, "click", function(e, el) {
+						editTranslation(_this.translationsLearning[UIManager.getElData(el, "tr-raw")]); 
 					});
 				});
 				
 				performOnElsList(document.querySelectorAll(".TR-BackToLearning"), function(button) 
 				{
 					UIManager.addEventNoDefault(button, "click", function() {
-						moveBackToLearning(UIManager.getElData(button, "tr-word")); 
+						moveBackToLearning(UIManager.getElData(button, "tr-text")); 
 					});
 				});
 			}
 			else
 			{
-				UIManager.showEl(noWordsView);
+				UIManager.showEl(noTranslationsView);
 			}
 
 			UIManager.hideEl(loadingAnimation);
-		}, {
-			order: currentWordsOrder
-		});
-	};
-
-
-	function markWordAsLearned(word)
-	{
-		Register.wordsManager.setWordLearned(word, function() {
-			showUserWords();
+		}, 
+		{
+			order: currentTablesOrder
 		});
 	};
 	
-	function moveBackToLearning(word)
+	function editTranslation(data) 
 	{
-		Register.wordsManager.setWordLearning(word, function() {
-			showUserWords();
+		Register.settingsManager.GetTranslationLanguage(function (langTo)
+		{
+			var form = new TranslationForm(translationEditingForm.querySelector("._tr_body"), data, langTo, false);
+
+			form.setup(function(result) 
+			{
+				if (result.translation.length > 0)
+				{
+					Register.translationsManager.EditTranslation(result.text, result.translation, result.image, result.definition,
+					function ()
+					{
+						UIManager.addClassToEl(translationEditingForm.querySelector(".TR-Body"), "TR-Successful");
+	
+						setTimeout(function ()
+						{
+							showUserTranslations();
+							finishEditing();
+							UIManager.removeClassFromEl(translationEditingForm.querySelector(".TR-Body"), "TR-Successful");
+						}, 500);
+					});
+				}
+			});
+
+			UIManager.showEl(translationEditingForm);
+			UIManager.scrollIntoView(translationEditingForm);
+		});
+	};
+	
+	function finishEditing() 
+	{
+		UIManager.hideEl(translationEditingForm);
+		UIManager.clearEl(translationEditingForm.querySelector("._tr_body"));
+	}
+
+
+	function markTranslationAsLearned(text)
+	{
+		Register.translationsManager.setTextLearned(text, function() {
+			showUserTranslations();
+		});
+	};
+	
+	function moveBackToLearning(text)
+	{
+		Register.translationsManager.setTextLearning(text, function() {
+			showUserTranslations();
 		});
 	};
 };

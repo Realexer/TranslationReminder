@@ -30,6 +30,10 @@ var AppConfig =
 		accountId: "uzo4aDuoHBH44J7X2kzXzU+ElWr+HbdxVyS6or56poQ="
 	},
 	
+	translationForm: {
+		imagesToShow: 10
+	},
+	
 	restrictedTags: [
 		"trtag",
 		"style", 
@@ -54,12 +58,13 @@ var Messages =
 	BE: {
 		DB: 
 		{
-			GetWords: "BE.DB.GetWords",
-			AddWord: "BE.DB.AddWord",
-			UpdateWordHitCount: "BE.DB.UpdateWordHitCount",
-			SetWordLearned: "BE.DB.SetWordLearned",
-			DeleteWord: "BE.DB.DeleteWord",
-			DeleteAllWords: "BE.DB.DeleteAllWords",
+			GetTranslations: "BE.DB.GetTranslations",
+			AddTranslation: "BE.DB.AddTranslation",
+			EditTranslation: "BE.DB.EditTranslation",
+			SetTranslationHitsCount: "BE.DB.SetTranslationHitsCount",
+			SetTextLearned: "BE.DB.SetTextLearned",
+			DeleteTranslation: "BE.DB.DeleteTranslation",
+			DeleteAllTranslations: "BE.DB.DeleteAllTranslations",
 			GetSitesBlackList: "BE.DB.GetSitesBlackList",
 			AddSiteToBlackList: "BE.DB.AddSiteToBlackList",
 			GetAllSettings: "BE.DB.GetAllSettings",
@@ -107,6 +112,10 @@ var TemplatesLoader =
 			}, function() 
 			{
 				Register.templater = new Templater();
+				Register.templater.templatesDeclarationAttr = "data-tr-js-template";
+				Register.templater.templatesUsageAttr = "data-tr-js-use-template";
+				Register.templater.templatesUsageDataAttr = "data-tr-js-template-data";
+				
 				Register.templater.prepareUI();
 				
 				callback();
@@ -115,10 +124,10 @@ var TemplatesLoader =
 	}
 };
 
-var WordsOrder = 
+var TranslationsOrder = 
 {
 	order: {
-		word: "word",
+		text: "text",
 		date: "date",
 		hits: "hits"
 	},

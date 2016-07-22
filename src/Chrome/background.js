@@ -1,21 +1,24 @@
 var BEMessagesHandler = [];
-BEMessagesHandler[Messages.BE.DB.GetWords] = function(message, data, callback, sender) {
-	Register.DB.GetWords(data, callback);
+BEMessagesHandler[Messages.BE.DB.GetTranslations] = function(message, data, callback, sender) {
+	Register.DB.GetTranslations(data, callback);
 };
-BEMessagesHandler[Messages.BE.DB.AddWord] = function(message, data, callback, sender) {
-	Register.DB.AddWord(data, callback);
+BEMessagesHandler[Messages.BE.DB.AddTranslation] = function(message, data, callback, sender) {
+	Register.DB.AddTranslation(data, callback);
 };
-BEMessagesHandler[Messages.BE.DB.UpdateWordHitCount] = function(message, data, callback, sender) {
-	Register.DB.UpdateWordHitCount(data, callback);
+BEMessagesHandler[Messages.BE.DB.EditTranslation] = function(message, data, callback, sender) {
+	Register.DB.EditTranslation(data, callback);
 };
-BEMessagesHandler[Messages.BE.DB.DeleteWord] = function(message, data, callback, sender) {
-	Register.DB.DeleteWord(data, callback);
+BEMessagesHandler[Messages.BE.DB.SetTranslationHitsCount] = function(message, data, callback, sender) {
+	Register.DB.SetTranslationHitsCount(data, callback);
 };
-BEMessagesHandler[Messages.BE.DB.SetWordLearned] = function(message, data, callback, sender) {
-	Register.DB.SetWordLearned(data, callback);
+BEMessagesHandler[Messages.BE.DB.DeleteTranslation] = function(message, data, callback, sender) {
+	Register.DB.DeleteTranslation(data, callback);
 };
-BEMessagesHandler[Messages.BE.DB.DeleteAllWords] = function(message, data, callback, sender) {
-	Register.DB.DeleteAllWords(callback);
+BEMessagesHandler[Messages.BE.DB.SetTextLearned] = function(message, data, callback, sender) {
+	Register.DB.SetTextLearned(data, callback);
+};
+BEMessagesHandler[Messages.BE.DB.DeleteAllTranslations] = function(message, data, callback, sender) {
+	Register.DB.DeleteAllTranslations(callback);
 };
 
 Messanger.onMessage(function(message, data, callback, sender) 
@@ -30,7 +33,7 @@ chrome.contextMenus.onClicked.addListener(function (info, tab)
 	Messanger.sendMessageToTab(tab.id,
 	{
 		name: info.menuItemId, 
-		word: info.selectionText 
+		text: info.selectionText 
 	}, function() {});
 });
 
@@ -40,7 +43,7 @@ chrome.runtime.onInstalled.addListener(function ()
 		title: "Highlight text...",
 		contexts: ["selection"],
 		id: Messages.FE.DisplayTranslationForm,
-	}, function () { console.log("Couldn't create context menu for 'Add New Word'"); });
+	}, function () { console.log("Couldn't create context menu for 'Add New Translation'"); });
 	
 	chrome.contextMenus.create({
 		title: "Don't highlight text on this site",
