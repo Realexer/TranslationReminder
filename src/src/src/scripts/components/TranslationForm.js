@@ -127,75 +127,85 @@ var TranslationForm = function(handler, data, langTo, autoTranslate)
 	
 	this.translateWithBing = function()
 	{
-		_this.showLoadingAnimation();
-		Register.settingsManager.GetTranslationLanguage(function(toLang) 
+		if(_this.text.split(" ").length <= AppConfig.translationForm.textMaxWordsToTranslate.bing) 
 		{
-			BingClient.Translate(_this.text, OR(document.documentElement.lang, 'en'), toLang,
-			function (result)
+			_this.showLoadingAnimation();
+			
+			Register.settingsManager.GetTranslationLanguage(function(toLang) 
 			{
-				var translation = result.trim("\"");
-				UIManager.setValue(_this.translationInput, translation);
-				UIManager.setHTML(_this.specifiedTranslation, translation);
+				BingClient.Translate(_this.text, OR(document.documentElement.lang, 'en'), toLang,
+				function (result)
+				{
+					var translation = result.trim("\"");
+					UIManager.setValue(_this.translationInput, translation);
+					UIManager.setHTML(_this.specifiedTranslation, translation);
 
-				UIManager.setFocus(_this.translationInput);
+					UIManager.setFocus(_this.translationInput);
 
-				_this.hideLoadingAnimation();
+					_this.hideLoadingAnimation();
+				});
 			});
-		});
+		} else {
+			alert("Text to translate with Bing should contain no more than "+AppConfig.translationForm.textMaxWordsToTranslate.bing+" words.");
+		}
 	};
 	
 	this.translateWithGlobse = function()
 	{
-		_this.showLoadingAnimation();
-		Register.settingsManager.GetTranslationLanguage(function(toLang) 
+		if(_this.text.split(" ").length <= AppConfig.translationForm.textMaxWordsToTranslate.glosbe) 
 		{
-			GlosbeClient.Translate(_this.text, OR(document.documentElement.lang, 'en'), toLang,
-			function (translation)
+			_this.showLoadingAnimation();
+			Register.settingsManager.GetTranslationLanguage(function(toLang) 
 			{
-				console.log(translation);
-				var result = {
-					definitionOrigin: [],
-					definitionTranslated: [],
-					translation: ''
-				};
-				if(translation.result == "ok") 
+				GlosbeClient.Translate(_this.text, OR(document.documentElement.lang, 'en'), toLang,
+				function (translation)
 				{
-					if(translation.tuc.length > 0) 
+					console.log(translation);
+					var result = {
+						definitionOrigin: [],
+						definitionTranslated: [],
+						translation: ''
+					};
+					if(translation.result == "ok") 
 					{
-						var useTranslation = translation.tuc[0];
-						if(useTranslation.meanings) {
-							result.definitionOrigin = useTranslation.meanings.filter(function(el) {
-								return el.language == translation.from;
-							});
-							result.definitionTranslated = useTranslation.meanings.filter(function(el) {
-								return el.language == translation.dest;
-							});
+						if(translation.tuc.length > 0) 
+						{
+							var useTranslation = translation.tuc[0];
+							if(useTranslation.meanings) {
+								result.definitionOrigin = useTranslation.meanings.filter(function(el) {
+									return el.language == translation.from;
+								});
+								result.definitionTranslated = useTranslation.meanings.filter(function(el) {
+									return el.language == translation.dest;
+								});
+							}
+
+							if(useTranslation.phrase) {
+								result.translation = useTranslation.phrase.text;
+							}
 						}
-						
-						if(useTranslation.phrase) {
-							result.translation = useTranslation.phrase.text;
-						}
+					} else {
+						console.log("Couldn't get translation from Glosbe.")
 					}
-				} else {
-					console.log("Couldn't get translation from Glosbe.")
-				}
-				
-				console.log(result);
 
-				if(result.definitionOrigin.length > 0) {
-					UIManager.setHTML(_this.textDefinition, result.definitionOrigin[0].text);
-					UIManager.setElData(_this.textDefinition, "tr-selected-definition", result.definitionOrigin[0].text);
-				}
-				
-				UIManager.setValue(_this.translationInput, result.translation);
-				UIManager.setHTML(_this.specifiedTranslation, result.translation);
+					console.log(result);
 
-				UIManager.setFocus(_this.translationInput);
+					if(result.definitionOrigin.length > 0) {
+						UIManager.setHTML(_this.textDefinition, result.definitionOrigin[0].text);
+						UIManager.setElData(_this.textDefinition, "tr-selected-definition", result.definitionOrigin[0].text);
+					}
 
-				_this.hideLoadingAnimation();
+					UIManager.setValue(_this.translationInput, result.translation);
+					UIManager.setHTML(_this.specifiedTranslation, result.translation);
+
+					UIManager.setFocus(_this.translationInput);
+
+					_this.hideLoadingAnimation();
+				});
 			});
-		});
-		
+		} else {
+			alert("Text to translate with Glosbe should contain no more than "+AppConfig.translationForm.textMaxWordsToTranslate.glosbe+" words.");
+		}
 	};
 
 	this.addTranslation = function()

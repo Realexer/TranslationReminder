@@ -31,7 +31,11 @@ var AppConfig =
 	},
 	
 	translationForm: {
-		imagesToShow: 10
+		imagesToShow: 10,
+		textMaxWordsToTranslate: {
+			bing: 5,
+			glosbe: 3
+		}
 	},
 	
 	restrictedTags: [
@@ -59,16 +63,11 @@ var Messages =
 		DB: 
 		{
 			GetTranslations: "BE.DB.GetTranslations",
+			GetTranslationByText: "BE.DB.GetTranslationByText",
 			AddTranslation: "BE.DB.AddTranslation",
-			EditTranslation: "BE.DB.EditTranslation",
-			SetTranslationHitsCount: "BE.DB.SetTranslationHitsCount",
-			SetTextLearned: "BE.DB.SetTextLearned",
+			UpdateTranslation: "BE.DB.UpdateTranslation",
 			DeleteTranslation: "BE.DB.DeleteTranslation",
 			DeleteAllTranslations: "BE.DB.DeleteAllTranslations",
-			GetSitesBlackList: "BE.DB.GetSitesBlackList",
-			AddSiteToBlackList: "BE.DB.AddSiteToBlackList",
-			GetAllSettings: "BE.DB.GetAllSettings",
-			SetSetting: "BE.DB.SetSetting"
 		}
 	}
 };

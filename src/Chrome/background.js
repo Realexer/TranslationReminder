@@ -2,20 +2,17 @@ var BEMessagesHandler = [];
 BEMessagesHandler[Messages.BE.DB.GetTranslations] = function(message, data, callback, sender) {
 	Register.DB.GetTranslations(data, callback);
 };
+BEMessagesHandler[Messages.BE.DB.GetTranslationByText] = function(message, data, callback, sender) {
+	Register.DB.getTranslationByText(data, callback);
+};
 BEMessagesHandler[Messages.BE.DB.AddTranslation] = function(message, data, callback, sender) {
 	Register.DB.AddTranslation(data, callback);
 };
-BEMessagesHandler[Messages.BE.DB.EditTranslation] = function(message, data, callback, sender) {
-	Register.DB.EditTranslation(data, callback);
-};
-BEMessagesHandler[Messages.BE.DB.SetTranslationHitsCount] = function(message, data, callback, sender) {
-	Register.DB.SetTranslationHitsCount(data, callback);
+BEMessagesHandler[Messages.BE.DB.UpdateTranslation] = function(message, data, callback, sender) {
+	Register.DB.UpdateTranslation(data, callback);
 };
 BEMessagesHandler[Messages.BE.DB.DeleteTranslation] = function(message, data, callback, sender) {
 	Register.DB.DeleteTranslation(data, callback);
-};
-BEMessagesHandler[Messages.BE.DB.SetTextLearned] = function(message, data, callback, sender) {
-	Register.DB.SetTextLearned(data, callback);
 };
 BEMessagesHandler[Messages.BE.DB.DeleteAllTranslations] = function(message, data, callback, sender) {
 	Register.DB.DeleteAllTranslations(callback);

@@ -11,32 +11,29 @@ var TranslationsHighlighter = function()
 	
 	this.showHighlights = function()
 	{
-		Register.settingsManager.ifSiteNotInBlackList(document.domain, function() 
-		{
-			var textNodes = findTextNodes(document.body);
-			
-			Register.translationsManager.GetTranslations(function(translations) 
-			{
-				performOnElsList(textNodes, function(textNode) {
-					_this.highlightTextsInNode(textNode, translations);
-				});
-				
-				performOnEveryKey(textsHits, function(text, hits) {
-					Register.translationsManager.SetTranslationHitsCount(text, hits, function() {
-						console.log("Text hit counts updated");
-					});
-				});
+		var textNodes = findTextNodes(document.body);
 
-				performOnElsList(document.querySelectorAll(".TR-HighlightedText"), function(highlightedText) {
-					UIManager.addEventNoDefault(highlightedText, "click", function(event) {
-						showTranslationDetails(event);
-					});
-				});
-			}, {
-				condition: {
-					learned: false
-				}
+		Register.translationsManager.GetTranslations(function(translations) 
+		{
+			performOnElsList(textNodes, function(textNode) {
+				_this.highlightTextsInNode(textNode, translations);
 			});
+
+			performOnEveryKey(textsHits, function(text, hits) {
+				Register.translationsManager.SetTranslationHitsCount(text, hits, function() {
+					console.log("Text hit counts updated");
+				});
+			});
+
+			performOnElsList(document.querySelectorAll(".TR-HighlightedText"), function(highlightedText) {
+				UIManager.addEventNoDefault(highlightedText, "click", function(event) {
+					showTranslationDetails(event);
+				});
+			});
+		}, {
+			condition: {
+				learned: false
+			}
 		});
 	};
 	
@@ -223,5 +220,10 @@ var TranslationsHighlighter = function()
 				}
 			}
 		});
+	};
+	
+	this.removeAllHighlights = function() 
+	{
+		this.removeHighLights(null);
 	};
 };

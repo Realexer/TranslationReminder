@@ -124,7 +124,7 @@ var IndexedStorage = function()
 
 	this.AddTranslation = function (request, callback)
 	{
-		this.isTextExists(request.text, function(isExists) 
+		this.isTextExists(request, function(isExists) 
 		{
 			if(!isExists) 
 			{
@@ -146,9 +146,9 @@ var IndexedStorage = function()
 		});
 	};
 	
-	this.EditTranslation = function(request, callback) 
+	this.UpdateTranslation = function(request, callback) 
 	{
-		this.getTranslationByText(request.text, function(translation, tr, store) 
+		this.getTranslationByText(request, function(translation, tr, store) 
 		{
 			Register.synchStorage.synchTranslations(function() {
 				callback();
@@ -157,21 +157,21 @@ var IndexedStorage = function()
 		function(translation, tr, store, cursor) 
 		{
 			if(translation && cursor) {
-				translation.translation = request.translation;
-				translation.image = request.image;
-				translation.definition = request.definition;
+				performOnEveryKey(request, function(key, value) {
+					translation[key] = value;
+				});
 				cursor.update(translation);
 			}
 		});
 	};
 	
-	this.getTranslationByText = function(text, callback, onSuccess) 
+	this.getTranslationByText = function(request, callback, onSuccess) 
 	{
 		var translation = null;
 		this.runTransaction(DBObjects.Translations, DBTransactionTypes.rw, function(tr, store) 
 		{
 			var index = store.index('text');
-			var keyRange = IDBKeyRange.only(text);
+			var keyRange = IDBKeyRange.only(request.text);
 
 			return index.openCursor(keyRange);
 		},
@@ -192,48 +192,17 @@ var IndexedStorage = function()
 		});
 	};
 	
-	this.isTextExists = function(text, callback) 
+	this.isTextExists = function(request, callback) 
 	{
-		this.getTranslationByText(text, function(translation) 
+		this.getTranslationByText(request, function(translation) 
 		{
 			callback(translation != null);
 		});
 	};
 
-	this.SetTranslationHitsCount = function (request, callback)
-	{
-		this.getTranslationByText(request.text, function(translation, tr, store) 
-		{
-			callback();
-		},
-		function(translation, tr, store, cursor) 
-		{
-			if(translation && cursor) {
-				translation.hits = request.hits;
-				cursor.update(translation);
-			}
-		});
-	};
-
-	this.SetTextLearned = function(request, callback) 
-	{
-		this.getTranslationByText(request.text, function(translation, tr, store) 
-		{
-			callback();
-		},
-		function(translation, tr, store, cursor) 
-		{
-			if(translation && cursor) {
-				translation.learned = request.learned;
-				translation.learnedAt = request.learnedAt;
-				cursor.update(translation);
-			}
-		});
-	};
-
 	this.DeleteTranslation = function (request, callback)
 	{
-		this.getTranslationByText(request.text, function(translation, tr, store) 
+		this.getTranslationByText(request, function(translation, tr, store) 
 		{
 			Register.synchStorage.synchTranslations(function() {
 				callback();

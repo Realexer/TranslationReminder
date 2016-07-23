@@ -1,22 +1,17 @@
 var FEMessageHandlers = [];
 FEMessageHandlers[Messages.FE.DisplayTranslationForm] = function(message, data, callback, sender) 
 {
-	Register.translationForm.display();
+	Register.translationFormHandler.display();
 	callback();
 };
 
 FEMessageHandlers[Messages.FE.AddSiteToBlackList] = function(message, data, callback, sender) 
 {
-	Messanger.sendMessage({ 
-		name: Messages.BE.DB.AddSiteToBlackList, 
-		data: { 
-			site: document.domain
-		}
-	},
-	function () {
+	Register.settingsManager.AddSiteToBlackList(document.domain, function() 
+	{
 		callback();
+		Register.translationsHighlighter.removeAllHighlights();
 	});
-	Register.translationsHighlighter.RemoveHighLights(null)
 };
 
 Messanger.onMessage(function (message, data, callback, sender)
@@ -26,5 +21,5 @@ Messanger.onMessage(function (message, data, callback, sender)
 	}
 });
 
-var frontend = new Frontend();
-frontend.Init();
+var browserPage = new BrowserPage();
+browserPage.Init();

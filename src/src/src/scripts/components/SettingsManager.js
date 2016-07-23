@@ -42,14 +42,6 @@ var SettingsManager = function()
 			
 			callback(_default);
 		});
-		
-		Messanger.sendMessage(Messages.BE.DB.GetAllSettings, null, function (settings)
-		{
-			if (settings[key])
-				_default = settings[key];
-			
-			callback(_default);
-		});
 	}
 	
 	function saveSetting(key, value, callback) 
@@ -59,10 +51,6 @@ var SettingsManager = function()
 				callback();
 			}
 		});
-		Messanger.sendMessage(Messages.BE.DB.SetSetting, {
-			key: key,
-			value: value
-		}, callback);
 	}
 	
 	this.GetSitesBlackList = function (callback)
@@ -76,7 +64,14 @@ var SettingsManager = function()
 	{
 		this.GetSitesBlackList(function(sites) 
 		{
-			if (sites.indexOf(domain) === -1)
+			var isBlacklisted = false;
+			performOnElsList(sites, function(site) {
+				if(domain.indexOf(site) !== -1) {
+					isBlacklisted = true;
+				}
+			});
+			
+			if (!isBlacklisted)
 			{
 				callback();
 			}
@@ -85,7 +80,7 @@ var SettingsManager = function()
 
 	this.UpdateSitesBlackList = function (sites, callback)
 	{
-		saveSetting(settingsKeys.SitesBlackList, sites.RemoveDuplicates(), callback);
+		saveSetting(settingsKeys.SitesBlackList, sites.RemoveDuplicates().TrimAllElements(), callback);
 	};
 
 	this.AddSiteToBlackList = function (site, callback)

@@ -25,91 +25,176 @@ var TranslationsManager = function ()
 			}
 		}, callback);
 	};
+	
+	this.GetTranslationByText = function(text, _funcOK, _funcNotFound) 
+	{
+		Messanger.sendMessage(Messages.BE.DB.GetTranslationByText, {text: text}, function(translation) {
+			if(translation) {
+				_funcOK(translation);
+			} else {
+				if(_funcNotFound)
+					_funcNotFound();
+			}
+		});
+	};
 
 
 	this.AddTranslation = function (text, translation, image, definition, callback)
 	{
 		Messanger.sendMessage(Messages.BE.DB.AddTranslation, 
-		{
-			text: prepareTextForDB(text),
-			translation: translation,
-			image: image,
-			definition: definition,
-			date: dateToTimestamp(),
-			hits: 1,
-			learned: false,
-			learnedAt: null
-		}, callback);
+			TranslationAdapter.getNew(text, translation, image, definition), callback);
 	};
 	
 	this.EditTranslation = function (text, translation, image, definition, callback)
 	{
-		Messanger.sendMessage(Messages.BE.DB.EditTranslation, 
+		this.GetTranslationByText(text, function(data) 
 		{
-			text: prepareTextForDB(text),
-			translation: translation,
-			image: image,
-			definition: definition,
+			var tr = TranslationAdapter.getFromExisting(data);
+			tr.edit(text, translation, image, definition);
+			
+			Messanger.sendMessage(Messages.BE.DB.UpdateTranslation, tr.getData(), callback);
+			
 		}, callback);
 	};
 
 	this.SetTranslationHitsCount = function (text, hits, callback)
 	{
-		Messanger.sendMessage(Messages.BE.DB.SetTranslationHitsCount, 
+		this.GetTranslationByText(text, function(data) 
 		{
-			text: prepareTextForDB(text),
-			hits: hits
+			var tr = TranslationAdapter.getFromExisting(data);
+			tr.hits = hits;
+			
+			Messanger.sendMessage(Messages.BE.DB.UpdateTranslation, tr.getData(), callback);
+			
 		}, callback);
 	};
 	
 	this.setTextLearned = function(text, callback) 
 	{
-		Messanger.sendMessage(Messages.BE.DB.SetTextLearned, 
+		this.GetTranslationByText(text, function(data) 
 		{
-			text: prepareTextForDB(text),
-			learned: true,
-			learnedAt: dateToTimestamp()
+			var tr = TranslationAdapter.getFromExisting(data);
+			tr.setLearned();
+			
+			Messanger.sendMessage(Messages.BE.DB.UpdateTranslation, tr.getData(), callback);
+			
 		}, callback);
 	};
 	
 	this.setTextLearning = function(text, callback) 
 	{
-		Messanger.sendMessage(Messages.BE.DB.SetTextLearned, 
+		this.GetTranslationByText(text, function(data) 
 		{
-			text: prepareTextForDB(text),
-			learned: false,
-			learnedAt: null
+			var tr = TranslationAdapter.getFromExisting(data);
+			tr.setLearning();
+			
+			Messanger.sendMessage(Messages.BE.DB.UpdateTranslation, tr.getData(), callback);
+			
 		}, callback);
 	};
 
 
 	this.DeleteTranslation = function (text, callback)
 	{
-		Messanger.sendMessage(Messages.BE.DB.DeleteTranslation, 
+		this.GetTranslationByText(text, function(data) 
 		{
-			text: prepareTextForDB(text)
+			var tr = TranslationAdapter.getFromExisting(data);
+			
+			Messanger.sendMessage(Messages.BE.DB.DeleteTranslation, tr.getData(), callback);
+			
 		}, callback);
+		
 	};
 
 	this.DeleteAllTranslations = function (callback)
 	{
 		Messanger.sendMessage(Messages.BE.DB.DeleteAllTranslations, callback);
 	};
+};
+
+
+var Translation = function()
+{
+	var _this = this;
 	
-	function prepareTextForDB(text) 
+	this.text = null;
+	this.translation = null;
+	this.image = null;
+	this.definition = null;
+	this.date = null;
+	this.hits = null;
+	this.learned = null;
+	this.learnedAt = null;
+	
+	this.edit = function(text, translation, image, definition) 
 	{
-		return text.toString().toLowerCase().trim();
+		this.text = _this.prepareTextForDB(text);
+		this.translation = translation;
+		this.image = image;
+		this.definition = definition;
 	};
 	
-	function dateToTimestamp(date) 
+	this.setLearned = function() 
+	{
+		this.learned = true;
+		this.learnedAt = TranslationAdapter.dateToTimestamp();
+	};
+	
+	this.setLearning = function() 
+	{
+		this.learned = false;
+		this.learnedAt = null;
+	};
+	
+	this.getData = function() 
+	{
+		return JSON.parse(JSON.stringify(this));
+	};
+};
+
+var TranslationAdapter = 
+{
+	getNew: function(text, translation, image, definition) 
+	{
+		var tr = new Translation();
+		
+		tr.text = TranslationAdapter.prepareTextForDB(text);
+		tr.translation = translation;
+		tr.image = image;
+		tr.definition = definition;
+		tr.date = TranslationAdapter.dateToTimestamp();
+		tr.hits = 1;
+		tr.learned = false;
+		tr.learnedAt = null;
+		
+		return tr;
+	},
+	
+	getFromExisting: function(data) 
+	{
+		var tr = new Translation();
+		
+		performOnEveryKey(data, function(key, val) {
+			tr[key] = val;
+		});
+		
+		return tr;
+	},
+	
+	prepareTextForDB: function(text) 
+	{
+		return text.toString().toLowerCase().trim();
+	},
+	
+	dateToTimestamp: function(date) 
 	{
 		if (!date) {
 			date = new Date().getTime();
 		}
 
 		return parseInt(date);
-	};
-};
+	}
+}
 
 Register.translationsManager = new TranslationsManager();
 Register.translationsManager.init();
