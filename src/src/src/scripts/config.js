@@ -4,7 +4,14 @@ var AppConfig =
 	{
 		SitesBlackList: [],
 		TranslationLanguage: "en",
-		AutoTranslationEnabled: true
+		AutoTranslationEnabled: true,
+		HighlightStyling: {
+			addBackgroundColor: false,
+			backgroundColor: "",
+			addShaddow: false,
+			addUnderline: true,
+			customCSS: ""
+		}
 	},
 	
 	glosbeAPI: {
@@ -114,6 +121,11 @@ var TemplatesLoader =
 				Register.templater.templatesDeclarationAttr = "data-tr-js-template";
 				Register.templater.templatesUsageAttr = "data-tr-js-use-template";
 				Register.templater.templatesUsageDataAttr = "data-tr-js-template-data";
+				
+				Templater.UI.dataAttributes.checked = "data-tr-checked";
+				Templater.UI.dataAttributes.selected = "data-tr-selected";
+				
+				Templater.UI.init();
 				
 				Register.templater.prepareUI();
 				

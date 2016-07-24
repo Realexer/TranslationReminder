@@ -86,12 +86,13 @@ function removeFromArray(el, array)
 
 function getBool(val)
 {
-	if(val === undefined) 
+	if(val === undefined || val === null) 
 		return false;
 	
 	switch (val.toString().toLowerCase().trim()) {
 		case "true":
 		case "yes":
+		case "on":
 		case "1":
 			return true;
 

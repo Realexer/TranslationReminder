@@ -173,22 +173,24 @@ var Templater = function()
 	};
 };
 
-Initer.addConstructor(function() {
-	Register.templater = new Templater();
-}).addIniter(function() {
-	Templater.UI.init();
-});
-
-
 Templater.UI = 
 {
+	dataAttributes: {
+		checked: "data-checked",
+		selected: "data-selected"
+	},
 	init: function() 
 	{
 		EventsManager.subscribe(Events.htmlChanged, function(el) 
 		{
-			performOnElsList(el.querySelectorAll("[data-checked]"), function(el) 
+			performOnElsList(el.querySelectorAll("["+Templater.UI.dataAttributes.checked+"]"), function(el) 
 			{
-				el.checked = getBool(el.getAttribute("data-checked"));
+				el.checked = getBool(el.getAttribute(Templater.UI.dataAttributes.checked));
+			});
+			
+			performOnElsList(el.querySelectorAll("["+Templater.UI.dataAttributes.selected+"]"), function(el) 
+			{
+				el.selected = getBool(el.getAttribute(Templater.UI.dataAttributes.selected));
 			});
 		});
 	},

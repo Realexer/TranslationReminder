@@ -2,13 +2,6 @@ var SettingsManager = function()
 {
 	var _this = this;
 	
-	var settingsKeys =
-	{
-		SitesBlackList: "SitesBlackList",
-		AutoTranslatioinEnabled: "AutoTranslationEnabled",
-		TranslationLanguage: "TranslationLanguage"
-	};
-	
 	this.init = function() 
 	{
 		inportOrSetDefaultSettings();
@@ -18,17 +11,18 @@ var SettingsManager = function()
 	{
 		Register.synchStorage.getSettings(function(res) 
 		{
-			if(!res) 
+			if(!res || res.length == 0) 
 			{
 				Register.sqlStorage.GetAllSettings(function(settings) // get settings from previous version
 				{
 					var defaultSettings = {
-						SitesBlackList: OR(settings[settingsKeys.SitesBlackList], AppConfig.initialSettings.SitesBlackList),
-						AutoTranslatioinEnabled: OR(settings[settingsKeys.AutoTranslationEnabled], AppConfig.initialSettings.AutoTranslationEnabled),
-						TranslationLanguage: OR(settings[settingsKeys.TranslationLanguage], AppConfig.initialSettings.TranslationLanguage),
+						SitesBlackList: OR(settings[SettingsKeys.SitesBlackList].split(";").TrimAllElements(), AppConfig.initialSettings.SitesBlackList),
+						AutoTranslatioinEnabled: OR(settings[SettingsKeys.AutoTranslationEnabled], AppConfig.initialSettings.AutoTranslationEnabled),
+						TranslationLanguage: OR(settings[SettingsKeys.TranslationLanguage], AppConfig.initialSettings.TranslationLanguage),
+						HighlightStyling: OR(settings[SettingsKeys.HighlightStyling], AppConfig.initialSettings.HighlightStyling)
 					};
 					
-					Register.setSettings(defaultSettings);
+					Register.synchStorage.setSettings(defaultSettings);
 				});
 			}
 		});
@@ -37,10 +31,7 @@ var SettingsManager = function()
 	function getSetting(key, callback) 
 	{
 		return Register.synchStorage.getSettings(function(settings) {
-			if (settings[key])
-				_default = settings[key];
-			
-			callback(_default);
+			callback(settings[key]);
 		});
 	}
 	
@@ -53,9 +44,21 @@ var SettingsManager = function()
 		});
 	}
 	
+	this.getSettings = function(callback) 
+	{
+		return Register.synchStorage.getSettings(function(settings) {
+			callback(settings);
+		});
+	};
+	
+	this.saveSettings = function(settings, callback) 
+	{
+		return Register.synchStorage.setSettings(settings, callback);
+	};
+	
 	this.GetSitesBlackList = function (callback)
 	{
-		getSetting(settingsKeys.SitesBlackList, function(value) {
+		getSetting(SettingsKeys.SitesBlackList, function(value) {
 			callback(value);
 		});
 	};
@@ -80,7 +83,9 @@ var SettingsManager = function()
 
 	this.UpdateSitesBlackList = function (sites, callback)
 	{
-		saveSetting(settingsKeys.SitesBlackList, sites.RemoveDuplicates().TrimAllElements(), callback);
+		saveSetting(SettingsKeys.SitesBlackList, sites.RemoveDuplicates().TrimAllElements().filter(function(item) {
+			return !UIFormat.isEmptyString(item);
+		}), callback);
 	};
 
 	this.AddSiteToBlackList = function (site, callback)
@@ -94,7 +99,7 @@ var SettingsManager = function()
 
 	this.IsAutotranslationEnabled = function (callback)
 	{
-		getSetting(settingsKeys.AutoTranslatioinEnabled, 
+		getSetting(SettingsKeys.AutoTranslatioinEnabled, 
 		function(value) {
 			return callback(getBool(value));
 		});
@@ -102,12 +107,12 @@ var SettingsManager = function()
 	
 	this.setAutoTranslationEnabled = function(value, callback) 
 	{
-		saveSetting(settingsKeys.AutoTranslatioinEnabled, getBool(value), callback);
+		saveSetting(SettingsKeys.AutoTranslatioinEnabled, getBool(value), callback);
 	};
 
 	this.GetTranslationLanguage = function (callback)
 	{
-		getSetting(settingsKeys.TranslationLanguage, 
+		getSetting(SettingsKeys.TranslationLanguage, 
 		function(lang) {
 			return callback(lang);
 		});
@@ -115,9 +120,39 @@ var SettingsManager = function()
 
 	this.SetTranslationLanguage = function (lang, callback)
 	{
-		saveSetting(settingsKeys.TranslationLanguage, lang, callback);
+		saveSetting(SettingsKeys.TranslationLanguage, lang, callback);
+	};
+	
+	this.GetHighlightStyling = function (callback)
+	{
+		getSetting(SettingsKeys.HighlightStyling, 
+		function(lang) {
+			return callback(lang);
+		});
+	};
+
+	this.SetHighlightStyling = function (styling, callback)
+	{
+		saveSetting(SettingsKeys.HighlightStyling, styling, callback);
 	};
 };
 
 Register.settingsManager = new SettingsManager();
 Register.settingsManager.init();
+
+var SettingsKeys =
+{
+	SitesBlackList: "SitesBlackList",
+	AutoTranslatioinEnabled: "AutoTranslationEnabled",
+	TranslationLanguage: "TranslationLanguage",
+	HighlightStyling: "HighlightStyling"
+};
+
+var HighlightStylingKeys =  
+{
+	addBackgroundColor: "addBackgroundColor",
+	backgroundColor: "backgroundColor",
+	addShaddow: "addShaddow",
+	addUnderline: "addUnderline",
+	customCSS: "customCSS"
+};

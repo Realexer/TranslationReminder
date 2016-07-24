@@ -496,6 +496,8 @@ var UIManager = new function()
 				UIManager.setElData(el, prevLengthDataAttr, UIManager.getValue(el).length);
 			}
 		});
+		
+		UIManager.adaptElHeight(el);
 	};
 	
 	this.rotate = function(el, degrees)

@@ -5,7 +5,9 @@
 	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 	<link rel="shortcut icon" href="icons/icon-16.png">
 	<link rel="stylesheet" type="text/css" href="css/common.css" />
+	<link rel="stylesheet" type="text/css" href="css/BrowserPage.css" />
 	<link rel="stylesheet" type="text/css" href="css/OptionsPage.css" />
+	<script type='text/javascript' src='scripts/libs/jscolor-2.0.4/jscolor.js'></script>
 	<script type='text/javascript' src='scripts/config.js'></script>
 	<script type='text/javascript' src='scripts/general/Essentials.js'></script>
 	<script type='text/javascript' src='scripts/general/Templater.js'></script>
@@ -20,6 +22,7 @@
 	<script type='text/javascript' src='scripts/components/DBManager.js'></script>
 	<script type='text/javascript' src='scripts/components/TranslationsManager.js'></script>
 	<script type='text/javascript' src='scripts/components/SettingsManager.js'></script>
+	<script type='text/javascript' src='scripts/components/TranslationsHighlighter.js'></script>
 	<script type='text/javascript' src='scripts/pages/OptionsPage.js'></script>
 </head>
 <body class="TR-Base">
@@ -30,30 +33,79 @@
 			<div class="TR-Clear"></div>
 		</div>
 		<div class="TR-Settings">
-			<h3>General</h3>
-			<hr />
-
-			<div class="TR-Section">
-				<label for="TR-SitesBlackList"><b>Don't</b> highlight texts on these sites: <b title="Extension may break layout of some pages. You can add such sites to exceptions and texts won't be highlighted on these sites.">(?)</b></label>
-				<div class="TR-Clear"></div>
-				<textarea id="TR-SitesBlackList" rows="5" placeholder=""></textarea>
-				<span class="TR-MinorInfo">Specify domains separated by ';'. Ctrl+Enter to save</span>
-			</div>
-
-			<h3>Translation</h3>
-			<hr />
-
-			<div class="TR-Section">
-				<input type="checkbox" id="TR-EnableAutoTranslate"/>
-				<label for="TR-EnableAutoTranslate">Automatically translate selection</label><span id="Span1" style="float:right;" class="TR-Red"></span>
-			</div>
-
-			<div class="TR-Section">
-				<select id="TR-TranslationLanguage"><option value="select" disabled="disabled">select</option></select>
-				<label for="TR-TranslationLanguage">Language of translation</label><span id="Span2" style="float:right;" class="TR-Red"></span>
-			</div>
-			
+			<form id="TR-SettingsForm" action="/" method="POST" enctype="multipart/form-data">
+				<div id="TR-SettingsFormBody"></div>
+				<input type="submit"/>
+			</form>
 		</div>
+	</div>
+	
+	<div class="TR-InvisibleTemplate" data-tr-js-template="SettingsForm">
+		<h3>General</h3>
+				<hr />
+
+				<div class="TR-Section">
+					<label for="TR-SitesBlackList"><b>Don't</b> highlight texts on these sites: <b title="Extension may break layout of some pages. You can add such sites to exceptions and texts won't be highlighted on these sites.">(?)</b></label>
+					<div class="TR-Clear"></div>
+					<textarea id="TR-SitesBlackList" name="SitesBlackList" rows="5" placeholder="">{{SitesBlackList}}</textarea>
+					<span class="TR-MinorInfo">Specify domains separated by ';'. Ctrl+Enter to save</span>
+				</div>
+
+				<h3>Translation</h3>
+				<hr />
+
+				<div class="TR-Section">
+					<input type="checkbox" name="AutotranslationEnabled" data-tr-checked="{{AutotranslationEnabled}}" id="TR-EnableAutoTranslate"/>
+					<label for="TR-EnableAutoTranslate">Automatically translate selection</label>
+				</div>
+
+				<div class="TR-Section">
+					<select id="TR-TranslationLanguage" name="TranslationLanguage">
+						<option value="select" disabled="disabled">select</option>
+						{{AvailableLanguagesHTML}}
+					</select>
+					<select class="TR-InvisibleTemplate" data-tr-js-template="TranslationLangOption">
+						<option value="{{value}}" data-tr-selected="{{selected}}">{{title}}</option>
+					</select>
+					<label for="TR-TranslationLanguage">Language of translation</label>
+				</div>
+
+				<h3>Text Highlight</h3>
+				<hr />
+
+				<div class="TR-Section">
+					<input type="checkbox"
+							 name="HighlightStyling.addBackgroundColor" 
+							 data-tr-checked="{{HighlightStyling.addBackgroundColor}}"
+							 id="TR-HighlightAddBGColor">
+					<label for="TR-HighlightBGColor">background color </label>
+					<input type="color"
+							 name="HighlightStyling.backgroundColor" 
+							 value="{{HighlightStyling.backgroundColor}}"
+							 id="TR-HighlightBGColorValue">
+				</div>
+
+				<div class="TR-Section">
+					<input type="checkbox" name="HighlightStyling.addShaddow" data-tr-checked="{{HighlightStyling.addShaddow}}" id="TR-HighlightShaddow"/>
+					<label for="TR-HighlightShaddow">shaddow</label>
+				</div>
+
+				<div class="TR-Section">
+					<input type="checkbox" name="HighlightStyling.addUnderline" data-tr-checked="{{HighlightStyling.addUnderline}}" id="TR-HighlightUnderline"/>
+					<label for="TR-HighlightUnderline">underline</label>
+				</div>
+
+				<div class="TR-Section">
+					<label for="TR-HighlightCustomCSS">Custom CSS</label>
+					<textarea id="TR-HighlightCustomCSS" placeholder="eg: padding:0.5em; font-size: 1.1em;" name="HighlightStyling.customCSS">{{HighlightStyling.customCSS}}</textarea>
+				</div>
+
+				<div class="TR-Section">
+					<div for=""><b>Example:</b></div>
+					<div id="TR-HighlightStylingExample">
+						
+					</div>
+				</div>
 	</div>
 </body>
 </html>

@@ -9,14 +9,26 @@ var TranslationsHighlighter = function()
 		this.showHighlights();
 	};
 	
-	this.showHighlights = function()
+	this.showHighlights = function() 
 	{
-		var textNodes = findTextNodes(document.body);
-
 		Register.translationsManager.GetTranslations(function(translations) 
 		{
+			_this.showTranslationsHighlights(document.body, translations);
+		}, {
+			condition: {
+				learned: false
+			}
+		});
+	};
+	
+	this.showTranslationsHighlights = function(el, translations)
+	{
+		var textNodes = findTextNodes(el);
+
+		Register.settingsManager.GetHighlightStyling(function(styling) 
+		{
 			performOnElsList(textNodes, function(textNode) {
-				_this.highlightTextsInNode(textNode, translations);
+				_this.highlightTextsInNode(textNode, translations, styling);
 			});
 
 			performOnEveryKey(textsHits, function(text, hits) {
@@ -30,14 +42,10 @@ var TranslationsHighlighter = function()
 					showTranslationDetails(event);
 				});
 			});
-		}, {
-			condition: {
-				learned: false
-			}
 		});
 	};
 	
-	this.highlightTextsInNode = function(textNode, translations)
+	this.highlightTextsInNode = function(textNode, translations, styling)
 	{
 		try
 		{
@@ -64,7 +72,7 @@ var TranslationsHighlighter = function()
 						{
 							if (isHTMLContainsText(splitPart, translationItem))
 							{
-								modifiedTextSplit[i] = replaceTextWithHightlights(splitPart, translationItem);
+								modifiedTextSplit[i] = replaceTextWithHightlights(splitPart, translationItem, styling);
 							}
 						}
 					});
@@ -77,7 +85,7 @@ var TranslationsHighlighter = function()
 					UIManager.addNodeFromHTML(textHandler, 
 						Register.templater.formatTemplate("TranslationsHighlightsHandler", {content: modifiedText}), 
 						false, textNode);
-					UIManager.removeEl(textNode);
+					UIManager.removeEl(textNode);	
 				}
 			}
 		}
@@ -118,12 +126,16 @@ var TranslationsHighlighter = function()
 		return (textContent.search(new RegExp("\\b" + translationItem.text + "\\b", "mgi")) !== -1);
 	};
 
-	function replaceTextWithHightlights(textContent, translationItem)
+	function replaceTextWithHightlights(textContent, translationItem, styling)
 	{
 		textContent = textContent.replace(new RegExp("\\b" + translationItem.text + "\\b", "mgi"), 
 		function (match, offset, string)
 		{
 			translationItem.originalText = match;
+			translationItem.styling = styling;
+			translationItem.styling.backgroundColorFormatted = translationItem.styling.addBackgroundColor ? "background-color: "+translationItem.styling.backgroundColor : "";
+			
+			
 			return Register.templater.formatTemplate("TranslationHighlight", translationItem).replaceAll("\"", "'").trim();
 		});
 
@@ -148,7 +160,7 @@ var TranslationsHighlighter = function()
 	function showTranslationDetails(event)
 	{
 		var highlight = event.target;
-		if (UIManager.getClass(highlight) !== "TR-HighlightedText")
+		if (!UIManager.hasClass(highlight, "TR-HighlightedText"))
 			return false;
 
 		if (event.target.hasInChildren("TR-Hint")) // hint already displaied
