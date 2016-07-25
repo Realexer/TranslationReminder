@@ -35,6 +35,11 @@ if (window.Element != undefined && !window.Element.getElementsByClassName)
 	{
 		return hasInParents(this, nodeClassName);
 	};
+	
+	window.Text.prototype.hasInParents = function (nodeClassName)
+	{
+		return hasInParents(this, nodeClassName);
+	};
 
 	function hasInChildren(parentNode, nodeClassName)
 	{

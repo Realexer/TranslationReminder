@@ -1,19 +1,26 @@
-var TranslationsHighlighter = function() 
+var TranslationsHighlighter = function(htmlHandler) 
 {
 	var _this = this;
+	
+	var htmlHandlder = htmlHandler;
 	
 	var textsHits = {};
 	
 	this.init = function() 
 	{
-		this.showHighlights();
+		
 	};
 	
-	this.showHighlights = function() 
+	this.showHighlightsOnDocuemnt = function() 
+	{
+		this.showHighlightsOnEleemnt(document.body);
+	};
+	
+	this.showHighlightsOnEleemnt = function(el) 
 	{
 		Register.translationsManager.GetTranslations(function(translations) 
 		{
-			_this.showTranslationsHighlights(document.body, translations);
+			_this.showTranslationsHighlights(el, translations);
 		}, {
 			condition: {
 				learned: false
@@ -23,6 +30,7 @@ var TranslationsHighlighter = function()
 	
 	this.showTranslationsHighlights = function(el, translations)
 	{
+		textsHits = {};
 		var textNodes = findTextNodes(el);
 
 		Register.settingsManager.GetHighlightStyling(function(styling) 
@@ -166,7 +174,7 @@ var TranslationsHighlighter = function()
 		if (event.target.hasInChildren("TR-Hint")) // hint already displaied
 			return false;
 
-		var hint = UIManager.addNodeFromHTML(document.body, Register.templater.formatTemplate("TranslationDetails", 
+		var hint = UIManager.addNodeFromHTML(htmlHandlder, Register.templater.formatTemplate("TranslationDetails", 
 		{
 			text: UIManager.getElData(highlight, "tr-text"),
 			translation: UIManager.getElData(highlight, "tr-translation"),
@@ -203,7 +211,7 @@ var TranslationsHighlighter = function()
 		function ()
 		{
 			_this.removeHighLights(text);
-			_this.showHighlights();
+			_this.showHighlightsOnDocuemnt();
 			_this.hideAllTranslationDetails();
 		});
 	};

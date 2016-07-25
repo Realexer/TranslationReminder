@@ -1,29 +1,11 @@
 var OptionsPage = function ()
 {
 	var _this = this;
-	
-	var sitesInitialValues = "";
 
 	var settingsForm = getEl("TR-SettingsForm");
-	var sitesBlackListTextArea = getEl("TR-SitesBlackList");
-	var enableAutoTranslateCheckbox = getEl("TR-EnableAutoTranslate");
-	var languageSelect = getEl("TR-TranslationLanguage");
-	var savingStatusLabel = getEl("TR-SavingLabel");
 
 	this.init = function ()
-	{
-		
-//		Register.settingsManager.GetSitesBlackList(function (sites)
-//		{
-//			sitesInitialValues = sites.join("; ");
-//			UIManager.setValue(sitesBlackListTextArea, sitesInitialValues);
-//		});
-//		
-//		Register.settingsManager.IsAutotranslationEnabled(function (result)
-//		{
-//			UIManager.setChecked(enableAutoTranslateCheckbox, result);
-//		});
-		
+	{		
 		UIManager.addEventNoDefault(settingsForm, "submit", function(e) 
 		{
 			var formData = new FormData(settingsForm);
@@ -41,47 +23,9 @@ var OptionsPage = function ()
 			settings[SettingsKeys.HighlightStyling][HighlightStylingKeys.customCSS] = formData.get(SettingsKeys.HighlightStyling+"."+HighlightStylingKeys.customCSS);
 			
 			Register.settingsManager.saveSettings(settings, function() {
-				tellSaved();
 				highlightExampleText();
 			});
 		});
-		
-//		UIManager.addEvent(sitesBlackListTextArea, "keydown", function(event) 
-//		{
-//			if (event.keyCode === 13 && event.ctrlKey) // enter
-//			{
-//				event.preventDefault();
-//				Register.settingsManager.UpdateSitesBlackList(sitesBlackListTextArea.value.split(";"), function ()
-//				{
-//					tellSaved();
-//				});
-//			}
-//		});
-//		
-//		UIManager.addEvent(sitesBlackListTextArea, "input", function() 
-//		{
-//			if (UIManager.getValue(sitesBlackListTextArea) != sitesInitialValues)
-//			{
-//				tellNotSaved();
-//			}
-//			else
-//			{
-//				tellNothingToSave();
-//			}
-//		});
-//		
-//		UIManager.addEvent(enableAutoTranslateCheckbox, "change", function() 
-//		{
-//			Register.settingsManager.setAutoTranslationEnabled(enableAutoTranslateCheckbox.checked, 
-//			function () { 
-//				tellSaved(); 
-//			});
-//		});
-//		
-//		UIManager.addEvent(languageSelect, "change", function() 
-//		{
-//			Register.settingsManager.SetTranslationLanguage(languageSelect.value, function () { tellSaved(); });
-//		})
 
 		BingClient.GetSupportedLangs(function (langs)
 		{
@@ -102,20 +46,8 @@ var OptionsPage = function ()
 				UIManager.setHTML(getEl("TR-SettingsFormBody"), Register.templater.formatTemplate("SettingsForm", settings));
 				
 				UIManager.autogrowTetarea(getEl("TR-HighlightCustomCSS"));
-				UIManager.adaptElHeight(getEl("TR-HighlightCustomCSS"));
-				//var picker = new jscolor(getEl('TR-HighlightBGColor'));
 				
 				highlightExampleText();
-				
-//				for (var i = 0; i < langs.length; i++)
-//				{
-//					
-//					var option = document.createElement("option");
-//					option.setAttribute("value", langs[i]);
-//					option.selected = settings[SettingsKeys.TranslationLanguage] == langs[i];
-//					option.innerHTML = langs[i];
-//					languageSelect.appendChild(option);
-//				}
 			});
 		});
 	};
@@ -126,43 +58,18 @@ var OptionsPage = function ()
 						"Nullam mauris augue, sagittis sed vulputate non, congue sit amet ligula. " +
 						"Vivamus blandit, ligula at finibus fringilla, massa purus gravida risus, quis lobortis leo velit nec magna.");
 		
-		var highlighter = new TranslationsHighlighter();
+		var highlighter = new TranslationsHighlighter(document.body);
 		highlighter.showTranslationsHighlights(getEl("TR-HighlightStylingExample"), [
 			TranslationAdapter.getNew("vulputate", "test", "definition", ""),
 			TranslationAdapter.getNew("ligula at finibus fringilla", "test", "definition", "")
 		]);
 	}
-
-
-	function tellSaved()
-	{
-		UIManager.setClass(savingStatusLabel, "TR-Green");
-		
-		// hack for making animation run again. We first (re) apply not animated class and then run animated (again)
-		Threader.putInQueue(function() {
-			UIManager.setHTML(savingStatusLabel, "Saved");
-			UIManager.setClass(savingStatusLabel, "TR-Green TR-Saved")
-			UIManager.showEl(savingStatusLabel);
-		});
-	};
-
-	function tellNotSaved()
-	{
-		UIManager.setHTML(savingStatusLabel, "Not saved");
-		UIManager.setClass(savingStatusLabel, "TR-Red")
-		UIManager.showEl(savingStatusLabel);
-	};
-
-	function tellNothingToSave()
-	{
-		UIManager.hideEl(savingStatusLabel);
-	};
 };
 
 window.onload = function ()
 {
 	Register.optionsPage = new OptionsPage();
-	TemplatesLoader.loadTemplates("templates/all.html", function() 
+	TemplatesLoader.loadTemplates("templates/all.html", document.body, function() 
 	{
 		Register.optionsPage.init();
 	});

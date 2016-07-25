@@ -104,7 +104,7 @@ var Messanger =
 
 var TemplatesLoader = 
 {
-	loadTemplates: function(url, callback) 
+	loadTemplates: function(url, intoEl, callback) 
 	{
 		Ajax.Invoke({
 			type: "GET",
@@ -112,7 +112,7 @@ var TemplatesLoader =
 		},
 		function(html) 
 		{
-			UIManager.addNodeFromHTML(document.body, html);
+			UIManager.addNodeFromHTML(intoEl, html);
 			Initer.whenTrue(function() {
 				return getEl("tr-templates") != null;
 			}, function() 

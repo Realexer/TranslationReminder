@@ -6,12 +6,17 @@ var BrowserPage = function ()
 	{
 		Register.settingsManager.ifSiteNotInBlackList(document.domain, function() 
 		{
-			TemplatesLoader.loadTemplates("templates/all.html", function() 
-			{	
-				Register.translationsHighlighter = new TranslationsHighlighter();
+			TemplatesLoader.loadTemplates("templates/all.html", document.body, function() 
+			{
+				// using different html handler to 
+				// prevent observing DOM changes that are made by the extension
+				var htmlHandler = UIManager.addNodeFromHTML(document.body, Register.templater.formatTemplate("TR-Handler"));
+				
+				Register.translationsHighlighter = new TranslationsHighlighter(htmlHandler);
 				Register.translationsHighlighter.init();
+				Register.translationsHighlighter.showHighlightsOnDocuemnt();
 
-				Register.translationFormHandler = new TranslationFormHandler();
+				Register.translationFormHandler = new TranslationFormHandler(htmlHandler);
 				Register.translationFormHandler.init();
 
 				UIManager.addEvent(document.body, "mouseup", function(event, el) 
@@ -31,14 +36,67 @@ var BrowserPage = function ()
 						Register.translationFormHandler.dismiss();
 					}
 				});
+				
+
+				var updateTimeout = null;
+				var nodesToUpdate = [];
+				
+				var observer = new MutationObserver(function (mutations) {
+					mutations.forEach(function (mutation) {
+						if (mutation.addedNodes) 
+						{
+							try {
+								performOnElsList(mutation.addedNodes, function(node) {
+									try
+									{
+										if(!node.hasInParents("TR-Handler") 
+										&& node.tagName != "trhandler".toUpperCase() 
+										&& !UIFormat.isEmptyString(node.innerHTML)) 
+										{
+											console.log(mutation.type);
+
+											nodesToUpdate.push(node);
+										}
+									} catch(e) {
+										console.log(e);
+									}
+								});
+
+								if(nodesToUpdate.length > 0) 
+								{
+									if(updateTimeout) {
+										Timeout.reset(updateTimeout);
+									}
+
+									updateTimTimeout = Timeout.set(function() {
+										performOnElsList(nodesToUpdate, function(node) {
+											Register.translationsHighlighter.showHighlightsOnEleemnt(node);
+											console.log("Highlighting texts in node:");
+											console.log(node);
+										});
+										nodesToUpdate = [];
+									}, 2000);
+								}
+							}
+							catch(e)
+							{
+								console.log(e);
+							}
+						}
+					});
+				});
+
+				observer.observe(document.body, { childList: true, characterData: true, subtree: true });
 			});
 		});
 	};
 };
 
-var TranslationFormHandler = function() 
+var TranslationFormHandler = function(htmlHandler) 
 {
 	var _this = this;
+	
+	this.dataHandler = htmlHandler;
 	
 	this.formHandler = null;
 	this.formHandlerBody = null;
@@ -46,7 +104,7 @@ var TranslationFormHandler = function()
 	
 	this.init = function() 
 	{
-		this.formHandler = UIManager.addNodeFromHTML(document.body, 
+		this.formHandler = UIManager.addNodeFromHTML(htmlHandler, 
 			Register.templater.formatTemplate("TranslationFormHandler"));
 		
 		this.formHandlerBody = this.formHandler.querySelector("._tr_body");

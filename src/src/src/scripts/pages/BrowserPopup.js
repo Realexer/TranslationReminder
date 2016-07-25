@@ -54,7 +54,7 @@ var BrowserPopup = function ()
 			finishEditing();
 		});
 
-		TemplatesLoader.loadTemplates("templates/all.html", function() 
+		TemplatesLoader.loadTemplates("templates/all.html", document.body, function() 
 		{
 			showUserTranslations();
 		});
