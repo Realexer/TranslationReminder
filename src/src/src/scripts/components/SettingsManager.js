@@ -19,7 +19,8 @@ var SettingsManager = function()
 						SitesBlackList: OR(settings[SettingsKeys.SitesBlackList].split(";").TrimAllElements(), AppConfig.initialSettings.SitesBlackList),
 						AutoTranslatioinEnabled: OR(settings[SettingsKeys.AutoTranslationEnabled], AppConfig.initialSettings.AutoTranslationEnabled),
 						TranslationLanguage: OR(settings[SettingsKeys.TranslationLanguage], AppConfig.initialSettings.TranslationLanguage),
-						HighlightStyling: OR(settings[SettingsKeys.HighlightStyling], AppConfig.initialSettings.HighlightStyling)
+						HighlightStyling: AppConfig.initialSettings.HighlightStyling,
+						RestrictedTags: AppConfig.initialSettings.RestrictedTags
 					};
 					
 					Register.synchStorage.setSettings(defaultSettings);
@@ -135,6 +136,14 @@ var SettingsManager = function()
 	{
 		saveSetting(SettingsKeys.HighlightStyling, styling, callback);
 	};
+	
+	this.GetRestrictedTags = function(callback) 
+	{
+		getSetting(SettingsKeys.RestrictedTags, 
+		function(tags) {
+			return callback(tags);
+		});
+	};
 };
 
 Register.settingsManager = new SettingsManager();
@@ -145,7 +154,8 @@ var SettingsKeys =
 	SitesBlackList: "SitesBlackList",
 	AutoTranslatioinEnabled: "AutoTranslationEnabled",
 	TranslationLanguage: "TranslationLanguage",
-	HighlightStyling: "HighlightStyling"
+	HighlightStyling: "HighlightStyling",
+	RestrictedTags: "RestrictedTags"
 };
 
 var HighlightStylingKeys =  

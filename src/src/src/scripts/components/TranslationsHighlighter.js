@@ -6,21 +6,29 @@ var TranslationsHighlighter = function(htmlHandler)
 	
 	var textsHits = {};
 	
-	this.init = function() 
+	this.settings = null;
+	
+	this.init = function(callback) 
 	{
-		
+		Register.settingsManager.getSettings(function(settings) {
+			_this.settings = settings;
+			
+			if(callback) {
+				callback();
+			}
+		});
 	};
 	
 	this.showHighlightsOnDocuemnt = function() 
 	{
-		this.showHighlightsOnEleemnt(document.body);
+		this.showHighlightsOnTextNodes(this.getTextNodes(document.body));
 	};
 	
-	this.showHighlightsOnEleemnt = function(el) 
+	this.showHighlightsOnTextNodes = function(textNodes) 
 	{
 		Register.translationsManager.GetTranslations(function(translations) 
 		{
-			_this.showTranslationsHighlights(el, translations);
+			_this.showTranslationsHighlightsOnTextNodes(textNodes, translations);
 		}, {
 			condition: {
 				learned: false
@@ -30,25 +38,26 @@ var TranslationsHighlighter = function(htmlHandler)
 	
 	this.showTranslationsHighlights = function(el, translations)
 	{
+		this.showTranslationsHighlightsOnTextNodes(this.getTextNodes(el), translations);
+	};
+	
+	this.showTranslationsHighlightsOnTextNodes = function(textNodes, translations) 
+	{
 		textsHits = {};
-		var textNodes = findTextNodes(el);
+		
+		performOnElsList(textNodes, function(textNode) {
+			_this.highlightTextsInNode(textNode, translations, _this.settings[SettingsKeys.HighlightStyling]);
+		});
 
-		Register.settingsManager.GetHighlightStyling(function(styling) 
-		{
-			performOnElsList(textNodes, function(textNode) {
-				_this.highlightTextsInNode(textNode, translations, styling);
+		performOnEveryKey(textsHits, function(text, hits) {
+			Register.translationsManager.SetTranslationHitsCount(text, hits, function() {
+				console.log("Text hit counts updated");
 			});
+		});
 
-			performOnEveryKey(textsHits, function(text, hits) {
-				Register.translationsManager.SetTranslationHitsCount(text, hits, function() {
-					console.log("Text hit counts updated");
-				});
-			});
-
-			performOnElsList(document.querySelectorAll(".TR-HighlightedText"), function(highlightedText) {
-				UIManager.addEventNoDefault(highlightedText, "click", function(event) {
-					showTranslationDetails(event);
-				});
+		performOnElsList(document.querySelectorAll(".TR-HighlightedText"), function(highlightedText) {
+			UIManager.addEventNoDefault(highlightedText, "click", function(event) {
+				showTranslationDetails(event);
 			});
 		});
 	};
@@ -103,6 +112,10 @@ var TranslationsHighlighter = function(htmlHandler)
 		}
 	};
 
+	this.getTextNodes = function(node) 
+	{
+		return findTextNodes(node);
+	};
 
 	function findTextNodes(node, textNodes)
 	{
@@ -113,7 +126,7 @@ var TranslationsHighlighter = function(htmlHandler)
 		performOnElsList(node.childNodes, function(node) 
 		{
 			if (node.nodeType === 3 // 3 - is text node
-			&& AppConfig.restrictedTags.indexOf(node.parentNode.tagName.toLowerCase()) === -1) 
+			&& _this.settings[SettingsKeys.RestrictedTags].indexOf(node.parentNode.tagName.toLowerCase()) === -1) 
 			{
 				if(!UIFormat.isEmptyString(node.nodeValue)) 
 				{

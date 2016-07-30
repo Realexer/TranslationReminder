@@ -13,8 +13,9 @@ var BrowserPage = function ()
 				var htmlHandler = UIManager.addNodeFromHTML(document.body, Register.templater.formatTemplate("TR-Handler"));
 				
 				Register.translationsHighlighter = new TranslationsHighlighter(htmlHandler);
-				Register.translationsHighlighter.init();
-				Register.translationsHighlighter.showHighlightsOnDocuemnt();
+				Register.translationsHighlighter.init(function() {
+					Register.translationsHighlighter.showHighlightsOnDocuemnt();
+				});
 
 				Register.translationFormHandler = new TranslationFormHandler(htmlHandler);
 				Register.translationFormHandler.init();
@@ -39,7 +40,7 @@ var BrowserPage = function ()
 				
 
 				var updateTimeout = null;
-				var nodesToUpdate = [];
+				var addedNodes = [];
 				
 				var observer = new MutationObserver(function (mutations) {
 					mutations.forEach(function (mutation) {
@@ -49,32 +50,43 @@ var BrowserPage = function ()
 								performOnElsList(mutation.addedNodes, function(node) {
 									try
 									{
-										if(!node.hasInParents("TR-Handler") 
+										if([1, 3].indexOf(node.nodeType) !== -1 
+										&& node.parentNode != null
 										&& node.tagName != "trhandler".toUpperCase() 
 										&& !UIFormat.isEmptyString(node.innerHTML)) 
 										{
-											console.log(mutation.type);
+											//console.log(mutation.type);
 
-											nodesToUpdate.push(node);
+											addedNodes.push(node);
 										}
 									} catch(e) {
 										console.log(e);
 									}
 								});
 
-								if(nodesToUpdate.length > 0) 
+								if(addedNodes.length > 0) 
 								{
 									if(updateTimeout) {
 										Timeout.reset(updateTimeout);
 									}
 
-									updateTimTimeout = Timeout.set(function() {
-										performOnElsList(nodesToUpdate, function(node) {
-											Register.translationsHighlighter.showHighlightsOnEleemnt(node);
-											console.log("Highlighting texts in node:");
-											console.log(node);
+									updateTimeout = Timeout.set(function() 
+									{
+										var textNodes = [];
+										performOnElsList(addedNodes, function(node) {
+											if(!node.hasInParents("TR-Handler")) 
+											{
+												textNodes = textNodes.concat(Register.translationsHighlighter.getTextNodes(node));
+											}
 										});
-										nodesToUpdate = [];
+										
+										if(textNodes.length > 0) {
+											Register.translationsHighlighter.showHighlightsOnTextNodes(textNodes);
+											console.log("Highlighting on added text nodes: ");
+											console.log(textNodes);
+										}
+
+										addedNodes = [];
 									}, 2000);
 								}
 							}
@@ -150,7 +162,7 @@ var TranslationFormHandler = function(htmlHandler)
 						Register.translationsManager.AddTranslation(result.text, result.translation, result.image, result.definition,
 						function ()
 						{
-							Register.translationsHighlighter.showHighlights();
+							Register.translationsHighlighter.showHighlightsOnDocuemnt();
 							UIManager.addClassToEl(_this.formHandler, "TR-Successful");
 
 							setTimeout(function ()

@@ -26,7 +26,7 @@
 	<script type='text/javascript' src='scripts/pages/OptionsPage.js'></script>
 </head>
 <body class="TR-Base">
-	<div class="TR-BG-Light TR-Options">
+	<div id="TR-Options" class="TR-Options TR-BG-Light">
 		<div class="TR-BG-Dark TR-Header">
 			<span id="TR-SavingLabel" style="float:right;" class="TR-Red"></span>
 			<h2>Translation Reminder - Options</h2>
@@ -35,7 +35,9 @@
 		<div class="TR-Settings">
 			<form id="TR-SettingsForm" action="/" method="POST" enctype="multipart/form-data">
 				<div id="TR-SettingsFormBody"></div>
-				<input type="submit"/>
+				<div style="text-align: center;">
+					<input type="submit" class="SubmitButton TR-BG-Green" value="Save"/>
+				</div>
 			</form>
 		</div>
 	</div>
@@ -48,7 +50,7 @@
 					<label for="TR-SitesBlackList"><b>Don't</b> highlight texts on these sites: <b title="Extension may break layout of some pages. You can add such sites to exceptions and texts won't be highlighted on these sites.">(?)</b></label>
 					<div class="TR-Clear"></div>
 					<textarea id="TR-SitesBlackList" name="SitesBlackList" rows="5" placeholder="">{{SitesBlackList}}</textarea>
-					<span class="TR-MinorInfo">Specify domains separated by ';'. Ctrl+Enter to save</span>
+					<span class="TR-MinorInfo">Specify domains separated by ';'</span>
 				</div>
 
 				<h3>Translation</h3>
@@ -105,6 +107,18 @@
 					<div id="TR-HighlightStylingExample">
 						
 					</div>
+				</div>
+				
+				<br/>
+				
+				<h3>Advanced <span class="TR-Red">Only for advanced users</span></h3>
+				<hr />
+				
+				<div class="TR-Section">
+					<label for="TR-RestrictedTags">Restricted tags:</label>
+					<div class="TR-Clear"></div>
+					<textarea id="TR-RestrictedTags" name="RestrictedTags" rows="5" placeholder="">{{RestrictedTags}}</textarea>
+					<span class="TR-MinorInfo">Specify tags separated by ';'</span>
 				</div>
 	</div>
 </body>

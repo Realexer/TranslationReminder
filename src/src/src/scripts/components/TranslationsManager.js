@@ -41,8 +41,13 @@ var TranslationsManager = function ()
 
 	this.AddTranslation = function (text, translation, image, definition, callback)
 	{
-		Messanger.sendMessage(Messages.BE.DB.AddTranslation, 
-			TranslationAdapter.getNew(text, translation, image, definition), callback);
+		this.GetTranslationByText(text, function(data) 
+		{
+			_this.setTextLearning(text, callback);
+		}, function() {
+			Messanger.sendMessage(Messages.BE.DB.AddTranslation, 
+				TranslationAdapter.getNew(text, translation, image, definition), callback);
+		});
 	};
 	
 	this.EditTranslation = function (text, translation, image, definition, callback)

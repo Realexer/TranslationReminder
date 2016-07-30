@@ -11,7 +11,24 @@ var AppConfig =
 			addShaddow: false,
 			addUnderline: true,
 			customCSS: ""
-		}
+		},
+		RestrictedTags: [
+			"trtag",
+			"trhandler",
+			"head",
+			"noscript",
+			"style", 
+			"script", 
+			"object", 
+			"embed", 
+			"textarea", 
+			"button", 
+			"select", 
+			"option",
+			"input", 
+			"checkbox",
+			"canvas"
+		]
 	},
 	
 	glosbeAPI: {
@@ -43,21 +60,7 @@ var AppConfig =
 			bing: 5,
 			glosbe: 3
 		}
-	},
-	
-	restrictedTags: [
-		"trtag",
-		"style", 
-		"script", 
-		"object", 
-		"embed", 
-		"textarea", 
-		"button", 
-		"select", 
-		"option",
-		"input", 
-		"checkbox"
-	]
+	}
 };
 
 var Messages = 
@@ -112,7 +115,7 @@ var TemplatesLoader =
 		},
 		function(html) 
 		{
-			UIManager.addNodeFromHTML(intoEl, html);
+			var templatesHandler = UIManager.addNodeFromHTML(intoEl, html);
 			Initer.whenTrue(function() {
 				return getEl("tr-templates") != null;
 			}, function() 
@@ -127,7 +130,9 @@ var TemplatesLoader =
 				
 				Templater.UI.init();
 				
-				Register.templater.prepareUI();
+				Register.templater.prepareUI(document);
+				
+				UIManager.removeEl(templatesHandler);
 				
 				callback();
 			});

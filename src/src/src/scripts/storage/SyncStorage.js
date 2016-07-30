@@ -45,11 +45,22 @@ var SynchStorage = function()
 		return data;
 	};
 	
-	this.synchTranslations = function(callback) 
+	var synchTimer = null;
+	
+	this.synchTranslations = function() 
 	{
-		Register.translationsManager.GetTranslations(function(translations) {
-			_this.setTranslations(translations, callback);
-		});
+		// Scheduling synch to prevent excessive number of writes
+		if(synchTimer) {
+			Timeout.reset(synchTimer);
+		}
+		
+		synchTimer = Timeout.set(function() {
+			Register.translationsManager.GetTranslations(function(translations) {
+				_this.setTranslations(translations, function() {
+					console.log("Words synched.");
+				});
+			});
+		}, 2000);
 	};
 	
 	this.setTranslations = function(translations, callback) 

@@ -22,8 +22,17 @@ var OptionsPage = function ()
 			settings[SettingsKeys.HighlightStyling][HighlightStylingKeys.addUnderline] = getBool(formData.get(SettingsKeys.HighlightStyling+"."+HighlightStylingKeys.addUnderline));
 			settings[SettingsKeys.HighlightStyling][HighlightStylingKeys.customCSS] = formData.get(SettingsKeys.HighlightStyling+"."+HighlightStylingKeys.customCSS);
 			
+			settings[SettingsKeys.RestrictedTags] = formData.get(SettingsKeys.RestrictedTags).split(";").TrimAllElements().RemoveDuplicates().filter(function(item) {
+				return !UIFormat.isEmptyString(item);
+			});
+			
 			Register.settingsManager.saveSettings(settings, function() {
 				highlightExampleText();
+				UIManager.addClassToEl(getEl("TR-Options"), "TR-Successful");
+				
+				Timeout.set(function(){
+					UIManager.removeClassFromEl(getEl("TR-Options"), "TR-Successful");
+				}, 180);
 			});
 		});
 
@@ -32,6 +41,7 @@ var OptionsPage = function ()
 			Register.settingsManager.getSettings(function (settings)
 			{
 				settings[SettingsKeys.SitesBlackList] = settings[SettingsKeys.SitesBlackList].join("; ");
+				settings[SettingsKeys.RestrictedTags] = settings[SettingsKeys.RestrictedTags].join("; ");
 				
 				langs.sort();
 				settings.AvailableLanguagesHTML = "";
@@ -59,10 +69,12 @@ var OptionsPage = function ()
 						"Vivamus blandit, ligula at finibus fringilla, massa purus gravida risus, quis lobortis leo velit nec magna.");
 		
 		var highlighter = new TranslationsHighlighter(document.body);
-		highlighter.showTranslationsHighlights(getEl("TR-HighlightStylingExample"), [
-			TranslationAdapter.getNew("vulputate", "test", "definition", ""),
-			TranslationAdapter.getNew("ligula at finibus fringilla", "test", "definition", "")
-		]);
+		highlighter.init(function() {
+			highlighter.showTranslationsHighlights(getEl("TR-HighlightStylingExample"), [
+				TranslationAdapter.getNew("vulputate", "test", "definition", ""),
+				TranslationAdapter.getNew("ligula at finibus fringilla", "test", "definition", "")
+			]);
+		});
 	}
 };
 

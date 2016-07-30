@@ -12,10 +12,10 @@ var Templater = function()
 		return "["+attr+"]";
 	}
 	
-	this.prepareUI = function() 
+	this.prepareUI = function(el) 
 	{
-		this.retrieveTemplates(document);
-		this.drawTemplates(document);
+		this.retrieveTemplates(el);
+		this.drawTemplates(el);
 	};
 
 	this.retrieveTemplates = function(element) 

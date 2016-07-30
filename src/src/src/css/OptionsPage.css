@@ -2,10 +2,10 @@ body {
 }
 .TR-Options 
 {
-	width: 500px;
+	width: 60%;
+	min-width: 540px;
 	margin: 0 auto;
 	padding: 20px;
-	border: 1px solid #D8D8D8;
 	font-size: 0.8em;
 }
 .TR-Header 
@@ -22,6 +22,7 @@ body {
 {
 	padding: 10px 20px;
 	margin: 10px 0px;
+	position: relative;
 }
 
 .TR-Settings .TR-Section {
@@ -32,6 +33,15 @@ body {
 {
 	width: 100%;
 	max-width: 100%;
+}
+
+.TR-Settings .SubmitButton 
+{
+	width: 100%;
+	color: #fff;
+	padding: 1em;
+	border: 0;
+	cursor: pointer;
 }
 
 .TR-Saved 

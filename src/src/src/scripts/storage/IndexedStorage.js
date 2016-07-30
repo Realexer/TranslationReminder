@@ -134,9 +134,8 @@ var IndexedStorage = function()
 				},
 				function() 
 				{
-					Register.synchStorage.synchTranslations(function() {
-						callback();
-					});
+					callback();
+					Register.synchStorage.synchTranslations();
 				});
 			}
 			else 
@@ -150,9 +149,8 @@ var IndexedStorage = function()
 	{
 		this.getTranslationByText(request, function(translation, tr, store) 
 		{
-			Register.synchStorage.synchTranslations(function() {
-				callback();
-			});
+			callback();
+			Register.synchStorage.synchTranslations();
 		},
 		function(translation, tr, store, cursor) 
 		{
@@ -204,9 +202,8 @@ var IndexedStorage = function()
 	{
 		this.getTranslationByText(request, function(translation, tr, store) 
 		{
-			Register.synchStorage.synchTranslations(function() {
-				callback();
-			});
+			callback();
+			Register.synchStorage.synchTranslations();
 		},
 		function(translation, tr, store, cursor) 
 		{
@@ -223,9 +220,8 @@ var IndexedStorage = function()
 			return store.clear();
 		}, 
 		function() {
-			Register.synchStorage.synchTranslations(function() {
-				callback();
-			});
+			callback();
+			Register.synchStorage.synchTranslations();
 		});
 	};
 	

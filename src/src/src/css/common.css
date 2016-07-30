@@ -89,7 +89,7 @@
 
 .TR-Successful
 {
-	background: #C0FFC5 !important;
+	background: #f1ffea !important;
 }
 
 .TR-LoadingAnimation 
@@ -111,6 +111,11 @@
 .TR-BG-Ultralight 
 {
 	background: #fffcf6;
+}
+
+.TR-BG-Green
+{
+	background: #53ab53;
 }
 
 
