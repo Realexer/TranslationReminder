@@ -126,7 +126,7 @@ var TranslationsHighlighter = function(htmlHandler)
 		performOnElsList(node.childNodes, function(node) 
 		{
 			if (node.nodeType === 3 // 3 - is text node
-			&& _this.settings[SettingsKeys.RestrictedTags].indexOf(node.parentNode.tagName.toLowerCase()) === -1) 
+			&& _this.settings[SettingsKeys.RestrictedTags].concat(AppConfig.restrictedTags).indexOf(node.parentNode.tagName.toLowerCase()) === -1) 
 			{
 				if(!UIFormat.isEmptyString(node.nodeValue)) 
 				{

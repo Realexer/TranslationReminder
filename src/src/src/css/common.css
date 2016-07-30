@@ -36,6 +36,10 @@
 	cursor: pointer;
 }
 
+.TR-TextMinor 
+{
+	color: #999;
+}
 .TR-MinorInfo 
 {
 	font-size: 0.9em;

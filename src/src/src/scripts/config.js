@@ -13,23 +13,27 @@ var AppConfig =
 			customCSS: ""
 		},
 		RestrictedTags: [
-			"trtag",
-			"trhandler",
-			"head",
-			"noscript",
-			"style", 
-			"script", 
-			"object", 
-			"embed", 
-			"textarea", 
-			"button", 
-			"select", 
-			"option",
-			"input", 
-			"checkbox",
-			"canvas"
+			
 		]
 	},
+	
+	restrictedTags: [
+		"trtag",
+		"trhandler",
+		"head",
+		"noscript",
+		"style", 
+		"script", 
+		"object", 
+		"embed", 
+		"textarea", 
+		"button", 
+		"select", 
+		"option",
+		"input", 
+		"checkbox",
+		"canvas"
+	],
 	
 	glosbeAPI: {
 		url: "https://glosbe.com/gapi/",

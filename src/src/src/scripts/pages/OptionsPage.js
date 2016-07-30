@@ -42,6 +42,7 @@ var OptionsPage = function ()
 			{
 				settings[SettingsKeys.SitesBlackList] = settings[SettingsKeys.SitesBlackList].join("; ");
 				settings[SettingsKeys.RestrictedTags] = settings[SettingsKeys.RestrictedTags].join("; ");
+				settings.restrictedTagsDefault = AppConfig.restrictedTags.join("; ");
 				
 				langs.sort();
 				settings.AvailableLanguagesHTML = "";
