@@ -57,7 +57,13 @@ var TranslationsHighlighter = function(htmlHandler)
 
 		performOnElsList(document.querySelectorAll(".TR-HighlightedText"), function(highlightedText) {
 			UIManager.addEventNoDefault(highlightedText, "click", function(event) {
-				showTranslationDetails(event);
+				var translationDetails = highlightedText.querySelector(".TR-Hint");
+				if(translationDetails != null) 
+				{
+					UIManager.removeEl(translationDetails);
+				} else {
+					showTranslationDetails(highlightedText, event);
+				}
 			});
 		});
 	};
@@ -178,7 +184,7 @@ var TranslationsHighlighter = function(htmlHandler)
 	};
 
 
-	function showTranslationDetails(event)
+	function showTranslationDetails(hint, event)
 	{
 		var highlight = event.target;
 		if (!UIManager.hasClass(highlight, "TR-HighlightedText"))
@@ -187,7 +193,7 @@ var TranslationsHighlighter = function(htmlHandler)
 		if (event.target.hasInChildren("TR-Hint")) // hint already displaied
 			return false;
 
-		var hint = UIManager.addNodeFromHTML(htmlHandlder, Register.templater.formatTemplate("TranslationDetails", 
+		var details = UIManager.addNodeFromHTML(hint, Register.templater.formatTemplate("TranslationDetails", 
 		{
 			text: UIManager.getElData(highlight, "tr-text"),
 			translation: UIManager.getElData(highlight, "tr-translation"),
@@ -198,11 +204,11 @@ var TranslationsHighlighter = function(htmlHandler)
 		}));
 
 		var highlightedTextElementRect = highlight.getBoundingClientRect();
-		var hintRect = hint.getBoundingClientRect();
-		hint.style.left = (window.scrollX + highlightedTextElementRect.right - highlightedTextElementRect.width / 2) + "px";
-		hint.style.top = (window.scrollY + highlightedTextElementRect.top - hintRect.height) + "px";
+		var hintRect = details.getBoundingClientRect();
+		details.style.left = (highlightedTextElementRect.width / 2) + "px";
+		details.style.top = (highlightedTextElementRect.height) + "px";
 
-		UIManager.addEvent(hint.querySelector("._tr_markAsLearnedButton"), "click", function(event, el) {
+		UIManager.addEvent(details.querySelector("._tr_markAsLearnedButton"), "click", function(event, el) {
 			markTextAsLearned(UIManager.getElData(el, "tr-text"));
 		});
 	};
