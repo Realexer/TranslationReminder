@@ -129,6 +129,7 @@ var UIManager = new function()
 		el.innerHTML = html;
 		
 		EventsManager.fire(Events.htmlChanged, el);
+		EventsManager.fire(Events.elementContentChanged, el);
 	};
 	
 	this.addHTML = function(el, html, atTop) 
@@ -143,6 +144,7 @@ var UIManager = new function()
 		}
 		
 		EventsManager.fire(Events.htmlChanged, el);
+		EventsManager.fire(Events.elementContentChanged, el);
 	};
 	
 	this.addNodeFromHTML = function(el, html, atTop, beforeEl) 
@@ -168,6 +170,7 @@ var UIManager = new function()
 		UIManager.removeEl(tmpNode);
 		
 		EventsManager.fire(Events.htmlChanged, el);
+		EventsManager.fire(Events.elementContentChanged, el);
 		
 		return newNode;
 	};
@@ -181,6 +184,7 @@ var UIManager = new function()
 		UIManager.addNodeFromHTML(el, html);
 		
 		EventsManager.fire(Events.htmlChanged, el);
+		EventsManager.fire(Events.elementContentChanged, el);
 	};
 	
 	this.removeEl = function(el) 
@@ -196,6 +200,8 @@ var UIManager = new function()
 	this.setText = function(el, text) 
 	{
 		el.textContent = text;
+		
+		EventsManager.fire(Events.elementContentChanged, el);
 	};
 	
 	this.getValue = function(el) 
@@ -206,16 +212,22 @@ var UIManager = new function()
 	this.setValue = function(el, value) 
 	{
 		el.value = value;
+		
+		EventsManager.fire(Events.elementContentChanged, el);
 	};
 	
 	this.appendValue = function(el, value) 
 	{
 		el.value += value;
+		
+		EventsManager.fire(Events.elementContentChanged, el);
 	};
 	
 	this.resetValue = function(el) 
 	{
 		el.value = "";
+		
+		EventsManager.fire(Events.elementContentChanged, el);
 	};
 	
 	this.isChecked = function(el) 
@@ -661,6 +673,12 @@ var UIDisplayToggler = new function()
 		}
 	}
 };
+
+EventsManager.subscribe(Events.elementContentChanged, function(el) {
+	if(UIManager.getElData(el, "prev-length")) {
+		UIManager.adaptElHeight(el);
+	}
+});
 
 var UIEffects = new function() 
 {

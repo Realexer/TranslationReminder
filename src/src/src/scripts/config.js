@@ -64,6 +64,13 @@ var AppConfig =
 			bing: 5,
 			glosbe: 3
 		}
+	},
+	images: {
+		selectTextImage: chrome.extension.getURL('imgs/select_image.png'),
+		noTextImage: chrome.extension.getURL('imgs/select_image.png'),
+		bingIcon: chrome.extension.getURL('imgs/bing_icon.png'),
+		glosbeIcon: chrome.extension.getURL('imgs/glosbe_icon.png'),
+		loadingAnimation: chrome.extension.getURL('imgs/loading.gif')
 	}
 };
 

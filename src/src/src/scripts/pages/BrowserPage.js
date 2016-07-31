@@ -6,7 +6,7 @@ var BrowserPage = function ()
 	{
 		Register.settingsManager.ifSiteNotInBlackList(document.domain, function() 
 		{
-			TemplatesLoader.loadTemplates("templates/all.html", document.body, function() 
+			TemplatesLoader.loadTemplates("templates/common.html", document.body, function() 
 			{
 				// using different html handler to 
 				// prevent observing DOM changes that are made by the extension
@@ -172,11 +172,12 @@ var TranslationFormHandler = function(htmlHandler)
 							}, 50);
 						});
 					}
+				},
+				function() {
+					_this.position(selection, event);
+					UIManager.showEl(_this.formHandler);
 				});
-
-				_this.position(selection, event);
-				UIManager.showEl(_this.formHandler);
-
+				
 				//UIManager.setHTML(_this.formHandler.translationLanguageSpan, "'" + lang.toUpperCase() + "'");
 			});
 		});

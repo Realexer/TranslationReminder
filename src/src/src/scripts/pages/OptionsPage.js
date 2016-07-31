@@ -82,7 +82,7 @@ var OptionsPage = function ()
 window.onload = function ()
 {
 	Register.optionsPage = new OptionsPage();
-	TemplatesLoader.loadTemplates("templates/all.html", document.body, function() 
+	TemplatesLoader.loadTemplates("templates/common.html", document.body, function() 
 	{
 		Register.optionsPage.init();
 	});

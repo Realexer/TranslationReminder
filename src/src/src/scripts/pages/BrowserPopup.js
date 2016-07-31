@@ -54,7 +54,7 @@ var BrowserPopup = function ()
 			finishEditing();
 		});
 
-		TemplatesLoader.loadTemplates("templates/all.html", document.body, function() 
+		TemplatesLoader.loadTemplates("templates/common.html", document.body, function() 
 		{
 			showUserTranslations();
 		});
@@ -81,7 +81,7 @@ var BrowserPopup = function ()
 
 				performOnElsList(_this.translationsLearning, function(data, i) {
 					data.index = i;
-					data.image = OR(data.image, chrome.extension.getURL('imgs/select_image.png'));
+					data.image = OR(data.image, AppConfig.images.noTextImage);
 					data.rowClass = (i % 2 == 0) ? "TR-BG-Light" : "TR-BG-Dark";
 					UIManager.addHTML(translationsTableLearning, Register.templater.formatTemplate("WordLearningRowItem", data));
 				});
@@ -89,7 +89,7 @@ var BrowserPopup = function ()
 				performOnElsList(translations.filter(function(translationItem) {
 					return translationItem.learned;
 				}), function(data, i) {
-						data.image = OR(data.image, chrome.extension.getURL('imgs/select_image.png'));
+						data.image = OR(data.image, AppConfig.images.noTextImage);
 						data.rowClass = (i % 2 == 0) ? "TR-BG-Grey-Light" : "TR-BG-Grey-Dark";
 						UIManager.addHTML(translationsTableLearned, Register.templater.formatTemplate("WordLearnedRowItem", data));
 				});
@@ -150,10 +150,11 @@ var BrowserPopup = function ()
 						}, 500);
 					});
 				}
+			},
+			function() {
+				UIManager.showEl(translationEditingForm);
+				UIManager.scrollIntoView(translationEditingForm);
 			});
-
-			UIManager.showEl(translationEditingForm);
-			UIManager.scrollIntoView(translationEditingForm);
 		});
 	};
 	

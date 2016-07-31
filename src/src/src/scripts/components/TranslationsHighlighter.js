@@ -55,16 +55,25 @@ var TranslationsHighlighter = function(htmlHandler)
 			});
 		});
 
-		performOnElsList(document.querySelectorAll(".TR-HighlightedText"), function(highlightedText) {
-			UIManager.addEventNoDefault(highlightedText, "click", function(event) {
-				var translationDetails = highlightedText.querySelector(".TR-Hint");
-				if(translationDetails != null) 
-				{
-					UIManager.removeEl(translationDetails);
-				} else {
-					showTranslationDetails(highlightedText, event);
-				}
-			});
+		performOnElsList(document.querySelectorAll(".TR-HighlightedText"), function(highlight) {
+			if(UIManager.getElData(highlight, "tr-event-set") != true) 
+			{
+				UIManager.addEventNoDefault(highlight, "click", function(event) 
+				{	
+					if (!UIManager.hasClass(highlight, "TR-HighlightedText"))
+						return false;
+
+					if (event.target.hasInChildren("TR-Hint")) // hint already displayed
+						return false;
+					
+					_this.hideAllTranslationDetails();
+
+					showTranslationDetails(highlight, event);
+					
+				});
+				
+				UIManager.setElData(highlight, "tr-event-set", true);
+			}
 		});
 	};
 	
@@ -184,29 +193,22 @@ var TranslationsHighlighter = function(htmlHandler)
 	};
 
 
-	function showTranslationDetails(hint, event)
+	function showTranslationDetails(highlight, event)
 	{
-		var highlight = event.target;
-		if (!UIManager.hasClass(highlight, "TR-HighlightedText"))
-			return false;
-
-		if (event.target.hasInChildren("TR-Hint")) // hint already displaied
-			return false;
-
-		var details = UIManager.addNodeFromHTML(hint, Register.templater.formatTemplate("TranslationDetails", 
+		var details = UIManager.addNodeFromHTML(htmlHandlder, Register.templater.formatTemplate("TranslationDetails", 
 		{
 			text: UIManager.getElData(highlight, "tr-text"),
 			translation: UIManager.getElData(highlight, "tr-translation"),
-			image: UIManager.getElData(highlight, "tr-image"),
-			definition: UIManager.getElData(highlight, "tr-definition"),
+			image: OR(UIManager.getElData(highlight, "tr-image"), AppConfig.images.noTextImage),
+			definition: OR(UIManager.getElData(highlight, "tr-definition"), ""),
 			hits: UIManager.getElData(highlight, "tr-hits"),
 			date: parseInt(UIManager.getElData(highlight, "tr-date"))
 		}));
 
 		var highlightedTextElementRect = highlight.getBoundingClientRect();
 		var hintRect = details.getBoundingClientRect();
-		details.style.left = (highlightedTextElementRect.width / 2) + "px";
-		details.style.top = (highlightedTextElementRect.height) + "px";
+		details.style.left = (window.scrollX + highlightedTextElementRect.right - highlightedTextElementRect.width / 2) + "px";
+		details.style.top = (window.scrollY + highlightedTextElementRect.top - hintRect.height) + "px";
 
 		UIManager.addEvent(details.querySelector("._tr_markAsLearnedButton"), "click", function(event, el) {
 			markTextAsLearned(UIManager.getElData(el, "tr-text"));

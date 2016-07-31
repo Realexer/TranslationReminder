@@ -11,22 +11,24 @@ var TranslationForm = function(handler, data, langTo, autoTranslate)
 		text: data.text,
 		translation: OR(data.translation, ""),
 		definition: OR(data.definition, ""),
-		image: OR(data.image, chrome.extension.getURL('imgs/select_image.png')),
+		image: OR(data.image, AppConfig.images.selectTextImage),
+		selectedImage: OR(data.image, ""),
 		langTo: langTo.toUpperCase(),
 		config: {
-			bingIcon: chrome.extension.getURL('imgs/bing_icon.png'),
-			glosbeIcon: chrome.extension.getURL('imgs/glosbe_icon.png'),
-			loadingAnimation: chrome.extension.getURL('imgs/loading.gif')
+			bingIcon: AppConfig.images.bingIcon,
+			glosbeIcon: AppConfig.images.glosbeIcon,
+			loadingAnimation: AppConfig.images.loadingAnimation
 		}
 	}));
 
-	this.selection = this.form.querySelector("._tr_textToTranslate");
+	this.selectionInput = this.form.querySelector("._tr_textToTranslateInput");
 	this.translationInput = this.form.querySelector("._tr_translationInput");
 	this.imageSelectorHandler = this.form.querySelector("._tr_imageSelectorHandler");
 	this.imageSelector = this.form.querySelector("._tr_imageSelector");
 	this.chooseImageButton = this.form.querySelector("._tr_chooseImageButton");
 	this.cancelImageButton = this.form.querySelector("._tr_cancelImageButton");
 	this.textImage = this.form.querySelector("._tr_textImage");
+	this.textImageInput = this.form.querySelector("._tr_selectedImageInput");
 	this.textDefinition = this.form.querySelector("._tr_textToTranslateDefinition");
 	this.specifiedTranslation = this.form.querySelector("._tr_textTranslation");
 	this.enterKeyButton = this.form.querySelector("._tr_setTranslationButton");
@@ -38,7 +40,7 @@ var TranslationForm = function(handler, data, langTo, autoTranslate)
 	
 	this.doneCallback = null;
 
-	this.setup = function(doneCallback) 
+	this.setup = function(doneCallback, setupFinished) 
 	{
 		this.doneCallback = doneCallback;
 		
@@ -86,6 +88,15 @@ var TranslationForm = function(handler, data, langTo, autoTranslate)
 			_this.textImage.src = UIManager.getElData(_this.textImage, "tr-default-image");
 			UIManager.hideEl(_this.imageSelectorHandler);
 		});
+		
+		UIManager.addEvent(_this.textImageInput, "change", function() {
+			_this.textImage.src = OR(UIManager.getValue(_this.textImageInput), UIManager.getElData(_this.textImage, "tr-default-image"));
+		});
+		
+		setupFinished();
+		
+		UIManager.autogrowTetarea(_this.selectionInput);
+		UIManager.autogrowTetarea(_this.translationInput);
 	};
 
 	this.showLoadingAnimation = function() { UIManager.showEl(this.loadingAnimationImage); };
@@ -97,7 +108,7 @@ var TranslationForm = function(handler, data, langTo, autoTranslate)
 		UIManager.showEl(_this.imageSelectorHandler);
 		UIManager.clearEl(_this.imageSelector);
 		
-		BingClient.GetImages(_this.text,
+		BingClient.GetImages(UIManager.getValue(_this.selectionInput),
 		function (result)
 		{
 			//console.log(result);
@@ -117,7 +128,7 @@ var TranslationForm = function(handler, data, langTo, autoTranslate)
 			performOnElsList(_this.imageSelector.querySelectorAll("._tr_imageSelectFrom"), function(el) {
 				UIManager.addEvent(el, "click", function(e, el) {
 					_this.textImage.src = el.src;
-					UIManager.setElData(_this.textImage, "tr-selected-image", _this.textImage.src);
+					UIManager.setValue(_this.textImageInput, _this.textImage.src);
 				});
 			});
 
@@ -127,13 +138,13 @@ var TranslationForm = function(handler, data, langTo, autoTranslate)
 	
 	this.translateWithBing = function()
 	{
-		if(_this.text.split(" ").length <= AppConfig.translationForm.textMaxWordsToTranslate.bing) 
+		if(UIManager.getValue(_this.selectionInput).split(" ").length <= AppConfig.translationForm.textMaxWordsToTranslate.bing) 
 		{
 			_this.showLoadingAnimation();
 			
 			Register.settingsManager.GetTranslationLanguage(function(toLang) 
 			{
-				BingClient.Translate(_this.text, OR(document.documentElement.lang, 'en'), toLang,
+				BingClient.Translate(UIManager.getValue(_this.selectionInput), OR(document.documentElement.lang, 'en'), toLang,
 				function (result)
 				{
 					var translation = result.trim("\"");
@@ -152,7 +163,7 @@ var TranslationForm = function(handler, data, langTo, autoTranslate)
 	
 	this.translateWithGlobse = function()
 	{
-		if(_this.text.split(" ").length <= AppConfig.translationForm.textMaxWordsToTranslate.glosbe) 
+		if(UIManager.getValue(_this.selectionInput).split(" ").length <= AppConfig.translationForm.textMaxWordsToTranslate.glosbe) 
 		{
 			_this.showLoadingAnimation();
 			Register.settingsManager.GetTranslationLanguage(function(toLang) 
@@ -212,9 +223,9 @@ var TranslationForm = function(handler, data, langTo, autoTranslate)
 	{
 		this.doneCallback(
 		{
-			text: _this.text,
+			text: UIManager.getValue(_this.selectionInput),
 			definition: UIManager.getElData(_this.textDefinition, "tr-selected-definition"),
-			image: UIManager.getElData(_this.textImage, "tr-selected-image"),
+			image: UIManager.getValue(_this.textImageInput),
 			translation: UIManager.getValue(_this.translationInput)
 		});
 	};

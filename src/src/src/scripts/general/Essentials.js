@@ -582,6 +582,7 @@ var Threader =
 var Events = 
 {
 	htmlChanged: "htmlChanged",
+	elementContentChanged: "elementContentChanged",
 	elDisplayed: "elDisplayed",
 	elHidden: "elHidden",
 	
