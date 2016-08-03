@@ -14,6 +14,23 @@ FEMessageHandlers[Messages.FE.AddSiteToBlackList] = function(message, data, call
 	});
 };
 
+FEMessageHandlers[Messages.FE.GetDomain] = function(message, data, callback, sender) 
+{
+	callback(document.domain);
+};
+
+FEMessageHandlers[Messages.FE.ShowHighlights] = function(message, data, callback, sender) 
+{
+	window.location.reload();
+	callback();
+};
+
+FEMessageHandlers[Messages.FE.RemoveHighlights] = function(message, data, callback, sender) 
+{
+	window.location.reload();
+	callback();
+};
+
 Messanger.onMessage(function (message, data, callback, sender)
 {
 	if(FEMessageHandlers[message]) {
@@ -21,5 +38,5 @@ Messanger.onMessage(function (message, data, callback, sender)
 	}
 });
 
-var browserPage = new BrowserPage();
-browserPage.Init();
+Register.browserPage = new BrowserPage();
+Register.browserPage.Init();

@@ -102,6 +102,11 @@ var BrowserPage = function ()
 			});
 		});
 	};
+	
+	this.reload = function() 
+	{
+		this.Init();
+	};
 };
 
 var TranslationFormHandler = function(htmlHandler) 
@@ -153,7 +158,11 @@ var TranslationFormHandler = function(htmlHandler)
 			{
 				_this.form = new TranslationForm(_this.formHandlerBody, {
 					text: selectedText 
-				}, langTo, autoTranslate);
+				}, {
+					langTo: langTo,
+					autoTranslate: autoTranslate, 
+					editable: true
+				});
 
 				_this.form.setup(function(result) 
 				{

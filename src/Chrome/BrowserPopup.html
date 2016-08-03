@@ -1,10 +1,13 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-	<title>Words I need to remember</title>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>Translation Reminder : Options</title>
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+	<link rel="shortcut icon" href="icons/icon-16.png">
 	<link rel="stylesheet" type="text/css" href="css/common.css" />
+	<link rel="stylesheet" type="text/css" href="css/BrowserPage.css" />
 	<link rel="stylesheet" type="text/css" href="css/BrowserPopup.css" />
+	<script type='text/javascript' src='scripts/libs/jscolor-2.0.4/jscolor.js'></script>
 	<script type='text/javascript' src='scripts/config.js'></script>
 	<script type='text/javascript' src='scripts/general/Essentials.js'></script>
 	<script type='text/javascript' src='scripts/general/Templater.js'></script>
@@ -16,68 +19,42 @@
 	<script type='text/javascript' src='scripts/storage/IndexedStorage.js'></script>
 	<script type='text/javascript' src='scripts/storage/SyncStorage.js'></script>
 	<script type='text/javascript' src='scripts/api/BingClient.js'></script>
-	<script type='text/javascript' src='scripts/api/GlosbeClient.js'></script>
-	<script type='text/javascript' src='scripts/components/DBManager.js'></script>
-	<script type='text/javascript' src='scripts/components/TranslationsManager.js'></script>
-	<script type='text/javascript' src='scripts/components/SettingsManager.js'></script>
-	<script type='text/javascript' src='scripts/components/TranslationForm.js'></script>
+	<script type='text/javascript' src='scripts/managers/DBManager.js'></script>
+	<script type='text/javascript' src='scripts/managers/TranslationsManager.js'></script>
+	<script type='text/javascript' src='scripts/managers/SettingsManager.js'></script>
+	<script type='text/javascript' src='scripts/components/TranslationsHighlighter.js'></script>
 	<script type='text/javascript' src='scripts/pages/BrowserPopup.js'></script>
 </head>
-
-<body class="TR-Base TR-Popup">
-	<!-- NO WORDS VIEW  -->
-	<div id="TR-NoWordsView" class="TR-Blur TR-InfoMessage" style="display: none;">
-		<h1>YOU HAVE NO TRANSLATIONS YET</h1>
-		<span>Select the text on the page holding Ctrl key and add it.</span>
-	</div>
-
-	<!-- WORDS LIST  -->
-	<div class="TR-WordsView" id="TR-WordsView">	
-		<div id="TR-EditTranslation" class="TR-EditTranslation">
-			<div class="TR-Body TR-BG-Light">
-				<div class="TR-NewWordForm-TitleHandler">
-					<span class="TR-NewWordForm-Title">edit translaton to the text</span>
-					<button class="_tr_close TR-Red TR-NewWordForm-CloseButton">cancel</button>
-					<div class="TR-Clear"></div>
-				</div>
-				<div class="_tr_body">
-
-				</div>
-				<div class="TR-BG-Dark" style="height: 0.2em;"></div>
-			</div>
+<body class="TR-Base TR-Popup TR-BG-Light">
+	<div class="">
+		<div class="TR-BG-Dark TR-Popup-Header">
+			<h2>Translation Reminder</h2>
+			<div class="TR-Clear"></div>
 		</div>
 		
-		<div class="TR-Header">
-			<img id="TR-LoadingAnimation" class="TR-LoadingAnimation" src="imgs/loading.gif"/>
-			<h4>Your Words</h4>
-			<div class="TR-ListControls">Order by: 
-				<button class="TR-Action TR-SelectWordsOrder TR-SelectedWordsOrder" id="TR-OrderWordsByDate">date</button> 
-				<button class="TR-Action TR-SelectWordsOrder" id="TR-OrderWordsByHits">hits</button>
+		<div style="height: 1em;"></div>
+		
+		<div class="TR-Popup-Body">
+			
+			<div class="TR-Popup-Controls TR-BG-Ultralight">
+				<input id="SwitchHilightingCheckbox" type="checkbox">
+				<label for="SwitchHilightingCheckbox">highlight translations on this site</label>
 			</div>
+			
+			<div style="height: 1em;"></div>
+			
+			<div class="TR-Popup-Links">
+				<ul>
+					<li>
+						<a href="options.html?dictionary" target="_blank" onclick="chrome.runtime.openOptionsPage();">manage dictionary</a>
+					</li>
+					<li>
+						<a href="options.html?options" target="_blank" onclick="chrome.runtime.openOptionsPage();">settings</a>
+					</li>
+				</ul>
+			</div>
+			
 		</div>
-		
-		<table class="TR-WordsList">
-			<thead>
-				<tr>
-					<th>text</th>
-					<th>translation</th>
-					<th></th>
-				</tr>
-			</thead>
-			<tbody id="TR-WordsListLearning">
-			</tbody>
-			<tbody style="font-size: 0.9em;" id="TR-WordsListLearnedHead">
-				<tr>
-					<td colspan="3" style="text-align: center; font-size: 1.2em;">
-						Learned
-					</td>
-				</tr>
-			</tbody>
-			<tbody id="TR-WordsListLearned">
-			</tbody>
-		</table>
-		
-		<div class="TR-WordsCount"><span id="TR-WordsCount">65 words</span></div>
 	</div>
 </body>
 </html>

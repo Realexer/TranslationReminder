@@ -1,212 +1,40 @@
-::-webkit-scrollbar
-{
-	width: 6px;
-	height: 8px;
+
+body {
+	font-size: 16px;
+	width: 450px;
 }
 
-::-webkit-scrollbar-thumb
-{
-	height: 50px;
-	background-color: #decdb1;
-	-webkit-border-radius: 8px;
-	border-radius: 8px;
-}
-
-::-webkit-scrollbar-thumb:vertical
-{
-	height: 50px;
-}
-
-.TR-Popup
-{
-	width: 400px;
-	font-size: 1em;
-}
-
-/*
-	Header
-*/
-.TR-Header 
-{
-	border-bottom: 2px solid #D6D6D6;
-	position: relative;
-}
-
-.TR-Header .TR-LoadingAnimation {
-	position: absolute;
-	left: 0px;
-	top: 0px;
-	display: none;
-}
-.TR-Header h4
-{
-	margin: 0.7em 0em 0.6em 0em;
-	text-transform: capitalize;
-	text-indent: 0.5em;
-	text-align: center;
-	width: 100%;
-}
-.TR-ListControls 
-{
-	color: #888;
-	font-size: 0.8em;
-	position: absolute;
-	top: 0;
-	right: 0;	
-}
-
-.TR-SelectWordsOrder 
-{
-	
-}
-
-.TR-ListControls button
-{
-}
-
-.TR-ListControls button:focus
-{
-	outline: none;
-}
-
-.TR-ListControls button.TR-SelectedWordsOrder 
-{
-	font-weight: bold;
-}
-
-/**
-   words table
-*/
-.TR-WordsView
-{
-	width: 100%;
-	position: relative;
-}
-.TR-WordsList
-{
-	width: 100%;
-	border-collapse: collapse;
-	background: #fff;
-	margin-bottom: 2.2em;
-}
-
-.TR-WordsList thead
-{
-	border-bottom: 1px solid #ccc;
-	color: #AAA;
-}
-
-.TR-WordsList tbody
-{
-	font-size: 0.8em;	
-}
-
-
-.TR-WordsList th
-{
-	font-size: 0.8em;
-	font-weight: normal;
-	text-align: left;
-	text-indent: 0.1em;
-	padding: 0.65em 0.4em;
-}
-
-.TR-WordsList tr 
-{
-	
-}
-
-.TR-WordsList td
-{
-	padding: 0.65em 0.4em;
-	vertical-align: top;
-}
-.TR-WordsList .TR-Word-Cell
-{
-	width: 30%;
-}
-
-.TR-WordsList .TR-Word-Cell .TR-WordHandler
-{
-	margin-bottom: 0.5em;
-}
-
-.TR-WordsList .TR-Word-Cell .TR-WordHandler .TR-Word 
-{
-	font-size: 1.3em;
-	text-decoration: none;
-}
-
-.TR-WordsList .TR-Translation-Cell
-{
-	width: 55%;
-}
-
-.TR-WordsList .TR-Translation:before {
-	content: "- ";
-}
-
-.TR-WordsList .TR-DeleteButton-Cell
-{
-	text-align: center;
-	width: 15%;
-}
-
-/** COVER VIEWS **/
-.TR-InfoMessage
-{
-	width: 100%;
-	height: 100%;
-	display: block;
-	background: none;
-	position: fixed;
-	left: 0;
-	right: 0;
-	z-index: 2;
-	text-align: center;
-	color: #888;
-}
-
-.TR-Blur
-{
-	width: 100%;
-	height: 100%;
-	background: #fff;
-}
-.TR-InfoMessage h1
-{
-	text-transform: uppercase;
-	font-weight: bold;
-	font-size: 1em;
-	letter-spacing: 0.3em;
-	margin: 0.5em;
-}
-
-.TR-InfoMessage span
-{
-	font-size: 0.75em;
-}
-
-.TR-WordsCount 
-{
-	padding: 0.7em 0em;
-	color: #888;
-	font-size: 0.8em;
-	text-align: center;
-	position: fixed;
-	bottom: 0;
-	width: 100%;
-	background: #fff;
-}
-
-.TR-EditTranslation
-{
-	display: none;
-	width: 100%;
-	font-size: 1.5em;
-}
-
-.TR-EditTranslation .TR-Body 
+.TR-Popup-Header 
 {
 	padding: 0.5em;
+}
+
+.TR-Popup-Body {
+	
+}
+
+.TR-Popup-Controls 
+{
+	padding: 1em;
+}
+
+.TR-Popup-Links 
+{
+	padding: 0.5em;
+}
+
+.TR-Popup-Links ul 
+{
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+
+.TR-Popup-Links ul li{
+	padding-bottom: 0.5em;
+}
+
+.TR-Popup-Links ul li a
+{
+	color: #777;
 }

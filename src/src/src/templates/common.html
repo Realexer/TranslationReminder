@@ -49,24 +49,27 @@
 									 placeholder="image url">
 						</div>
 						<div class="">
-							<button class="_tr_cancelImageButton">cancel</button>
-							<button class="_tr_chooseImageButton">done</button>
+							<button class="_tr_cancelImageButton TR-TextMinor">cancel</button>
+							<button class="_tr_chooseImageButton TR-Green">done</button>
 						</div>
 					</div>
 					<div style="height: 0.5em;"></div>
 				</div>
-				<div class="TR-Form-Image" style="float: left;">
-					<img class="_tr_textImage" 
-						  src="{{image}}"
-						  data-tr-default-image="{{image}}"
-						  style="width: 3em; height: 3em; cursor: pointer;">
-				</div>
-				<div class="TR-Form-Word" style="float: left; margin-left: 0.5em;">
-					<textarea class="_tr_textToTranslateInput TR-TranslationForm-TextInput">{{text}}</textarea>
-					<div class="_tr_textToTranslateDefinition" data-tr-selected-definition="" style="font-size: 0.65em;">
-						{{definition}}
-					</div>
-				</div>
+				<table class="TR-Form-TranslationInfo">
+					<tr>
+						<td class="TR-Form-Image">
+							<img class="_tr_textImage" 
+								  src="{{image}}"
+								  data-tr-default-image="{{image}}">
+						</td>
+						<td class="TR-Form-Word">
+							<textarea class="_tr_textToTranslateInput TR-TranslationForm-TextInput">{{text}}</textarea>
+							<div class="_tr_textToTranslateDefinition" data-tr-selected-definition="">
+								{{definition}}
+							</div>
+						</td>
+					</tr>
+				</table>
 				<div class="TR-Clear"></div>
 			</div>
 			<div class="TR-BG-Ultralight" style="padding: 0.5em;">
@@ -92,8 +95,12 @@
 				
 				<img stc="" class="_tr_loading TR-NewWordForm-LoadingAnimation TR-LoadingAnimation" data-tr-src="{{config.loadingAnimation}}">
 			</div>
+			
+			<div style="height: 0.3em"></div>
+			
 			<div class="TR-NewWordForm-Translation-Handler">
 				<textarea class="_tr_translationInput TR-Translation TR-NewWordForm-Translation" placeholder="translation">{{translation}}</textarea>
+				<div style="height: 0.2em"></div>
 				<div>
 					<button title="Add word" class="_tr_setTranslationButton TR-BG-Green TR-NewWordForm-EnterKeyButton">Save</button>
 				</div>
@@ -104,14 +111,10 @@
 	<div class="TR-InvisibleTemplate" data-tr-js-template="TranslationDetails">
 		<div class="TR-BG-Light TR-Base TR-Hint" style="">
 			<div class="" data-tr-js-use-template="TranslationDetailsBody"></div>
-<!--			<div class="TR-BG-Dark TR-WordBaseInfo">
-				<span class="TR-Word TR-Hint-Word">{{text}}</span> 
-				<span class="TR-Translation TR-Hint-Translation">{{translation}}</span>
-			</div>-->
+
 			<div class="TR-WordAdditionalInfo">
 				<div class="TR-WordData">{{hits}} times met<br/>{{Templater.UI.print.dateAgo | date}}</div>
-				<button class="_tr_markAsLearnedButton TR-KnowIt TR-Hint-DeleteWordButton" data-tr-text="{{text}}">I already know this word!
-				</button>
+				<button class="_tr_markAsLearnedButton TR-KnowIt TR-Hint-DeleteWordButton" data-tr-text="{{text}}">I already know this word!</button>
 				<div class="TR-Clear"></div>
 			</div>
 		</div>
@@ -121,28 +124,29 @@
 	<table class="TR-InvisibleTemplate">
 		<tbody data-tr-js-template="WordLearningRowItem">
 			<tr class='{{rowClass}}'>
-				<td class='TR-Word-Cell'>
-					<div style="float:left; padding-right: 0.5em;">
-						<img src="{{image}}" style="width: 3em; height: 3em;">
+				<td class='TR-Translation-Cell'>
+					<div class="TR-Word-Image">
+						<img src="{{image}}">
 					</div>
 					<div class='TR-WordHandler'><span class='TR-Word'>{{text}}</span></div>
 					<div class='TR-WordData'>{{hits}} times met<br/>{{Templater.UI.print.dateAgo | date}}</div>
 				</td>
 				<td class='TR-Translation-Cell'>
-					<span class='TR-Translation'>{{translation}}</span>
+					<div class='TR-Translation'>{{translation}}</div>
+					<div class='TR-Definition TR-TextMinor'>{{definition}}</div>
 				</td>
 				<td class='TR-DeleteButton-Cell'>
-					<button class='TR-EditTranslationButton' data-tr-raw='{{index}}'>edit</button>
-					<div></div>
-					<button class='TR-KnowIt' data-tr-text='{{text}}'>Know it!</button>
+					<button class='TR-KnowIt' data-tr-text='{{text}}'>know it</button>
+					<button class='TR-EditTranslationButton TR-TextMinor' data-tr-index='{{index}}'>edit</button>
+					<button class='TR-DeleteTranslationButton TR-TextMinor' data-tr-index='{{index}}'>delete</button>
 				</td>
 			</tr>
 		</tbody>
 		<tbody data-tr-js-template="WordLearnedRowItem">
 			<tr class='{{rowClass}}'>
-				<td class='TR-Word-Cell'>
-					<div style="float:left; padding-right: 0.5em;">
-						<img src="{{image}}" style="width: 3em; height: 3em;">
+				<td class='TR-Translation-Cell'>
+					<div class="TR-Word-Image">
+						<img src="{{image}}">
 					</div>
 					<div class='TR-WordHandler'><span class='TR-Word'>{{text}}</span></div>
 					<div class='TR-WordData'>{{hits}} times met<br/>{{Templater.UI.print.dateAgo | date}}</div>
@@ -150,7 +154,8 @@
 				<td class='TR-Translation-Cell' colspan="2">
 					<div>Learned {{Templater.UI.print.dateAgo | learnedAt}}</div>
 					<div class='TR-Translation' style="display: none;">{{translation}}</div>
-					<button class='TR-BackToLearning' data-tr-text='{{text}}'>back to learning</button>
+					<button class='TR-BackToLearning TR-TextMinor' data-tr-text='{{text}}'>back to learning</button>
+					<button class='TR-DeleteTranslationButton TR-TextMinor' data-tr-index='{{index}}'>delete</button>
 				</td>
 			</tr>
 		</tbody>

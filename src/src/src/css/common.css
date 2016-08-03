@@ -28,12 +28,12 @@
 .TR-Hint button, 
 .TR-NewWordForm button 
 {
-/*	background: none;
+	background: none;
 	border: none;
 	margin: 0px;
 	padding: 0px;
 	text-align: center;
-	cursor: pointer;*/
+	cursor: pointer;
 }
 
 .TR-TextMinor 
@@ -68,6 +68,7 @@
 	color: #3d7a40;
 	border-bottom: 1px dotted !important;
 	font-size: 10px;
+	white-space: nowrap;
 }
 
 .TR-Word 
@@ -119,7 +120,7 @@
 
 .TR-BG-Green
 {
-	background: #53ab53;
+	background: #53ab53 !important;
 }
 
 
@@ -170,6 +171,47 @@
 	margin: 0.2em;
 }
 
+.TR-Form-ImageSelector img:hover, 
+.TR-Form-ImageSelector img:active 
+{
+	outline: rgb(135, 230, 136) solid 0.1em;
+}
+
+.TR-Form-TranslationInfo 
+{
+	width: 100%;
+	border-collapse: collapse;
+}
+
+.TR-Form-TranslationInfo td {
+	vertical-align: top;
+}
+
+.TR-Form-TranslationInfo .TR-TranslationForm-TextInput {
+	width: 100%;
+}
+
+.TR-Form-Image {
+	padding-right: 0.5em;
+}
+
+.TR-Form-Image img 
+{
+	width: 3em; 
+	height: 3em; 
+	cursor: pointer;
+}
+
+.TR-Form-Word 
+{
+	width: 100%;
+}
+
+.TR-Form-Word ._tr_textToTranslateDefinition 
+{
+	font-size: 0.65em;
+}
+
 .TR-NewWordForm-SpecifiedTranslation 
 {
 	font-weight: normal;
@@ -195,7 +237,8 @@
 .TR-NewWordForm-EnterKeyButton 
 {
 	width: 100%;
-	padding: 0.5em;
+	padding: 0.5em !important;
+	color: #fff;
 }
 
 .TR-NewWordForm-ButtonsPanel

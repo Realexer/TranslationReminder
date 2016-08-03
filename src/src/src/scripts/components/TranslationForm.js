@@ -1,11 +1,10 @@
-var TranslationForm = function(handler, data, langTo, autoTranslate)
+var TranslationForm = function(handler, data, options)
 {
 	var _this = this;
 	
 	this.handler = handler;
 	this.text = data.text;
-	this.langTo = langTo;
-	this.autoTranslate = autoTranslate;
+	this.options = options;
 	
 	this.form = UIManager.addNodeFromHTML(handler, Register.templater.formatTemplate("TranslationForm", {
 		text: data.text,
@@ -13,7 +12,7 @@ var TranslationForm = function(handler, data, langTo, autoTranslate)
 		definition: OR(data.definition, ""),
 		image: OR(data.image, AppConfig.images.selectTextImage),
 		selectedImage: OR(data.image, ""),
-		langTo: langTo.toUpperCase(),
+		langTo: options.langTo.toUpperCase(),
 		config: {
 			bingIcon: AppConfig.images.bingIcon,
 			glosbeIcon: AppConfig.images.glosbeIcon,
@@ -44,9 +43,11 @@ var TranslationForm = function(handler, data, langTo, autoTranslate)
 	{
 		this.doneCallback = doneCallback;
 		
+		this.selectionInput.disabled = !this.options.editable;
+		
 		UIManager.setFocus(_this.translationInput);
 		
-		if (_this.autoTranslate) {
+		if (_this.options.autoTranslate) {
 			_this.translateWithBing();
 		}
 		
@@ -115,9 +116,6 @@ var TranslationForm = function(handler, data, langTo, autoTranslate)
 			var images = result.d.results;
 			performOnElsList(images, function(image, i) 
 			{
-				if(i == 0) {
-					_this.textImage.src = image.MediaUrl;
-				}
 				UIManager.addNodeFromHTML(_this.imageSelector, 
 					Register.templater.formatTemplate("TranslationFromImageToSelectFrom", 
 					{

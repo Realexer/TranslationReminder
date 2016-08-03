@@ -81,6 +81,21 @@ var SettingsManager = function()
 			}
 		});
 	};
+	
+	this.isSiteBlacklisted = function(domain, callback) 
+	{
+		this.GetSitesBlackList(function(sites) 
+		{
+			var isBlacklisted = false;
+			performOnElsList(sites, function(site) {
+				if(domain.indexOf(site) !== -1) {
+					isBlacklisted = true;
+				}
+			});
+			
+			callback(isBlacklisted);
+		});
+	};
 
 	this.UpdateSitesBlackList = function (sites, callback)
 	{
@@ -94,6 +109,16 @@ var SettingsManager = function()
 		this.GetSitesBlackList(function (sites)
 		{
 			sites.push(site);
+			_this.UpdateSitesBlackList(sites, callback);
+		});
+	};
+	
+	this.RemoveSiteToBlackList = function (site, callback)
+	{
+		this.GetSitesBlackList(function (sites)
+		{
+			var index = sites.indexOf(site);
+			sites.splice(index, 1);
 			_this.UpdateSitesBlackList(sites, callback);
 		});
 	};

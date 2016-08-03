@@ -27,9 +27,8 @@ Messanger.onMessage(function(message, data, callback, sender)
 
 chrome.contextMenus.onClicked.addListener(function (info, tab)
 {
-	Messanger.sendMessageToTab(tab.id,
+	Messanger.sendMessageToTab(tab.id, info.menuItemId,
 	{
-		name: info.menuItemId, 
 		text: info.selectionText 
 	}, function() {});
 });

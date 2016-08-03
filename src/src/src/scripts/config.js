@@ -78,7 +78,10 @@ var Messages =
 {
 	FE: {
 		DisplayTranslationForm: "FE.DisplayTranslationForm",
-		AddSiteToBlackList: "FE.AddSiteToBlackList"
+		AddSiteToBlackList: "FE.AddSiteToBlackList",
+		GetDomain: "FE.GetDomain",
+		ShowHighlights: "FE.ShowHighlights",
+		RemoveHighlights: "FE.RemoveHighlights"
 	},
 	BE: {
 		DB: 
@@ -102,9 +105,12 @@ var Messanger =
 			data: data
 		}, callback);
 	},
-	sendMessageToTab: function(tabId, message, callback) 
+	sendMessageToTab: function(tabId, message, data, callback) 
 	{
-		chrome.tabs.sendMessage(tabId, message, callback);
+		chrome.tabs.sendMessage(tabId, {
+			name: message,
+			data: data	
+		}, callback);
 	},
 	onMessage: function(handler) 
 	{

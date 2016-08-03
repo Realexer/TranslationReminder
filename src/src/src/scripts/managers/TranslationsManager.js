@@ -133,7 +133,7 @@ var Translation = function()
 	
 	this.edit = function(text, translation, image, definition) 
 	{
-		this.text = _this.prepareTextForDB(text);
+		this.text = TranslationAdapter.prepareTextForDB(text);
 		this.translation = translation;
 		this.image = image;
 		this.definition = definition;
