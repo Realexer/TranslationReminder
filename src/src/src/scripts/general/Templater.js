@@ -68,29 +68,32 @@ var Templater = function()
 	
 	this.formatTempalateText = function(string, data) 
 	{
-		string = string.replace(new RegExp("{{(.[^{{]+)}}", "g"), function(match, matchInner) 
+		if(data) 
 		{
-			var expressionParts = applyForEveryElOnList(matchInner.split("|"), function(val, key) {
-				return val.trim();
-			});
-			
-			if(expressionParts.length > 1) 
+			string = string.replace(new RegExp("{{(.[^{{]+)}}", "g"), function(match, matchInner) 
 			{
-				var func = parseDataExpression(expressionParts[0], window, undefined);
-				var arguments = parseExpressionArguments(expressionParts[1], data);
+				var expressionParts = applyForEveryElOnList(matchInner.split("|"), function(val, key) {
+					return val.trim();
+				});
 
-				if(func !== undefined) 
+				if(expressionParts.length > 1) 
 				{
-					value = func.apply(this, arguments);
+					var func = parseDataExpression(expressionParts[0], window, undefined);
+					var arguments = parseExpressionArguments(expressionParts[1], data);
+
+					if(func !== undefined) 
+					{
+						value = func.apply(this, arguments);
+					}
 				}
-			}
-			else 
-			{
-				var value = parseDataExpression(expressionParts[0], data, match);
-			}
-			
-			return value;
-		});
+				else 
+				{
+					var value = parseDataExpression(expressionParts[0], data, match);
+				}
+
+				return value;
+			});
+		}
 
 		return string;
 	};

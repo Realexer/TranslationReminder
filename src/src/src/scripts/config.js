@@ -19,7 +19,6 @@ var AppConfig =
 	
 	restrictedTags: [
 		"trtag",
-		"trhandler",
 		"head",
 		"noscript",
 		"style", 

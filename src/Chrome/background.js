@@ -40,10 +40,4 @@ chrome.runtime.onInstalled.addListener(function ()
 		contexts: ["selection"],
 		id: Messages.FE.DisplayTranslationForm,
 	}, function () { console.log("Couldn't create context menu for 'Add New Translation'"); });
-	
-	chrome.contextMenus.create({
-		title: "Don't highlight text on this site",
-		contexts: ["all"],
-		id: Messages.FE.AddSiteToBlackList,
-	}, function () { console.log("Couldn't create context menu for 'Disable Highlighting function'"); });
 });

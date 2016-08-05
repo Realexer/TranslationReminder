@@ -202,7 +202,8 @@ var TranslationsHighlighter = function(htmlHandler)
 			image: OR(UIManager.getElData(highlight, "tr-image"), AppConfig.images.noTextImage),
 			definition: OR(UIManager.getElData(highlight, "tr-definition"), ""),
 			hits: UIManager.getElData(highlight, "tr-hits"),
-			date: parseInt(UIManager.getElData(highlight, "tr-date"))
+			date: parseInt(UIManager.getElData(highlight, "tr-date")),
+			editable: false
 		}));
 
 		var highlightedTextElementRect = highlight.getBoundingClientRect();

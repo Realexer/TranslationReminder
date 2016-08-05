@@ -1,66 +1,135 @@
-::-webkit-scrollbar
+body 
 {
-	width: 6px;
-	height: 8px;
-}
-
-::-webkit-scrollbar-thumb
-{
-	height: 50px;
-	background-color: #decdb1;
-	-webkit-border-radius: 8px;
-	border-radius: 8px;
-}
-
-::-webkit-scrollbar-thumb:vertical
-{
-	height: 50px;
-}
-
-.body {
 	padding: 0;
 	margin: 0;
-	font-size: 16px;
+	font-size: 14px;
+	text-align: center;
 }
 
-/*
-	Header
-*/
-.TR-Header 
+.TR-OptionsPageHandler 
 {
-	border-bottom: 2px solid #D6D6D6;
+	max-width: 750px; 
+	text-align: left; 
+	display: inline-block;
+}
+.TR-OptionsPageHandler nav 
+{
+	float: left; 
+	padding: 1.5em; 
+	padding-top: 3em;
+	text-align: right;
+}
+.TR-OptionsPageHandler nav ul {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	font-size: 1.4em;
+}
+.TR-OptionsPageHandler nav ul li {
+	padding: 0.5em 0em;
+}
+.TR-OptionsPageHandler nav ul li a:not(.TR-OptionLinkSelected){
+	text-decoration: none;
+	color: #999;
+}
+
+.TR-OptionLinkSelected 
+{
+	color: #333;
+	font-weight: bold;
+}
+
+.TR-SectionsHandler 
+{
+	width: 500px;
+	float: left;
+	border-left: 1px solid #ddd;
+}
+
+.TR-SectionsHandler .TR-LoadingAnimation 
+{
+	display: none;
+}
+
+.TR-SectionsHandler section 
+{
+	padding: 1em;
+	padding-top: 4em;
 	position: relative;
 }
 
-.TR-Header .TR-LoadingAnimation {
-	position: absolute;
-	left: 0px;
-	top: 0px;
-	display: none;
+.TR-SectionHeader 
+{
+	border-bottom: 2px solid #D6D6D6;
+	position: relative;
+	text-align: left;
+	padding: 1em 0;
 }
-.TR-Header h3
+
+.TR-SectionHeader h3
 {
 	margin: 0.7em 0em 0.6em 0em;
 	text-transform: capitalize;
 	text-indent: 0.5em;
 	width: 100%;
 }
-.TR-ListControls 
+
+.TR-SubSection {
+	margin-bottom: 3em;
+}
+
+.TR-OptionItem {
+	margin: 0.5em 1em;
+}
+
+/*
+	Header
+*/
+.TR-DictionaryHandler 
+{
+	
+}
+
+.TR-EmptyDictionaryView 
+{
+	
+}
+
+.TR-EmptyDictionaryView h1
+{
+	text-transform: uppercase;
+	font-weight: bold;
+	font-size: 1em;
+	letter-spacing: 0.3em;
+	margin: 0.5em;
+}
+
+.TR-EmptyDictionaryView span
+{
+	font-size: 0.75em;
+}
+
+.TR-DicionaryView {}
+.TR-DicionaryView .TR-EditTranslationForm
+{
+	display: none;
+	width: 100%;
+	font-size: 1.5em;
+}
+
+.TR-DicionaryView .TR-EditTranslationForm .TR-Body 
+{
+	padding: 0.5em;
+}
+
+.TR-DictionaryControls 
 {
 	color: #888;
 	white-space: nowrap;
 }
 
-.TR-SelectWordsOrder 
-{
-	
-}
 
-.TR-ListControls button
-{
-}
-
-.TR-ListControls button:focus
+.TR-DictionaryControls button:focus
 {
 	outline: none;
 }
@@ -70,35 +139,24 @@
 	font-weight: bold;
 }
 
-/**
-   words table
-*/
-.TR-WordsView
-{
-	width: 100%;
-	position: relative;
-}
-.TR-WordsList
+.TR-TranslationsTable
 {
 	width: 100%;
 	border-collapse: collapse;
-	background: #fff;
-	margin-bottom: 2.2em;
 }
 
-.TR-WordsList thead
+.TR-TranslationsTable thead
 {
 	border-bottom: 1px solid #ccc;
 	color: #AAA;
 }
 
-.TR-WordsList tbody
+.TR-TranslationsTable tbody
 {
-	font-size: 0.8em;	
+	font-size: 0.9em;	
 }
 
-
-.TR-WordsList th
+.TR-TranslationsTable th
 {
 	font-size: 0.8em;
 	font-weight: normal;
@@ -107,152 +165,61 @@
 	padding: 0.65em 0.4em;
 }
 
-.TR-WordsList tr 
-{
-	
-}
-
-.TR-WordsList td
+.TR-TranslationsTable td
 {
 	padding: 0.65em 0.4em;
 	vertical-align: top;
 }
-.TR-WordsList .TR-Translation-Cell
+.TR-TranslationsTable .TR-Translation-Cell
 {
 	width: 30%;
 }
 
-.TR-WordsList .TR-Translation-Cell .TR-Word-Image 
+.TR-TranslationsTable .TR-Translation-Cell .TR-Word-Image 
 {
 	float: left;
 	margin-right: 0.5em;
 }
 
-.TR-WordsList .TR-Translation-Cell .TR-Word-Image img
+.TR-TranslationsTable .TR-Translation-Cell .TR-Word-Image img
 {
 	width: 3em; 
 	height: 3em; 
 	cursor: pointer;
 }
 
-.TR-WordsList .TR-Translation-Cell .TR-WordHandler
+.TR-TranslationsTable .TR-Translation-Cell .TR-WordHandler
 {
 	margin-bottom: 0.5em;
 }
 
-.TR-WordsList .TR-Translation-Cell .TR-WordHandler .TR-Word 
+.TR-TranslationsTable .TR-Translation-Cell .TR-WordHandler .TR-Word 
 {
 	font-size: 1.3em;
 	text-decoration: none;
 }
 
-.TR-WordsList .TR-Translation-Cell
+.TR-TranslationsTable .TR-Translation-Cell
 {
 	width: 55%;
 }
 
-.TR-WordsList .TR-Translation:before {
+.TR-TranslationsTable .TR-Translation:before {
 	content: "- ";
 }
 
-.TR-WordsList .TR-DeleteButton-Cell
+.TR-TranslationsTable .TR-DeleteButton-Cell
 {
 	text-align: center;
 	width: 15%;
 }
 
+.TR-TransltionsTotal {
+	padding: 1em;
+	text-align: center;
+}
+
 /** COVER VIEWS **/
-.TR-InfoMessage
-{
-	width: 100%;
-	height: 100%;
-	display: block;
-	background: none;
-	position: fixed;
-	left: 0;
-	right: 0;
-	z-index: 2;
-	text-align: center;
-	color: #888;
-}
-
-.TR-Blur
-{
-	width: 100%;
-	height: 100%;
-	background: #fff;
-}
-.TR-InfoMessage h1
-{
-	text-transform: uppercase;
-	font-weight: bold;
-	font-size: 1em;
-	letter-spacing: 0.3em;
-	margin: 0.5em;
-}
-
-.TR-InfoMessage span
-{
-	font-size: 0.75em;
-}
-
-.TR-WordsCount 
-{
-	padding: 0.7em 0em;
-	color: #888;
-	font-size: 0.8em;
-	text-align: center;
-	position: fixed;
-	bottom: 0;
-	width: 100%;
-	background: #fff;
-}
-
-.TR-EditTranslation
-{
-	display: none;
-	width: 100%;
-	font-size: 1.5em;
-}
-
-.TR-EditTranslation .TR-Body 
-{
-	padding: 0.5em;
-}
-
-//
-// OPTIONS 
-//
-
-.TR-Options 
-{
-	padding: 10px;
-	font-size: 0.8em;
-}
-.TR-Header 
-{
-	position: relative;
-	padding: 10px;
-}
-
-#TR-SavingLabel 
-{
-	padding: 3px 0px;	
-}
-.TR-Settings 
-{
-	padding: 10px 20px;
-	margin: 10px 0px;
-	position: relative;
-}
-
-.TR-Settings .TR-Section {
-	margin-bottom: 3em;
-}
-
-.TR-Settings .TR-Section .TR-OptionItem {
-	margin: 0.5em 1em;
-}
 
 .TR-Settings textarea 
 {
@@ -267,24 +234,4 @@
 	padding: 1em;
 	border: 0;
 	cursor: pointer;
-}
-
-.TR-Saved 
-{
-	animation: TR-Saved-Anim ease-out 2s;
-	animation-fill-mode: forwards;
-	-webkit-animation: TR-Saved-Anim ease-out 2s;
-	-webkit-animation-fill-mode: forwards;
-}
-
-@keyframes TR-Saved-Anim
-{
-	from {opacity: 1.0; }
-	to {opacity: 0.0; }
-}
-
-@-webkit-keyframes TR-Saved-Anim
-{
-	from {opacity: 1.0; }
-	to {opacity: 0.0; }
 }

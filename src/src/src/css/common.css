@@ -2,6 +2,11 @@
 {
 	display: none;
 }
+.TR-DisplayNone 
+{
+	display: none;
+}
+
 .TR-Base
 {
 	color: #333;
@@ -34,6 +39,16 @@
 	padding: 0px;
 	text-align: center;
 	cursor: pointer;
+}
+
+.TR-TextMain 
+{
+	color: #333;
+}
+
+.TR-Bold 
+{
+	font-weight: bold;
 }
 
 .TR-TextMinor 

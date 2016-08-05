@@ -86,8 +86,9 @@ var DictionaryView = function ()
 	var translationsTableLearning = getEl("TR-WordsListLearning");
 	var translationsTableLearned = getEl("TR-WordsListLearned");
 	var loadingAnimation = getEl("TR-LoadingAnimation");
-	var noTranslationsView = getEl("TR-NoWordsView");
-	var translationEditingForm = getEl("TR-EditTranslation");
+	var noTranslationsView = getEl("TR-EmptyDictionaryView");
+	var dictionaryView = getEl("TR-DicionaryView");
+	var translationEditingForm = getEl("TR-EditTranslationForm");
 
 	var currentTablesOrder =
 	{
@@ -152,7 +153,9 @@ var DictionaryView = function ()
 		{
 			if (translations.length > 0)
 			{
-				UIManager.setHTML(getEl("TR-WordsCount"), translations.length + " word" + (translations.length > 1 ? "s" : ""));
+				UIManager.setHTML(getEl("TR-TransltionsTotal"), Register.templater.formatTemplate("TranslationsAmount", {
+					amount: translations.length
+				}));
 
 				UIManager.hideEl(noTranslationsView);
 				
@@ -300,6 +303,7 @@ var OptionsPage = function()
 			Register.dictionaryView = new DictionaryView();
 			Register.dictionaryView.Init();
 			UIManager.showEl(dictionarySection);
+			UIManager.addClassToEl(getEl("TR-DictionaryLink"), "TR-OptionLinkSelected");
 		}
 		else 
 		{
@@ -309,6 +313,8 @@ var OptionsPage = function()
 				UIManager.showEl(optionsSection);
 				Register.optionsView.init();
 			});
+			
+			UIManager.addClassToEl(getEl("TR-OptionsLink"), "TR-OptionLinkSelected");
 		}
 	};
 }

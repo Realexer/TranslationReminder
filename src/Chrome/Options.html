@@ -21,48 +21,9 @@
 	<script type='text/javascript' src='scripts/managers/DBManager.js'></script>
 	<script type='text/javascript' src='scripts/managers/TranslationsManager.js'></script>
 	<script type='text/javascript' src='scripts/managers/SettingsManager.js'></script>
+	<script type='text/javascript' src='scripts/components/TranslationForm.js'></script>
 	<script type='text/javascript' src='scripts/components/TranslationsHighlighter.js'></script>
 	<script type='text/javascript' src='scripts/pages/OptionsPage.js'></script>
-	
-	<style>
-		body {
-			text-align: center;
-		}
-		
-		.TR-OptionsPageHandler 
-		{
-			max-width: 750px; 
-			text-align: left; 
-			display: inline-block;
-		}
-		.TR-OptionsPageHandler nav 
-		{
-			float: left; 
-			padding: 1.5em; 
-			padding-top: 3em;
-			text-align: right;
-		}
-		.TR-OptionsPageHandler nav ul {
-			list-style: none;
-			padding: 0;
-			margin: 0;
-			font-size: 1.4em;
-		}
-		.TR-OptionsPageHandler nav ul li {
-			padding: 0.5em 0em;
-		}
-		.TR-OptionsPageHandler nav ul li a{
-			color: #999;
-			text-decoration: none;
-		}
-		.TR-OptionsPageHandler .TR-SectionsHandler 
-		{
-			max-width: 500px; 
-			float: left; 
-			padding: 1em; 
-			border-left: 1px solid #ddd;
-		}
-	</style>
 </head>
 
 <body class="TR-Base" style="">
@@ -70,32 +31,32 @@
 		<nav class="" style="">
 			<ul>
 				<li class="">
-					<a href="options.html?dictionary">Your dictonary</a>
+					<a id="TR-DictionaryLink" href="options.html?dictionary">Your dictonary</a>
 				</li>
 				<li class="">
-					<a href="options.html?options">Settings</a>
+					<a id="TR-OptionsLink" href="options.html?options">Settings</a>
 				</li>
 			</ul>
 		</nav>
 		<div id="TR-SectionsHandler" class="TR-SectionsHandler" style="">
 			
-			<section id="TR-DictionaryHandler" class="TR-WordsListHandler" style="display: none;">
-				
-				<div class="TR-Header" style="position: relative; text-align: left;">
-					<div id="TR-WordsCount" class="TR-TextMinor" style="float: right;">65 words</div>
-					<h1>Your Dictionary</h1>
-				</div>
+			<div>
+				<img id="TR-LoadingAnimation" class="TR-LoadingAnimation" src="imgs/loading.gif"/>
+			</div>
+			
+			<section id="TR-DictionaryHandler" class="TR-DictionaryHandler" style="display: none;">
 				
 				
 				<!-- NO WORDS VIEW  -->
-				<div id="TR-NoWordsView" class="TR-Blur TR-InfoMessage" style="display: none;">
+				<div id="TR-EmptyDictionaryView" class="TR-Blur TR-InfoMessage" style="display: none;">
 					<h1>YOU HAVE NO TRANSLATIONS YET</h1>
 					<span>Select the text on the page holding Ctrl key and add it.</span>
 				</div>
 
 				<!-- WORDS LIST  -->
-				<div class="TR-WordsView" id="TR-WordsView">	
-					<div id="TR-EditTranslation" class="TR-EditTranslation">
+				<div class="TR-DicionaryView" id="TR-WordsView">
+					
+					<div id="TR-EditTranslationForm" class="TR-EditTranslationForm">
 						<div class="TR-Body TR-BG-Light">
 							<div class="TR-NewWordForm-TitleHandler">
 								<span class="TR-NewWordForm-Title">edit translaton to the text</span>
@@ -109,14 +70,13 @@
 						</div>
 					</div>
 
-					<table class="TR-WordsList">
+					<table class="TR-TranslationsTable">
 						<thead>
 							<tr>
 								<th>text</th>
 								<th>translation</th>
 								<th>
-									<img id="TR-LoadingAnimation" class="TR-LoadingAnimation" src="imgs/loading.gif"/>
-									<div class="TR-ListControls">order: 
+									<div class="TR-DictionaryControls">order: 
 										<button class="TR-Action TR-SelectWordsOrder TR-SelectedWordsOrder" id="TR-OrderWordsByDate">date</button> 
 										<button class="TR-Action TR-SelectWordsOrder" id="TR-OrderWordsByHits">hits</button>
 									</div>
@@ -136,11 +96,16 @@
 						</tbody>
 					</table>
 				</div>
+				
+				<div id="TR-TransltionsTotal" class="TR-TransltionsTotal TR-TextMinor">
+					<span class="TR-InvisibleTemplate" data-tr-js-template="TranslationsAmount">
+						Total: {{amount}}
+					</span>
+				</div>
+				
 			</section>
 			
-			<section id="TR-OptionsHandler" class="" style="display: none;">
-				
-				<h1>Options</h1>
+			<section id="TR-OptionsHandler" class="TR-BG-Grey-Light" style="display: none;">
 				
 				<div class="TR-Settings">
 					<form id="TR-SettingsForm" action="/" method="POST" enctype="multipart/form-data">
@@ -153,7 +118,7 @@
 				
 				<div class="TR-InvisibleTemplate" data-tr-js-template="SettingsForm">
 		
-					<div class="TR-Section">
+					<div class="TR-SubSection">
 						<h3>Translation</h3>
 						<hr />
 
@@ -175,7 +140,7 @@
 
 					</div>
 
-					<div class="TR-Section">
+					<div class="TR-SubSection">
 						<h3>Text Highlight</h3>
 						<hr />
 
@@ -214,7 +179,7 @@
 						</div>
 					</div>
 
-					<div class="TR-Section">
+					<div class="TR-SubSection">
 
 						<h3>Advanced</h3>
 						<hr />
@@ -238,7 +203,6 @@
 						</div>
 					</div>
 				</div>
-				
 				
 			</section>
 			

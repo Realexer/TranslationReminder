@@ -12,7 +12,8 @@ var TranslationForm = function(handler, data, options)
 		definition: OR(data.definition, ""),
 		image: OR(data.image, AppConfig.images.selectTextImage),
 		selectedImage: OR(data.image, ""),
-		langTo: options.langTo.toUpperCase(),
+		langTo: this.options.langTo.toUpperCase(),
+		editable: this.options.editable,
 		config: {
 			bingIcon: AppConfig.images.bingIcon,
 			glosbeIcon: AppConfig.images.glosbeIcon,
@@ -42,8 +43,6 @@ var TranslationForm = function(handler, data, options)
 	this.setup = function(doneCallback, setupFinished) 
 	{
 		this.doneCallback = doneCallback;
-		
-		this.selectionInput.disabled = !this.options.editable;
 		
 		UIManager.setFocus(_this.translationInput);
 		
