@@ -12,6 +12,14 @@
 	color: #333;
 	font-family: Tahoma;
 }
+
+.TR-Base a{
+	text-decoration: none;
+}
+.TR-Base a:hover{
+	text-decoration: underline;
+}
+
 .TR-Base h1, .TR-Base h2, .TR-Base h3, .TR-Base h4, .TR-Base h5, .TR-Base h6 
 {
 	margin-top: 0px;
@@ -44,6 +52,11 @@
 .TR-TextMain 
 {
 	color: #333;
+}
+
+.TR-TextMuted 
+{
+	color: #777;
 }
 
 .TR-Bold 
@@ -88,10 +101,7 @@
 
 .TR-Word 
 {
-	color: #111111;
-	font-family: Georgia;
 	font-weight: bold;
-	border-bottom: 1px dotted rgb(47, 100, 119);
 }
 
 .TR-Translation 

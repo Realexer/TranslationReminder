@@ -48,13 +48,21 @@
 				
 				
 				<!-- NO WORDS VIEW  -->
-				<div id="TR-EmptyDictionaryView" class="TR-Blur TR-InfoMessage" style="display: none;">
-					<h1>YOU HAVE NO TRANSLATIONS YET</h1>
-					<span>Select the text on the page holding Ctrl key and add it.</span>
+				<div id="TR-EmptyDictionaryView" class="TR-EmptyDictionaryView TR-BG-Grey-Light" style="display: none;">
+					<h1>Your dictionary is empty</h1>
+					<span>Select the text on the page holding Ctrl/Cmd button to add new.</span>
 				</div>
 
 				<!-- WORDS LIST  -->
-				<div class="TR-DicionaryView" id="TR-WordsView">
+				<div class="TR-DictionaryView" id="TR-DictionaryView">
+				
+					<div class="TR-DictionaryOptions TR-BG-Grey-Light">
+						<a id="TR-ExportDictionaryLink" 
+							class="TR-TextMinor" 
+							href="#">download csv</a>
+					</div>
+					
+					<div style="height: 1em;"></div>
 					
 					<div id="TR-EditTranslationForm" class="TR-EditTranslationForm">
 						<div class="TR-Body TR-BG-Light">
@@ -95,17 +103,20 @@
 						<tbody id="TR-WordsListLearned">
 						</tbody>
 					</table>
-				</div>
-				
-				<div id="TR-TransltionsTotal" class="TR-TransltionsTotal TR-TextMinor">
-					<span class="TR-InvisibleTemplate" data-tr-js-template="TranslationsAmount">
-						Total: {{amount}}
-					</span>
+					
+					<div id="TR-TransltionsTotal" class="TR-TransltionsTotal TR-TextMinor">
+						<span class="TR-InvisibleTemplate" data-tr-js-template="TranslationsAmount">
+							Total: {{amount}}
+						</span>
+					</div>
+					
 				</div>
 				
 			</section>
 			
-			<section id="TR-OptionsHandler" class="TR-BG-Grey-Light" style="display: none;">
+			<section id="TR-OptionsHandler" class="TR-BG-Grey-Light TR-Padding10" style="display: none;">
+				
+				<div style="height: 3em;"></div>
 				
 				<div class="TR-Settings">
 					<form id="TR-SettingsForm" action="/" method="POST" enctype="multipart/form-data">

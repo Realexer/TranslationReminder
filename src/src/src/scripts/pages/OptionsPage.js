@@ -85,9 +85,10 @@ var DictionaryView = function ()
 	
 	var translationsTableLearning = getEl("TR-WordsListLearning");
 	var translationsTableLearned = getEl("TR-WordsListLearned");
+	var translationsTableLearnedHeader = getEl("TR-WordsListLearnedHead");
 	var loadingAnimation = getEl("TR-LoadingAnimation");
 	var noTranslationsView = getEl("TR-EmptyDictionaryView");
-	var dictionaryView = getEl("TR-DicionaryView");
+	var dictionaryView = getEl("TR-DictionaryView");
 	var translationEditingForm = getEl("TR-EditTranslationForm");
 
 	var currentTablesOrder =
@@ -135,6 +136,10 @@ var DictionaryView = function ()
 		UIManager.addEvent(translationEditingForm.querySelector("._tr_close"), "click", function() {
 			finishEditing();
 		});
+		
+		UIManager.addEventNoDefault(getEl("TR-ExportDictionaryLink"), "click", function() {
+			DictionaryExporter.export(); 
+		});
 
 		TemplatesLoader.loadTemplates("templates/common.html", document.body, function() 
 		{
@@ -153,10 +158,6 @@ var DictionaryView = function ()
 		{
 			if (translations.length > 0)
 			{
-				UIManager.setHTML(getEl("TR-TransltionsTotal"), Register.templater.formatTemplate("TranslationsAmount", {
-					amount: translations.length
-				}));
-
 				UIManager.hideEl(noTranslationsView);
 				
 				_this.translations = [];
@@ -173,13 +174,20 @@ var DictionaryView = function ()
 					UIManager.addHTML(translationsTableLearning, Register.templater.formatTemplate("WordLearningRowItem", data));
 				});
 				
-				performOnElsList(translations.filter(function(translationItem) {
+				var translationsLearned = translations.filter(function(translationItem) {
 					return translationItem.learned;
-				}), function(data, i) {
-						data.image = OR(data.image, AppConfig.images.noTextImage);
-						data.rowClass = (i % 2 == 0) ? "TR-BG-Grey-Light" : "TR-BG-Grey-Dark";
-						UIManager.addHTML(translationsTableLearned, Register.templater.formatTemplate("WordLearnedRowItem", data));
 				});
+				
+				if(translationsLearned.length > 0) 
+				{
+					performOnElsList(translationsLearned, function(data, i) {
+							data.image = OR(data.image, AppConfig.images.noTextImage);
+							data.rowClass = (i % 2 == 0) ? "TR-BG-Grey-Light" : "TR-BG-Grey-Dark";
+							UIManager.addHTML(translationsTableLearned, Register.templater.formatTemplate("WordLearnedRowItem", data));
+					});
+				} else {
+					UIManager.hideEl(translationsTableLearnedHeader);
+				}
 
 				performOnElsList(document.querySelectorAll(".TR-KnowIt"), function(button) 
 				{
@@ -208,10 +216,15 @@ var DictionaryView = function ()
 						moveBackToLearning(UIManager.getElData(button, "tr-text")); 
 					});
 				});
+				
+				UIManager.setHTML(getEl("TR-TransltionsTotal"), Register.templater.formatTemplate("TranslationsAmount", {
+					amount: translations.length
+				}));
 			}
 			else
 			{
 				UIManager.showEl(noTranslationsView);
+				UIManager.hideEl(dictionaryView);
 			}
 
 			UIManager.hideEl(loadingAnimation);
@@ -259,11 +272,14 @@ var DictionaryView = function ()
 	
 	function deleteTranslation(translation) 
 	{
-		Register.translationsManager.DeleteTranslation(translation.text,
-		function ()
+		if(window.confirm("Delete translation '"+translation.text+"' from dictionary?")) 
 		{
-			showUserTranslations();
-		});
+			Register.translationsManager.DeleteTranslation(translation.text,
+			function ()
+			{
+				showUserTranslations();
+			});
+		}
 	}
 	
 	function finishEditing() 
@@ -288,6 +304,38 @@ var DictionaryView = function ()
 	};
 };
 
+var DictionaryExporter = 
+{
+	export: function() 
+	{
+		Register.translationsManager.GetTranslations(function(translations) {
+			var learning = [];
+			var learned = [];
+			
+			performOnElsList(translations, function(tr) 
+			{
+				var trAr = Object.keys(tr).map(function (key) {return tr[key]});
+				if(tr.learned) 
+				{
+					learned.push(trAr);
+				} else {
+					learning.push(trAr);
+				}
+			});
+			
+			var combined = learning.concat(learned);
+			
+			var csvContent = "data:text/csv;charset=utf-8,";
+			performOnElsList(combined, function(tr) {
+				csvContent += tr.join(",") + "\n";
+			});
+			
+			var encodedUri = encodeURI(csvContent);
+			window.open(encodedUri);
+		});
+	}
+};
+
 var OptionsPage = function() 
 {
 	var _this = this;
@@ -298,23 +346,27 @@ var OptionsPage = function()
 	
 	this.init = function() 
 	{
-		if(window.location.search.indexOf("dictionary") !== -1) 
+		
+		switch(window.location.search) 
 		{
-			Register.dictionaryView = new DictionaryView();
-			Register.dictionaryView.Init();
-			UIManager.showEl(dictionarySection);
-			UIManager.addClassToEl(getEl("TR-DictionaryLink"), "TR-OptionLinkSelected");
-		}
-		else 
-		{
-			Register.optionsView = new OptionsView();
-			TemplatesLoader.loadTemplates("templates/common.html", document.body, function() 
-			{
-				UIManager.showEl(optionsSection);
-				Register.optionsView.init();
-			});
+			case "?dictionary": {
+				Register.dictionaryView = new DictionaryView();
+				Register.dictionaryView.Init();
+				UIManager.showEl(dictionarySection);
+				UIManager.addClassToEl(getEl("TR-DictionaryLink"), "TR-OptionLinkSelected");
+			}
+			break;
 			
-			UIManager.addClassToEl(getEl("TR-OptionsLink"), "TR-OptionLinkSelected");
+			default: {
+				Register.optionsView = new OptionsView();
+				TemplatesLoader.loadTemplates("templates/common.html", document.body, function() 
+				{
+					UIManager.showEl(optionsSection);
+					Register.optionsView.init();
+				});
+
+				UIManager.addClassToEl(getEl("TR-OptionsLink"), "TR-OptionLinkSelected");
+			}
 		}
 	};
 }

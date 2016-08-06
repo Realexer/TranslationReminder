@@ -53,9 +53,11 @@ body
 
 .TR-SectionsHandler section 
 {
-	padding: 1em;
-	padding-top: 4em;
 	position: relative;
+}
+
+.TR-Padding10 {
+	padding: 1em;
 }
 
 .TR-SectionHeader 
@@ -92,16 +94,13 @@ body
 
 .TR-EmptyDictionaryView 
 {
-	
+	padding: 8em 2em;
+	text-align: center;
 }
 
 .TR-EmptyDictionaryView h1
 {
-	text-transform: uppercase;
-	font-weight: bold;
-	font-size: 1em;
-	letter-spacing: 0.3em;
-	margin: 0.5em;
+	margin-bottom: 0.5em;
 }
 
 .TR-EmptyDictionaryView span
@@ -109,15 +108,23 @@ body
 	font-size: 0.75em;
 }
 
-.TR-DicionaryView {}
-.TR-DicionaryView .TR-EditTranslationForm
+.TR-DictionaryView {}
+.TR-DictionaryView .TR-EditTranslationForm
 {
 	display: none;
 	width: 100%;
 	font-size: 1.5em;
 }
 
-.TR-DicionaryView .TR-EditTranslationForm .TR-Body 
+.TR-DictionaryOptions 
+{
+	padding: 0.5em 0.5em;
+	padding-top: 0.8em;
+	text-align: right;
+	border-bottom: 1px solid #ddd;
+}
+
+.TR-DictionaryView .TR-EditTranslationForm .TR-Body 
 {
 	padding: 0.5em;
 }
@@ -158,11 +165,11 @@ body
 
 .TR-TranslationsTable th
 {
-	font-size: 0.8em;
+	font-size: 0.95em;
 	font-weight: normal;
 	text-align: left;
 	text-indent: 0.1em;
-	padding: 0.65em 0.4em;
+	padding: 0.6em 0.7em;
 }
 
 .TR-TranslationsTable td
@@ -183,8 +190,8 @@ body
 
 .TR-TranslationsTable .TR-Translation-Cell .TR-Word-Image img
 {
-	width: 3em; 
-	height: 3em; 
+	width: 4em; 
+	height: 4em; 
 	cursor: pointer;
 }
 
@@ -195,7 +202,7 @@ body
 
 .TR-TranslationsTable .TR-Translation-Cell .TR-WordHandler .TR-Word 
 {
-	font-size: 1.3em;
+	font-size: 1.4em;
 	text-decoration: none;
 }
 

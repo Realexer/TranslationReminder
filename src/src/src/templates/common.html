@@ -43,7 +43,7 @@
 						  data-tr-default-image="{{image}}">
 				</td>
 				<td class="TR-Form-Word">
-					<div class="{{Templater.UI.print.ifTrue | editable, 'TR-DisplayNone'}}">{{text}}</div>
+					<div class="TR-Word {{Templater.UI.print.ifTrue | editable, 'TR-DisplayNone'}}">{{text}}</div>
 					<textarea class="_tr_textToTranslateInput TR-TranslationForm-TextInput {{Templater.UI.print.ifFalse | editable, 'TR-DisplayNone'}}">{{text}}</textarea>
 					<div class="_tr_textToTranslateDefinition" data-tr-selected-definition="">
 						{{definition}}
@@ -119,7 +119,8 @@
 
 			<div class="TR-WordAdditionalInfo">
 				<div class="TR-WordData">{{hits}} times met<br/>{{Templater.UI.print.dateAgo | date}}</div>
-				<button class="_tr_markAsLearnedButton TR-KnowIt TR-Hint-DeleteWordButton" data-tr-text="{{text}}">I already know this word!</button>
+				<button class="_tr_markAsLearnedButton TR-KnowIt TR-Hint-DeleteWordButton" 
+						  data-tr-text="{{text}}">move to learned</button>
 				<div class="TR-Clear"></div>
 			</div>
 		</div>
@@ -141,7 +142,7 @@
 					<div class='TR-Definition TR-TextMinor'>{{definition}}</div>
 				</td>
 				<td class='TR-DeleteButton-Cell'>
-					<button class='TR-KnowIt' data-tr-text='{{text}}'>know it</button>
+					<button class='TR-KnowIt' data-tr-text='{{text}}'>to learned</button>
 					<button class='TR-EditTranslationButton TR-TextMinor' data-tr-index='{{index}}'>edit</button>
 					<button class='TR-DeleteTranslationButton TR-TextMinor' data-tr-index='{{index}}'>delete</button>
 				</td>
