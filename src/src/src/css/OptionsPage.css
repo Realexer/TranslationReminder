@@ -39,6 +39,14 @@ body
 	font-weight: bold;
 }
 
+.TR-OptionsLoadingAnimationHandler 
+{
+	text-align: center;
+}
+.TR-OptionsLoadingAnimationHandler .TR-LoadingAnimation {
+	margin: 4em auto;
+}
+
 .TR-SectionsHandler 
 {
 	width: 500px;
@@ -131,8 +139,12 @@ body
 
 .TR-DictionaryControls 
 {
-	color: #888;
+}
+
+.TR-DictionaryControls ._buttonsHandler 
+{
 	white-space: nowrap;
+	font-size: 1.1em;
 }
 
 
@@ -141,7 +153,7 @@ body
 	outline: none;
 }
 
-.TR-ListControls button.TR-SelectedWordsOrder 
+.TR-DictionaryControls button.TR-SelectedWordsOrder 
 {
 	font-weight: bold;
 }
@@ -177,30 +189,30 @@ body
 	padding: 0.65em 0.4em;
 	vertical-align: top;
 }
-.TR-TranslationsTable .TR-Translation-Cell
+.TR-TranslationsTable .TR-Text-Cell
 {
-	width: 30%;
+	width: 40%;
 }
 
-.TR-TranslationsTable .TR-Translation-Cell .TR-Word-Image 
+.TR-TranslationsTable .TR-Text-Cell .TR-Word-Image 
 {
 	float: left;
 	margin-right: 0.5em;
 }
 
-.TR-TranslationsTable .TR-Translation-Cell .TR-Word-Image img
+.TR-TranslationsTable .TR-Text-Cell .TR-Word-Image img
 {
 	width: 4em; 
 	height: 4em; 
 	cursor: pointer;
 }
 
-.TR-TranslationsTable .TR-Translation-Cell .TR-WordHandler
+.TR-TranslationsTable .TR-Text-Cell .TR-WordHandler
 {
 	margin-bottom: 0.5em;
 }
 
-.TR-TranslationsTable .TR-Translation-Cell .TR-WordHandler .TR-Word 
+.TR-TranslationsTable .TR-Text-Cell .TR-WordHandler .TR-Word 
 {
 	font-size: 1.4em;
 	text-decoration: none;
@@ -208,22 +220,21 @@ body
 
 .TR-TranslationsTable .TR-Translation-Cell
 {
-	width: 55%;
+	width: 50%;
 }
 
 .TR-TranslationsTable .TR-Translation:before {
 	content: "- ";
 }
 
-.TR-TranslationsTable .TR-DeleteButton-Cell
+.TR-TranslationsTable .TR-ManageButtons-Cell
 {
-	text-align: center;
-	width: 15%;
+	text-align: right;
+	width: 10%;
 }
 
 .TR-TransltionsTotal {
-	padding: 1em;
-	text-align: center;
+	
 }
 
 /** COVER VIEWS **/
@@ -236,9 +247,8 @@ body
 
 .TR-Settings .SubmitButton 
 {
-	width: 100%;
 	color: #fff;
-	padding: 1em;
+	padding: 1em 2em;
 	border: 0;
 	cursor: pointer;
 }

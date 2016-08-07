@@ -78,7 +78,8 @@ var Messages =
 	FE: {
 		DisplayTranslationForm: "FE.DisplayTranslationForm",
 		AddSiteToBlackList: "FE.AddSiteToBlackList",
-		GetDomain: "FE.GetDomain",
+		GetSiteInfo: "FE.GetSiteInfo",
+		SetSiteLang: "FE.SetSiteLang",
 		ShowHighlights: "FE.ShowHighlights",
 		RemoveHighlights: "FE.RemoveHighlights"
 	},
@@ -136,23 +137,28 @@ var TemplatesLoader =
 				return getEl("tr-templates") != null;
 			}, function() 
 			{
-				Register.templater = new Templater();
-				Register.templater.templatesDeclarationAttr = "data-tr-js-template";
-				Register.templater.templatesUsageAttr = "data-tr-js-use-template";
-				Register.templater.templatesUsageDataAttr = "data-tr-js-template-data";
-				
-				Templater.UI.dataAttributes.checked = "data-tr-checked";
-				Templater.UI.dataAttributes.selected = "data-tr-selected";
-				
-				Templater.UI.init();
-				
-				Register.templater.prepareUI(document);
+				TemplatesLoader.initTemplater();
 				
 				UIManager.removeEl(templatesHandler);
 				
 				callback();
 			});
 		});
+	},
+	
+	initTemplater: function() 
+	{
+		Register.templater = new Templater();
+		Register.templater.templatesDeclarationAttr = "data-tr-js-template";
+		Register.templater.templatesUsageAttr = "data-tr-js-use-template";
+		Register.templater.templatesUsageDataAttr = "data-tr-js-template-data";
+
+		Templater.UI.dataAttributes.checked = "data-tr-checked";
+		Templater.UI.dataAttributes.selected = "data-tr-selected";
+
+		Templater.UI.init();
+
+		Register.templater.prepareUI(document);
 	}
 };
 

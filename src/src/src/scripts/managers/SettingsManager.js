@@ -20,7 +20,8 @@ var SettingsManager = function()
 						AutoTranslatioinEnabled: OR(settings[SettingsKeys.AutoTranslationEnabled], AppConfig.initialSettings.AutoTranslationEnabled),
 						TranslationLanguage: OR(settings[SettingsKeys.TranslationLanguage], AppConfig.initialSettings.TranslationLanguage),
 						HighlightStyling: AppConfig.initialSettings.HighlightStyling,
-						RestrictedTags: AppConfig.initialSettings.RestrictedTags
+						RestrictedTags: AppConfig.initialSettings.RestrictedTags,
+						SiteLanguage: {}
 					};
 					
 					Register.synchStorage.setSettings(defaultSettings);
@@ -169,6 +170,22 @@ var SettingsManager = function()
 			return callback(tags);
 		});
 	};
+	
+	this.SetSiteLanguage = function(domain, lang, callback) 
+	{
+		getSetting(SettingsKeys.SiteLanguage, function(sites) 
+		{
+			sites[domain] = lang;
+			saveSetting(SettingsKeys.SiteLanguage, sites, callback);
+		});
+	};
+	
+	this.GetSiteLanguage = function(domain, callback) 
+	{
+		getSetting(SettingsKeys.SiteLanguage, function(sites) {
+			callback(sites[domain]);
+		});
+	};
 };
 
 Register.settingsManager = new SettingsManager();
@@ -180,7 +197,8 @@ var SettingsKeys =
 	AutoTranslatioinEnabled: "AutoTranslationEnabled",
 	TranslationLanguage: "TranslationLanguage",
 	HighlightStyling: "HighlightStyling",
-	RestrictedTags: "RestrictedTags"
+	RestrictedTags: "RestrictedTags",
+	SiteLanguage: "SiteLanguage"
 };
 
 var HighlightStylingKeys =  

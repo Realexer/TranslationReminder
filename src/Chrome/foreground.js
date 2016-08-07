@@ -14,9 +14,14 @@ FEMessageHandlers[Messages.FE.AddSiteToBlackList] = function(message, data, call
 	});
 };
 
-FEMessageHandlers[Messages.FE.GetDomain] = function(message, data, callback, sender) 
+FEMessageHandlers[Messages.FE.GetSiteInfo] = function(message, data, callback, sender) 
 {
-	callback(document.domain);
+	Register.settingsManager.GetSiteLanguage(document.domain, function(lang) {
+		callback({
+			domain: document.domain,
+			lang: OR(lang, document.documentElement.lang)
+		});
+	});
 };
 
 FEMessageHandlers[Messages.FE.ShowHighlights] = function(message, data, callback, sender) 

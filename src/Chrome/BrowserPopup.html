@@ -34,15 +34,32 @@
 		
 		<div style="height: 1em;"></div>
 		
-		<div class="TR-Popup-Body">
+		<div class="TR-Popup-Body" id="TR-Popup-Body">
 			
+			
+			
+		</div>
+		
+	</div>
+	
+	<div class="TR-InvisibleTemplate" data-tr-js-template="BrowserPopupBody">
+		<div class="">
 			<div class="TR-Popup-Controls TR-BG-Ultralight">
-				<input id="SwitchHilightingCheckbox" type="checkbox">
-				<label for="SwitchHilightingCheckbox">highlight translations on this site</label>
+				<div class="TR-Popup-Controls-Item">
+					<input class="SwitchHilightingCheckbox" id="SwitchHilightingCheckbox" type="checkbox">
+					<label for="SwitchHilightingCheckbox">highlight translations on this site</label>
+				</div>
+				<div class="TR-Popup-Controls-Item">
+					<select class="SiteLanguageSelect" id="SiteLanguageSelect">
+						<option value="-">-</option>
+						{{langOptions}}
+					</select>
+					<label for="SiteLanguageSelect">site language</label>
+				</div>
 			</div>
-			
+
 			<div style="height: 1em;"></div>
-			
+
 			<div class="TR-Popup-Links">
 				<ul>
 					<li>
@@ -53,8 +70,11 @@
 					</li>
 				</ul>
 			</div>
-			
 		</div>
 	</div>
+	
+	<select class="TR-InvisibleTemplate" data-tr-js-template="LanguageOption">
+		<option value="{{lang}}">{{lang}}</option>
+	</select>
 </body>
 </html>

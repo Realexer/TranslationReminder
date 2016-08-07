@@ -141,7 +141,7 @@ var TranslationForm = function(handler, data, options)
 			
 			Register.settingsManager.GetTranslationLanguage(function(toLang) 
 			{
-				BingClient.Translate(UIManager.getValue(_this.selectionInput), OR(document.documentElement.lang, 'en'), toLang,
+				BingClient.Translate(UIManager.getValue(_this.selectionInput), _this.options.langFrom, toLang,
 				function (result)
 				{
 					var translation = result.trim("\"");
@@ -165,7 +165,7 @@ var TranslationForm = function(handler, data, options)
 			_this.showLoadingAnimation();
 			Register.settingsManager.GetTranslationLanguage(function(toLang) 
 			{
-				GlosbeClient.Translate(_this.text, OR(document.documentElement.lang, 'en'), toLang,
+				GlosbeClient.Translate(_this.text, _this.options.langFrom, toLang,
 				function (translation)
 				{
 					console.log(translation);

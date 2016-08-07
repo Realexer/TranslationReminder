@@ -126,6 +126,7 @@ var Translation = function()
 	this.translation = null;
 	this.image = null;
 	this.definition = null;
+	this.lang = null;
 	this.date = null;
 	this.hits = null;
 	this.learned = null;
@@ -159,7 +160,7 @@ var Translation = function()
 
 var TranslationAdapter = 
 {
-	getNew: function(text, translation, image, definition) 
+	getNew: function(text, translation, image, definition, lang) 
 	{
 		var tr = new Translation();
 		
@@ -167,6 +168,7 @@ var TranslationAdapter =
 		tr.translation = translation;
 		tr.image = image;
 		tr.definition = definition;
+		tr.lang = lang;
 		tr.date = TranslationAdapter.dateToTimestamp();
 		tr.hits = 1;
 		tr.learned = false;

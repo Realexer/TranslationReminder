@@ -156,38 +156,41 @@ var TranslationFormHandler = function(htmlHandler)
 		{
 			Register.settingsManager.IsAutotranslationEnabled(function (autoTranslate)
 			{
-				_this.form = new TranslationForm(_this.formHandlerBody, {
-					text: selectedText 
-				}, {
-					langTo: langTo,
-					autoTranslate: autoTranslate, 
-					editable: true
-				});
+				Register.settingsManager.GetSiteLanguage(document.domain, function(lang) {
+					_this.form = new TranslationForm(_this.formHandlerBody, {
+						text: selectedText 
+					}, {
+						langFrom: OR(lang, document.documentElement.lang),
+						langTo: langTo,
+						autoTranslate: autoTranslate, 
+						editable: true
+					});
 
-				_this.form.setup(function(result) 
-				{
-					if (result.translation.length > 0)
+					_this.form.setup(function(result) 
 					{
-						Register.translationsManager.AddTranslation(result.text, result.translation, result.image, result.definition,
-						function ()
+						if (result.translation.length > 0)
 						{
-							Register.translationsHighlighter.showHighlightsOnDocuemnt();
-							UIManager.addClassToEl(_this.formHandler, "TR-Successful");
-
-							setTimeout(function ()
+							Register.translationsManager.AddTranslation(result.text, result.translation, result.image, result.definition,
+							function ()
 							{
-								_this.dismiss();
-								UIManager.removeClassFromEl(_this.formHandler, "TR-Successful");
-							}, 50);
-						});
-					}
-				},
-				function() {
-					_this.position(selection, event);
-					UIManager.showEl(_this.formHandler);
+								Register.translationsHighlighter.showHighlightsOnDocuemnt();
+								UIManager.addClassToEl(_this.formHandler, "TR-Successful");
+
+								setTimeout(function ()
+								{
+									_this.dismiss();
+									UIManager.removeClassFromEl(_this.formHandler, "TR-Successful");
+								}, 50);
+							});
+						}
+					},
+					function() {
+						_this.position(selection, event);
+						UIManager.showEl(_this.formHandler);
+					});
+
+					//UIManager.setHTML(_this.formHandler.translationLanguageSpan, "'" + lang.toUpperCase() + "'");
 				});
-				
-				//UIManager.setHTML(_this.formHandler.translationLanguageSpan, "'" + lang.toUpperCase() + "'");
 			});
 		});
 	};

@@ -40,7 +40,7 @@
 		</nav>
 		<div id="TR-SectionsHandler" class="TR-SectionsHandler" style="">
 			
-			<div>
+			<div class="TR-OptionsLoadingAnimationHandler">
 				<img id="TR-LoadingAnimation" class="TR-LoadingAnimation" src="imgs/loading.gif"/>
 			</div>
 			
@@ -56,10 +56,17 @@
 				<!-- WORDS LIST  -->
 				<div class="TR-DictionaryView" id="TR-DictionaryView">
 				
-					<div class="TR-DictionaryOptions TR-BG-Grey-Light">
+					<div class="TR-DictionaryOptions TR-BG-Grey-Light" style="">
+						<span id="TR-TransltionsTotal" class="TR-TransltionsTotal TR-TextMinor">
+							<span class="TR-InvisibleTemplate" data-tr-js-template="TranslationsAmount">
+								Total: {{amount}}
+							</span>
+						</span>
+						·
 						<a id="TR-ExportDictionaryLink" 
 							class="TR-TextMinor" 
 							href="#">download csv</a>
+						
 					</div>
 					
 					<div style="height: 1em;"></div>
@@ -84,19 +91,23 @@
 								<th>text</th>
 								<th>translation</th>
 								<th>
-									<div class="TR-DictionaryControls">order: 
-										<button class="TR-Action TR-SelectWordsOrder TR-SelectedWordsOrder" id="TR-OrderWordsByDate">date</button> 
-										<button class="TR-Action TR-SelectWordsOrder" id="TR-OrderWordsByHits">hits</button>
+									<div class="TR-DictionaryControls">
+										<div class="_buttonsHandler">
+											<button class="TR-Action TR-SelectWordsOrder TR-SelectedWordsOrder" id="TR-OrderWordsByDate">date</button> 
+											<button class="TR-Action TR-SelectWordsOrder" id="TR-OrderWordsByHits">hits</button>
+										</div>
 									</div>
 								</th>
 							</tr>
 						</thead>
 						<tbody id="TR-WordsListLearning">
 						</tbody>
-						<tbody style="font-size: 0.9em;" id="TR-WordsListLearnedHead">
+						<tbody class="TR-TextMinor" id="TR-WordsListLearnedHead">
 							<tr>
-								<td colspan="3" style="text-align: center; font-size: 1.2em;">
-									Learned
+								<td colspan="3" style="text-align: center; padding-top: 2em; font-size: 1.1em;" id="TR-TranslationsLearnedAmount">
+									<span class="TR-InvisibleTemplate" data-tr-js-template="TranslationsLearnedAmount">
+										Learned: {{amount}}
+									</span>
 								</td>
 							</tr>
 						</tbody>
@@ -104,28 +115,25 @@
 						</tbody>
 					</table>
 					
-					<div id="TR-TransltionsTotal" class="TR-TransltionsTotal TR-TextMinor">
-						<span class="TR-InvisibleTemplate" data-tr-js-template="TranslationsAmount">
-							Total: {{amount}}
-						</span>
-					</div>
-					
 				</div>
+				
+				<div style="height: 4em;"></div>
 				
 			</section>
 			
 			<section id="TR-OptionsHandler" class="TR-BG-Grey-Light TR-Padding10" style="display: none;">
-				
-				<div style="height: 3em;"></div>
-				
-				<div class="TR-Settings">
-					<form id="TR-SettingsForm" action="/" method="POST" enctype="multipart/form-data">
-						<div id="TR-SettingsFormBody"></div>
-						<div style="text-align: center;">
+				<form id="TR-SettingsForm" action="/" method="POST" enctype="multipart/form-data">
+					
+					<div class="TR-Settings">
+						<div style="text-align: right;">
 							<input type="submit" class="SubmitButton TR-BG-Green" value="Save"/>
 						</div>
-					</form>
-				</div>
+						<div style="height: 0.5em;"></div>
+				
+						<div id="TR-SettingsFormBody"></div>
+					</div>
+					
+				</form>
 				
 				<div class="TR-InvisibleTemplate" data-tr-js-template="SettingsForm">
 		
@@ -160,7 +168,7 @@
 									 name="HighlightStyling.addBackgroundColor" 
 									 data-tr-checked="{{HighlightStyling.addBackgroundColor}}"
 									 id="TR-HighlightAddBGColor">
-							<label for="TR-HighlightBGColor">background color </label>
+							<label for="TR-HighlightAddBGColor">background color </label>
 							<input type="color"
 									 name="HighlightStyling.backgroundColor" 
 									 value="{{HighlightStyling.backgroundColor}}"
@@ -196,7 +204,7 @@
 						<hr />
 
 						<div class="TR-OptionItem TR-TextMinor">
-							Warning: It's possible that attention can break layout of some pages or prevent normal rendering. 
+							Warning: It's possible that extension can break layout of some pages or prevent normal rendering. 
 							That's why you can add some sites to exceptions or if you are advanced web user you can even specify additional restricted tags.
 						</div>
 

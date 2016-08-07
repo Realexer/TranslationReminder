@@ -18,6 +18,11 @@ body {
 	padding: 1em;
 }
 
+.TR-Popup-Controls-Item 
+{
+	margin-bottom: 0.5em;
+}
+
 .TR-Popup-Links 
 {
 	padding: 0.5em;

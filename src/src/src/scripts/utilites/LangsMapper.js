@@ -13,5 +13,15 @@ var LangsMapper =
 		return this.langsData.filter(function(lang) {
 			return lang.key3 == key3;
 		});
+	},
+	getLangKeys2: function() 
+	{
+		var keys = [];
+		
+		performOnElsList(this.langsData, function(lang) {
+			keys.push(lang.key2);
+		});
+		
+		return keys;
 	}
 };

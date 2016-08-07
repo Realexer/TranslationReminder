@@ -130,7 +130,7 @@
 	<table class="TR-InvisibleTemplate">
 		<tbody data-tr-js-template="WordLearningRowItem">
 			<tr class='{{rowClass}}'>
-				<td class='TR-Translation-Cell'>
+				<td class='TR-Text-Cell'>
 					<div class="TR-Word-Image">
 						<img src="{{image}}">
 					</div>
@@ -138,19 +138,23 @@
 					<div class='TR-WordData'>{{hits}} times met<br/>{{Templater.UI.print.dateAgo | date}}</div>
 				</td>
 				<td class='TR-Translation-Cell'>
-					<div class='TR-Translation'>{{translation}}</div>
-					<div class='TR-Definition TR-TextMinor'>{{definition}}</div>
+					<div class="TR-BG-Ultralight" style="padding: 0.5em;">
+						<div class='TR-Translation'>{{translation}}</div>
+						<div class='TR-Definition TR-TextMinor'>{{definition}}</div>
+					</div>
 				</td>
-				<td class='TR-DeleteButton-Cell'>
+				<td class='TR-ManageButtons-Cell'>
 					<button class='TR-KnowIt' data-tr-text='{{text}}'>to learned</button>
+					<div></div>
 					<button class='TR-EditTranslationButton TR-TextMinor' data-tr-index='{{index}}'>edit</button>
+					<div></div>
 					<button class='TR-DeleteTranslationButton TR-TextMinor' data-tr-index='{{index}}'>delete</button>
 				</td>
 			</tr>
 		</tbody>
 		<tbody data-tr-js-template="WordLearnedRowItem">
 			<tr class='{{rowClass}}'>
-				<td class='TR-Translation-Cell'>
+				<td class='TR-Text-Cell'>
 					<div class="TR-Word-Image">
 						<img src="{{image}}">
 					</div>
@@ -161,6 +165,7 @@
 					<div>Learned {{Templater.UI.print.dateAgo | learnedAt}}</div>
 					<div class='TR-Translation' style="display: none;">{{translation}}</div>
 					<button class='TR-BackToLearning TR-TextMinor' data-tr-text='{{text}}'>back to learning</button>
+					<div></div>
 					<button class='TR-DeleteTranslationButton TR-TextMinor' data-tr-index='{{index}}'>delete</button>
 				</td>
 			</tr>

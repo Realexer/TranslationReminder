@@ -1,38 +1,44 @@
-var OptionsView = function ()
+var OptionsView = function (htmlHandler)
 {
 	var _this = this;
 
 	var settingsForm = getEl("TR-SettingsForm");
 
 	this.init = function ()
-	{		
+	{
+		Register.optionsPage.showLoadingAnimation();
+		
 		UIManager.addEventNoDefault(settingsForm, "submit", function(e) 
 		{
-			var formData = new FormData(settingsForm);
-			var settings = {};
-			settings[SettingsKeys.SitesBlackList] = formData.get(SettingsKeys.SitesBlackList).split(";").TrimAllElements().RemoveDuplicates().filter(function(item) {
-				return !UIFormat.isEmptyString(item);
-			});
-			settings[SettingsKeys.TranslationLanguage] = formData.get(SettingsKeys.TranslationLanguage);
-			settings[SettingsKeys.AutoTranslatioinEnabled] = getBool(formData.get(SettingsKeys.AutoTranslatioinEnabled));
-			settings[SettingsKeys.HighlightStyling] = {};
-			settings[SettingsKeys.HighlightStyling][HighlightStylingKeys.addBackgroundColor] = getBool(formData.get(SettingsKeys.HighlightStyling+"."+HighlightStylingKeys.addBackgroundColor));
-			settings[SettingsKeys.HighlightStyling][HighlightStylingKeys.backgroundColor] = formData.get(SettingsKeys.HighlightStyling+"."+HighlightStylingKeys.backgroundColor);
-			settings[SettingsKeys.HighlightStyling][HighlightStylingKeys.addShaddow] = getBool(formData.get(SettingsKeys.HighlightStyling+"."+HighlightStylingKeys.addShaddow));
-			settings[SettingsKeys.HighlightStyling][HighlightStylingKeys.addUnderline] = getBool(formData.get(SettingsKeys.HighlightStyling+"."+HighlightStylingKeys.addUnderline));
-			settings[SettingsKeys.HighlightStyling][HighlightStylingKeys.customCSS] = formData.get(SettingsKeys.HighlightStyling+"."+HighlightStylingKeys.customCSS);
-			
-			settings[SettingsKeys.RestrictedTags] = formData.get(SettingsKeys.RestrictedTags).split(";").TrimAllElements().RemoveDuplicates().filter(function(item) {
-				return !UIFormat.isEmptyString(item);
-			});
-			
-			Register.settingsManager.saveSettings(settings, function() {
-				highlightExampleText();
-				UIManager.addClassToEl(getEl("TR-Options"), "TR-Successful");
+			Register.settingsManager.getSettings(function(settings) 
+			{
+				settings = OR(settings, {});
 				
-				Timeout.set(function(){
-					UIManager.removeClassFromEl(getEl("TR-Options"), "TR-Successful");
-				}, 180);
+				var formData = new FormData(settingsForm);
+				settings[SettingsKeys.SitesBlackList] = formData.get(SettingsKeys.SitesBlackList).split(";").TrimAllElements().RemoveDuplicates().filter(function(item) {
+					return !UIFormat.isEmptyString(item);
+				});
+				settings[SettingsKeys.TranslationLanguage] = formData.get(SettingsKeys.TranslationLanguage);
+				settings[SettingsKeys.AutoTranslatioinEnabled] = getBool(formData.get(SettingsKeys.AutoTranslatioinEnabled));
+				settings[SettingsKeys.HighlightStyling] = {};
+				settings[SettingsKeys.HighlightStyling][HighlightStylingKeys.addBackgroundColor] = getBool(formData.get(SettingsKeys.HighlightStyling+"."+HighlightStylingKeys.addBackgroundColor));
+				settings[SettingsKeys.HighlightStyling][HighlightStylingKeys.backgroundColor] = formData.get(SettingsKeys.HighlightStyling+"."+HighlightStylingKeys.backgroundColor);
+				settings[SettingsKeys.HighlightStyling][HighlightStylingKeys.addShaddow] = getBool(formData.get(SettingsKeys.HighlightStyling+"."+HighlightStylingKeys.addShaddow));
+				settings[SettingsKeys.HighlightStyling][HighlightStylingKeys.addUnderline] = getBool(formData.get(SettingsKeys.HighlightStyling+"."+HighlightStylingKeys.addUnderline));
+				settings[SettingsKeys.HighlightStyling][HighlightStylingKeys.customCSS] = formData.get(SettingsKeys.HighlightStyling+"."+HighlightStylingKeys.customCSS);
+
+				settings[SettingsKeys.RestrictedTags] = formData.get(SettingsKeys.RestrictedTags).split(";").TrimAllElements().RemoveDuplicates().filter(function(item) {
+					return !UIFormat.isEmptyString(item);
+				});
+
+				Register.settingsManager.saveSettings(settings, function() {
+					highlightExampleText();
+					UIManager.addClassToEl(htmlHandler, "TR-Successful");
+
+					Timeout.set(function(){
+						UIManager.removeClassFromEl(htmlHandler, "TR-Successful");
+					}, 180);
+				});
 			});
 		});
 
@@ -59,6 +65,8 @@ var OptionsView = function ()
 				UIManager.autogrowTetarea(getEl("TR-HighlightCustomCSS"));
 				
 				highlightExampleText();
+				
+				Register.optionsPage.hideLoadingAnimation();
 			});
 		});
 	};
@@ -86,7 +94,6 @@ var DictionaryView = function ()
 	var translationsTableLearning = getEl("TR-WordsListLearning");
 	var translationsTableLearned = getEl("TR-WordsListLearned");
 	var translationsTableLearnedHeader = getEl("TR-WordsListLearnedHead");
-	var loadingAnimation = getEl("TR-LoadingAnimation");
 	var noTranslationsView = getEl("TR-EmptyDictionaryView");
 	var dictionaryView = getEl("TR-DictionaryView");
 	var translationEditingForm = getEl("TR-EditTranslationForm");
@@ -150,7 +157,7 @@ var DictionaryView = function ()
 
 	function showUserTranslations()
 	{
-		UIManager.showEl(loadingAnimation);
+		Register.optionsPage.showLoadingAnimation();
 		UIManager.clearEl(translationsTableLearning);
 		UIManager.clearEl(translationsTableLearned);
 
@@ -185,6 +192,11 @@ var DictionaryView = function ()
 							data.rowClass = (i % 2 == 0) ? "TR-BG-Grey-Light" : "TR-BG-Grey-Dark";
 							UIManager.addHTML(translationsTableLearned, Register.templater.formatTemplate("WordLearnedRowItem", data));
 					});
+					
+					UIManager.setHTML(getEl("TR-TranslationsLearnedAmount"), Register.templater.formatTemplate("TranslationsLearnedAmount", {
+						amount: translationsLearned.length
+					}));
+					
 				} else {
 					UIManager.hideEl(translationsTableLearnedHeader);
 				}
@@ -227,7 +239,7 @@ var DictionaryView = function ()
 				UIManager.hideEl(dictionaryView);
 			}
 
-			UIManager.hideEl(loadingAnimation);
+			Register.optionsPage.hideLoadingAnimation();
 		}, 
 		{
 			order: currentTablesOrder
@@ -240,6 +252,7 @@ var DictionaryView = function ()
 		{
 			var form = new TranslationForm(translationEditingForm.querySelector("._tr_body"), data, 
 			{
+				langFrom: OR(data.lang, "en"), // temporary as previous records doens't contain lang propoery
 				langTo: langTo,
 				autoTranslate: false, 
 				editable: false
@@ -343,6 +356,7 @@ var OptionsPage = function()
 	var sectionsHandler = getEl("TR-SectionsHandler");
 	var dictionarySection = getEl("TR-DictionaryHandler");
 	var optionsSection = getEl("TR-OptionsHandler");
+	var loadingAnimation = getEl("TR-LoadingAnimation");
 	
 	this.init = function() 
 	{
@@ -358,7 +372,7 @@ var OptionsPage = function()
 			break;
 			
 			default: {
-				Register.optionsView = new OptionsView();
+				Register.optionsView = new OptionsView(optionsSection);
 				TemplatesLoader.loadTemplates("templates/common.html", document.body, function() 
 				{
 					UIManager.showEl(optionsSection);
@@ -369,7 +383,17 @@ var OptionsPage = function()
 			}
 		}
 	};
-}
+	
+	this.showLoadingAnimation = function() 
+	{
+		UIManager.showEl(loadingAnimation);
+	};
+	
+	this.hideLoadingAnimation = function() 
+	{
+		UIManager.hideEl(loadingAnimation);
+	};
+};
 
 window.onload = function ()
 {
