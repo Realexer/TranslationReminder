@@ -126,11 +126,7 @@ var TemplatesLoader =
 {
 	loadTemplates: function(url, intoEl, callback) 
 	{
-		Ajax.Invoke({
-			type: "GET",
-			url: chrome.extension.getURL(url)
-		},
-		function(html) 
+		TemplatesLoader.loadFile(url, function(html) 
 		{
 			var templatesHandler = UIManager.addNodeFromHTML(intoEl, html);
 			Initer.whenTrue(function() {
@@ -143,6 +139,18 @@ var TemplatesLoader =
 				
 				callback();
 			});
+		});
+	},
+	
+	loadFile: function(url, callback) 
+	{
+		Ajax.Invoke({
+			type: "GET",
+			url: chrome.extension.getURL(url)
+		},
+		function(html) 
+		{
+			callback(html);
 		});
 	},
 	

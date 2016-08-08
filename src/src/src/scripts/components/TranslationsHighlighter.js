@@ -219,7 +219,7 @@ var TranslationsHighlighter = function(htmlHandler)
 
 	this.hideAllTranslationDetails = function()
 	{
-		performOnElsList(document.querySelectorAll(".TR-Hint"), function(el) {
+		performOnElsList(htmlHandlder.querySelectorAll(".TR-Hint"), function(el) {
 			Threader.putInQueue(function() {
 				UIManager.removeEl(el);
 			});

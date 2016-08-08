@@ -675,7 +675,7 @@ var UIDisplayToggler = new function()
 };
 
 EventsManager.subscribe(Events.elementContentChanged, function(el) {
-	if(UIManager.getElData(el, "prev-length")) {
+	if(el.getAttribute && UIManager.getElData(el, "prev-length")) {
 		UIManager.adaptElHeight(el);
 	}
 });
