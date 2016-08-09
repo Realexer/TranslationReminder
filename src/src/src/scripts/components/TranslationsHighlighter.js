@@ -26,7 +26,7 @@ var TranslationsHighlighter = function(htmlHandler)
 	
 	this.showHighlightsOnTextNodes = function(textNodes) 
 	{
-		Register.translationsManager.GetTranslations(function(translations) 
+		Register.dictionaryManager.GetTranslations(function(translations) 
 		{
 			_this.showTranslationsHighlightsOnTextNodes(textNodes, translations);
 		}, {
@@ -50,7 +50,7 @@ var TranslationsHighlighter = function(htmlHandler)
 		});
 
 		performOnEveryKey(textsHits, function(text, hits) {
-			Register.translationsManager.SetTranslationHitsCount(text, hits, function() {
+			Register.dictionaryManager.SetTranslationHitsCount(text, hits, function() {
 				console.log("Text hit counts updated");
 			});
 		});
@@ -229,7 +229,7 @@ var TranslationsHighlighter = function(htmlHandler)
 
 	function markTextAsLearned(text)
 	{
-		Register.translationsManager.setTextLearned(text, 
+		Register.dictionaryManager.setTextLearned(text, 
 		function ()
 		{
 			_this.removeHighLights(text);

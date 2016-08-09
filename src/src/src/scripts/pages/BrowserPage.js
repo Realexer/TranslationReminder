@@ -185,7 +185,7 @@ var TranslationFormHandler = function(htmlHandler)
 					{
 						if (result.translation.length > 0)
 						{
-							Register.translationsManager.AddTranslation(result.text, result.translation, result.image, result.definition,
+							Register.dictionaryManager.AddTranslation(result.text, result.translation, result.image, result.definition,
 							function ()
 							{
 								Register.translationsHighlighter.showHighlightsOnDocuemnt();

@@ -1,4 +1,4 @@
-var TranslationsManager = function ()
+var DictionaryManager = function ()
 {
 	var _this = this;
 	
@@ -203,5 +203,5 @@ var TranslationAdapter =
 	}
 }
 
-Register.translationsManager = new TranslationsManager();
-Register.translationsManager.init();
+Register.dictionaryManager = new DictionaryManager();
+Register.dictionaryManager.init();

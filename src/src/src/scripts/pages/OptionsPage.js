@@ -161,7 +161,7 @@ var DictionaryView = function ()
 		UIManager.clearEl(translationsTableLearning);
 		UIManager.clearEl(translationsTableLearned);
 
-		Register.translationsManager.GetTranslations(function (translations)
+		Register.dictionary.GetTranslations(function (translations)
 		{
 			if (translations.length > 0)
 			{
@@ -262,7 +262,7 @@ var DictionaryView = function ()
 			{
 				if (result.translation.length > 0)
 				{
-					Register.translationsManager.EditTranslation(result.text, result.translation, result.image, result.definition,
+					Register.dictionary.EditTranslation(result.text, result.translation, result.image, result.definition,
 					function ()
 					{
 						UIManager.addClassToEl(translationEditingForm.querySelector(".TR-Body"), "TR-Successful");
@@ -287,7 +287,7 @@ var DictionaryView = function ()
 	{
 		if(window.confirm("Delete translation '"+translation.text+"' from dictionary?")) 
 		{
-			Register.translationsManager.DeleteTranslation(translation.text,
+			Register.dictionary.DeleteTranslation(translation.text,
 			function ()
 			{
 				showUserTranslations();
@@ -304,14 +304,14 @@ var DictionaryView = function ()
 
 	function markTranslationAsLearned(text)
 	{
-		Register.translationsManager.setTextLearned(text, function() {
+		Register.dictionary.setTextLearned(text, function() {
 			showUserTranslations();
 		});
 	};
 	
 	function moveBackToLearning(text)
 	{
-		Register.translationsManager.setTextLearning(text, function() {
+		Register.dictionary.setTextLearning(text, function() {
 			showUserTranslations();
 		});
 	};
@@ -321,7 +321,7 @@ var DictionaryExporter =
 {
 	export: function() 
 	{
-		Register.translationsManager.GetTranslations(function(translations) {
+		Register.dictionary.GetTranslations(function(translations) {
 			var learning = [];
 			var learned = [];
 			

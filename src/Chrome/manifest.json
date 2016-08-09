@@ -5,7 +5,7 @@
 
 	"name": "Translation Reminder",
 	"description": "Extension that helps you to remember new words.",
-	"version": "4.1.0",
+	"version": "4.1.1",
 
 	"permissions": [
 		"storage",
@@ -31,7 +31,7 @@
 				"scripts/storage/SyncStorage.js", 
 				"scripts/api/BingClient.js", 
 				"scripts/api/GlosbeClient.js", 
-				"scripts/managers/TranslationsManager.js", 
+				"scripts/managers/DictionaryManager.js", 
 				"scripts/managers/SettingsManager.js", 
 				"scripts/components/TranslationsHighlighter.js", 
 				"scripts/components/TranslationForm.js", 
@@ -71,7 +71,7 @@
 			"scripts/storage/IndexedStorage.js", 
 			"scripts/storage/SyncStorage.js", 
 			"scripts/managers/DBManager.js",
-			"scripts/managers/TranslationsManager.js",
+			"scripts/managers/DictionaryManager.js",
 			"scripts/managers/SettingsManager.js",
 			"background.js"
 		]

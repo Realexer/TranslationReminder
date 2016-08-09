@@ -17,7 +17,7 @@ var DBManager = function()
 				{
 					performOnElsList(words, function(word, i) 
 					{
-						Register.translationsManager.AddTranslation(word.word, word.translation, null, null, function() 
+						Register.dictionaryManager.AddTranslation(word.word, word.translation, null, null, function() 
 						{
 							if(i == words.length-1) 
 							{
