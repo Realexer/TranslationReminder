@@ -23,7 +23,16 @@ var DictionaryManager = function ()
 				learned: request.condition.learned,
 				lang: request.condition.lang
 			}
-		}, callback);
+		},
+		function(translations) 
+		{
+			var res = [];
+			performOnElsList(translations, function(tr) {
+				res.push(TranslationAdapter.getFromExisting(tr));
+			});
+			
+			callback(res);
+		});
 	};
 	
 	this.GetTranslationByText = function(text, _funcOK, _funcNotFound) 
@@ -39,14 +48,14 @@ var DictionaryManager = function ()
 	};
 
 
-	this.AddTranslation = function (text, translation, image, definition, callback)
+	this.AddTranslation = function (text, translation, image, definition, lang, callback)
 	{
 		this.GetTranslationByText(text, function(data) 
 		{
 			_this.setTextLearning(text, callback);
 		}, function() {
 			Messanger.sendMessage(Messages.BE.DB.AddTranslation, 
-				TranslationAdapter.getNew(text, translation, image, definition), callback);
+				TranslationAdapter.getNew(text, translation, image, definition, lang), callback);
 		});
 	};
 	

@@ -1,5 +1,6 @@
 var DBObjects = 
 {
+	Dictionary: "Translations",
 	Translations: "Translations"
 };
 
@@ -35,12 +36,12 @@ var IndexedStorage = function()
 			_this.db = e.target.result;
 			var tr = e.target.transaction;
 
-			if (!_this.db.objectStoreNames.contains(DBObjects.Translations)) 
+			if (!_this.db.objectStoreNames.contains(DBObjects.Dictionary)) 
 			{
-				var objectStore = _this.db.createObjectStore(DBObjects.Translations, {autoIncrement: true});
+				var objectStore = _this.db.createObjectStore(DBObjects.Dictionary, {autoIncrement: true});
 			}
 			
-			var objectStore = tr.objectStore(DBObjects.Translations);
+			var objectStore = tr.objectStore(DBObjects.Dictionary);
 			_this.updateIndex(objectStore, "text", "text", { unique: true });
 			_this.updateIndex(objectStore, "date", "date", { unique: false });
 			_this.updateIndex(objectStore, "hits", "hits", { unique: false });
@@ -95,7 +96,7 @@ var IndexedStorage = function()
 	this.GetTranslations = function (request, callback)
 	{
 		var translations = [];
-		this.runTransaction(DBObjects.Translations, DBTransactionTypes.rw, function(tr, store) 
+		this.runTransaction(DBObjects.Dictionary, DBTransactionTypes.rw, function(tr, store) 
 		{
 			return store.index(request.order.field).openCursor(null, DBOrderDirection[request.order.direction]); 
 		},
@@ -128,7 +129,7 @@ var IndexedStorage = function()
 		{
 			if(!isExists) 
 			{
-				_this.runTransaction(DBObjects.Translations, DBTransactionTypes.rw, function(tr, store) 
+				_this.runTransaction(DBObjects.Dictionary, DBTransactionTypes.rw, function(tr, store) 
 				{
 					return store.add(request);
 				},
@@ -166,7 +167,7 @@ var IndexedStorage = function()
 	this.getTranslationByText = function(request, callback, onSuccess) 
 	{
 		var translation = null;
-		this.runTransaction(DBObjects.Translations, DBTransactionTypes.rw, function(tr, store) 
+		this.runTransaction(DBObjects.Dictionary, DBTransactionTypes.rw, function(tr, store) 
 		{
 			var index = store.index('text');
 			var keyRange = IDBKeyRange.only(request.text);
@@ -215,7 +216,7 @@ var IndexedStorage = function()
 
 	this.DeleteAllTranslations = function (callback)
 	{
-		this.runTransaction(DBObjects.Translations, DBTransactionTypes.rw, function(tr, store) 
+		this.runTransaction(DBObjects.Dictionary, DBTransactionTypes.rw, function(tr, store) 
 		{
 			return store.clear();
 		}, 
@@ -228,7 +229,7 @@ var IndexedStorage = function()
 	this.setTranslations = function(translations, callback) 
 	{
 		var i = 0;
-		this.runTransaction(DBObjects.Translations, DBTransactionTypes.rw, function(tr, store) 
+		this.runTransaction(DBObjects.Dictionary, DBTransactionTypes.rw, function(tr, store) 
 		{
 			
 		}, function() {

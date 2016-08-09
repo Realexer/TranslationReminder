@@ -161,7 +161,7 @@ var DictionaryView = function ()
 		UIManager.clearEl(translationsTableLearning);
 		UIManager.clearEl(translationsTableLearned);
 
-		Register.dictionary.GetTranslations(function (translations)
+		Register.dictionaryManager.GetTranslations(function (translations)
 		{
 			if (translations.length > 0)
 			{
@@ -262,7 +262,7 @@ var DictionaryView = function ()
 			{
 				if (result.translation.length > 0)
 				{
-					Register.dictionary.EditTranslation(result.text, result.translation, result.image, result.definition,
+					Register.dictionaryManager.EditTranslation(result.text, result.translation, result.image, result.definition,
 					function ()
 					{
 						UIManager.addClassToEl(translationEditingForm.querySelector(".TR-Body"), "TR-Successful");
@@ -287,7 +287,7 @@ var DictionaryView = function ()
 	{
 		if(window.confirm("Delete translation '"+translation.text+"' from dictionary?")) 
 		{
-			Register.dictionary.DeleteTranslation(translation.text,
+			Register.dictionaryManager.DeleteTranslation(translation.text,
 			function ()
 			{
 				showUserTranslations();
@@ -304,14 +304,14 @@ var DictionaryView = function ()
 
 	function markTranslationAsLearned(text)
 	{
-		Register.dictionary.setTextLearned(text, function() {
+		Register.dictionaryManager.setTextLearned(text, function() {
 			showUserTranslations();
 		});
 	};
 	
 	function moveBackToLearning(text)
 	{
-		Register.dictionary.setTextLearning(text, function() {
+		Register.dictionaryManager.setTextLearning(text, function() {
 			showUserTranslations();
 		});
 	};
@@ -321,13 +321,22 @@ var DictionaryExporter =
 {
 	export: function() 
 	{
-		Register.dictionary.GetTranslations(function(translations) {
+		Register.dictionaryManager.GetTranslations(function(translations) 
+		{
+			translations = JSON.parse(JSON.stringify(translations));
+			
+			var header = [];
 			var learning = [];
 			var learned = [];
 			
 			performOnElsList(translations, function(tr) 
 			{
+				if(header.length == 0) {
+					header.push(Object.keys(tr).map(function (key) {return key}));
+				}
+				
 				var trAr = Object.keys(tr).map(function (key) {return tr[key]});
+				
 				if(tr.learned) 
 				{
 					learned.push(trAr);
@@ -336,7 +345,7 @@ var DictionaryExporter =
 				}
 			});
 			
-			var combined = learning.concat(learned);
+			var combined = header.concat(learning.concat(learned));
 			
 			var csvContent = "data:text/csv;charset=utf-8,";
 			performOnElsList(combined, function(tr) {

@@ -1,7 +1,7 @@
 var SynchStorage = function() 
 {
 	var _keys = {
-		translations: "translations",
+		dicitonary: "dictionary",
 		settings: "settings",
 		synchash: "synchash",
 		
@@ -15,20 +15,20 @@ var SynchStorage = function()
 	this.init = function() 
 	{
 		this.sync = chrome.storage.sync;
-		//this.sync.remove([_keys.translations, _keys.settings]);
+		//this.sync.remove([_keys.dictionary, _keys.settings]);
 		this.local = chrome.storage.local;
 		
 		chrome.storage.onChanged.addListener(function(changes, namespace) 
 		{
 			for (var key in changes) 
 			{
-				if(key == _keys.translations) 
+				if(key == _keys.dicitonary) 
 				{
 					_this.local.get(_keys.synchash, function(localHash) {
 						_this.sync.get(_keys.synchash, function(syncHash) {
 							if(localHash[_keys.synchash] != syncHash[_keys.synchash]) 
 							{
-								console.log("Translations sync required");
+								console.log("Dictionary sync required");
 							}
 						});
 					});
@@ -47,7 +47,7 @@ var SynchStorage = function()
 	
 	var synchTimer = null;
 	
-	this.synchTranslations = function() 
+	this.synchDictionary = function() 
 	{
 		// Scheduling synch to prevent excessive number of writes
 		if(synchTimer) {
@@ -55,20 +55,20 @@ var SynchStorage = function()
 		}
 		
 		synchTimer = Timeout.set(function() {
-			Register.dictionaryManager.GetTranslations(function(translations) {
-				_this.setTranslations(translations, function() {
+			Register.dictionaryManager.GetTranslations(function(dicitonary) {
+				_this.setDictionary(dicitonary, function() {
 					console.log("Words synched.");
 				});
 			});
 		}, 2000);
 	};
 	
-	this.setTranslations = function(translations, callback) 
+	this.setDictionary = function(dictionary, callback) 
 	{
 		var syncHash = generateRundomString(10);
 		this.local.set(setData(_keys.synchash, syncHash), function() {
 			_this.sync.set(setData(_keys.synchash, syncHash), function() {
-				_this.sync.set(setData(_keys.translations, JSON.stringify(translations)), function() 
+				_this.sync.set(setData(_keys.dicitonary, JSON.stringify(dictionary)), function() 
 				{
 					callback();
 				});
@@ -76,10 +76,10 @@ var SynchStorage = function()
 		});
 	};
 	
-	this.getTranslations = function(callback) 
+	this.getDictionary = function(callback) 
 	{
-		return this.sync.get(_keys.translations, function(result) {
-			callback(JSON.parse(result[_keys.translations]));
+		return this.sync.get(_keys.dicitonary, function(result) {
+			callback(JSON.parse(result[_keys.dicitonary]));
 		});
 	};
 	

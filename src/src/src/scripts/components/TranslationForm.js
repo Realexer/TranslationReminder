@@ -223,7 +223,8 @@ var TranslationForm = function(handler, data, options)
 			text: UIManager.getValue(_this.selectionInput),
 			definition: UIManager.getElData(_this.textDefinition, "tr-selected-definition"),
 			image: UIManager.getValue(_this.textImageInput),
-			translation: UIManager.getValue(_this.translationInput)
+			translation: UIManager.getValue(_this.translationInput),
+			lang: _this.options.langFrom
 		});
 	};
 };

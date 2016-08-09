@@ -171,11 +171,12 @@ var TranslationFormHandler = function(htmlHandler)
 		{
 			Register.settingsManager.IsAutotranslationEnabled(function (autoTranslate)
 			{
-				Register.settingsManager.GetSiteLanguage(document.domain, function(lang) {
+				Register.settingsManager.GetSiteLanguage(document.domain, function(langFrom) 
+				{
 					_this.form = new TranslationForm(_this.formHandlerBody, {
 						text: selectedText 
 					}, {
-						langFrom: OR(lang, document.documentElement.lang),
+						langFrom: OR(langFrom, document.documentElement.lang),
 						langTo: langTo,
 						autoTranslate: autoTranslate, 
 						editable: true
@@ -185,7 +186,7 @@ var TranslationFormHandler = function(htmlHandler)
 					{
 						if (result.translation.length > 0)
 						{
-							Register.dictionaryManager.AddTranslation(result.text, result.translation, result.image, result.definition,
+							Register.dictionaryManager.AddTranslation(result.text, result.translation, result.image, result.definition, result.lang,
 							function ()
 							{
 								Register.translationsHighlighter.showHighlightsOnDocuemnt();
