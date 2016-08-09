@@ -41,3 +41,5 @@ chrome.runtime.onInstalled.addListener(function ()
 		id: Messages.FE.DisplayTranslationForm,
 	}, function () { console.log("Couldn't create context menu for 'Add New Translation'"); });
 });
+
+Register.dbManager.init();

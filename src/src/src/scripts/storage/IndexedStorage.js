@@ -1,7 +1,6 @@
 var DBObjects = 
 {
-	Dictionary: "Translations",
-	Translations: "Translations"
+	Dictionary: "Dictionary",
 };
 
 var DBTransactionTypes = 
@@ -136,7 +135,7 @@ var IndexedStorage = function()
 				function() 
 				{
 					callback();
-					Register.synchStorage.synchTranslations();
+					Register.synchStorage.synchDictionary();
 				});
 			}
 			else 
@@ -151,7 +150,7 @@ var IndexedStorage = function()
 		this.getTranslationByText(request, function(translation, tr, store) 
 		{
 			callback();
-			Register.synchStorage.synchTranslations();
+			Register.synchStorage.synchDictionary();
 		},
 		function(translation, tr, store, cursor) 
 		{
@@ -204,7 +203,7 @@ var IndexedStorage = function()
 		this.getTranslationByText(request, function(translation, tr, store) 
 		{
 			callback();
-			Register.synchStorage.synchTranslations();
+			Register.synchStorage.synchDictionary();
 		},
 		function(translation, tr, store, cursor) 
 		{
@@ -222,7 +221,7 @@ var IndexedStorage = function()
 		}, 
 		function() {
 			callback();
-			Register.synchStorage.synchTranslations();
+			Register.synchStorage.synchDictionary();
 		});
 	};
 	

@@ -32,6 +32,5 @@ var DBManager = function()
 };
 
 Register.dbManager = new DBManager();
-Register.dbManager.init();
 
 Register.DB = Register.indexedStorage;

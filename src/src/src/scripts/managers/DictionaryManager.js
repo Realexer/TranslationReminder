@@ -7,14 +7,13 @@ var DictionaryManager = function ()
 		
 	};
 	
-	this.GetTranslations = function (callback, request)
+	this.ConstructTranslationsRequest = function(request) 
 	{
 		var request = OR(request, {});
 		request.order = OR(request.order, {});
 		request.condition = OR(request.condition, {});
-
-		Messanger.sendMessage(Messages.BE.DB.GetTranslations, 
-		{
+		
+		return {
 			order: {
 				field: OR(request.order.field, TranslationsOrder.order.date),
 				direction: OR(request.order.direction, TranslationsOrder.direction.DESC)
@@ -23,7 +22,13 @@ var DictionaryManager = function ()
 				learned: request.condition.learned,
 				lang: request.condition.lang
 			}
-		},
+		};
+	};
+	
+	this.GetTranslations = function (callback, request)
+	{
+		Messanger.sendMessage(Messages.BE.DB.GetTranslations, 
+		_this.ConstructTranslationsRequest(request),
 		function(translations) 
 		{
 			var res = [];
