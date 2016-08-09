@@ -1,5 +1,7 @@
 var AppConfig = 
 {
+	production: true,
+	
 	initialSettings: 
 	{
 		SitesBlackList: [],

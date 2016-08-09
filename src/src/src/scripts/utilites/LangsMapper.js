@@ -22,6 +22,6 @@ var LangsMapper =
 			keys.push(lang.key2);
 		});
 		
-		return keys;
+		return keys.sort();
 	}
 };

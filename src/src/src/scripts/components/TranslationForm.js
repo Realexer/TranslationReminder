@@ -176,7 +176,7 @@ var TranslationForm = function(handler, data, options)
 					};
 					if(translation.result == "ok") 
 					{
-						if(translation.tuc.length > 0) 
+						if(translation.tuc && translation.tuc.length > 0) 
 						{
 							var useTranslation = translation.tuc[0];
 							if(useTranslation.meanings) {
