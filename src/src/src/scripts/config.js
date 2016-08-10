@@ -67,8 +67,8 @@ var AppConfig =
 		}
 	},
 	images: {
-		selectTextImage: chrome.extension.getURL('imgs/select_image-2.png'),
-		noTextImage: chrome.extension.getURL('imgs/no-image.png'),
+		selectTextImage: chrome.extension.getURL('imgs/4.0/placeholder-select.png'),
+		noTextImage: chrome.extension.getURL('imgs/4.0/placeholder.png'),
 		bingIcon: chrome.extension.getURL('imgs/bing_icon.png'),
 		glosbeIcon: chrome.extension.getURL('imgs/glosbe_icon.png'),
 		loadingAnimation: chrome.extension.getURL('imgs/loading.gif')

@@ -176,9 +176,10 @@ var DictionaryView = function ()
 				performOnElsList(translations.filter(function(translationItem) {
 					return !translationItem.learned;
 				}), function(data, i) {
-					data.image = OR(data.image, AppConfig.images.noTextImage);
-					data.rowClass = (i % 2 == 0) ? "TR-BG-Light" : "TR-BG-Dark";
-					UIManager.addHTML(translationsTableLearning, Register.templater.formatTemplate("WordLearningRowItem", data));
+					var tr = TranslationAdapter.getFromExisting(data);
+					tr.image = OR(tr.image, AppConfig.images.noTextImage);
+					tr.rowClass = (i % 2 == 0) ? "TR-BG-Light" : "TR-BG-Dark";
+					UIManager.addHTML(translationsTableLearning, Register.templater.formatTemplate("WordLearningRowItem", tr));
 				});
 				
 				var translationsLearned = translations.filter(function(translationItem) {
@@ -187,10 +188,12 @@ var DictionaryView = function ()
 				
 				if(translationsLearned.length > 0) 
 				{
-					performOnElsList(translationsLearned, function(data, i) {
-							data.image = OR(data.image, AppConfig.images.noTextImage);
-							data.rowClass = (i % 2 == 0) ? "TR-BG-Grey-Light" : "TR-BG-Grey-Dark";
-							UIManager.addHTML(translationsTableLearned, Register.templater.formatTemplate("WordLearnedRowItem", data));
+					performOnElsList(translationsLearned, function(data, i) 
+					{
+						var tr = TranslationAdapter.getFromExisting(data);
+						tr.image = OR(tr.image, AppConfig.images.noTextImage);
+						tr.rowClass = (i % 2 == 0) ? "TR-BG-Grey-Light" : "TR-BG-Grey-Dark";
+						UIManager.addHTML(translationsTableLearned, Register.templater.formatTemplate("WordLearnedRowItem", tr));
 					});
 					
 					UIManager.setHTML(getEl("TR-TranslationsLearnedAmount"), Register.templater.formatTemplate("TranslationsLearnedAmount", {
