@@ -1,6 +1,6 @@
 var AppConfig = 
 {
-	production: true,
+	production: false,
 	
 	initialSettings: 
 	{

@@ -58,15 +58,18 @@
 		</table>
 	</div>
 	
+	<div class="TR-InvisibleTemplate" data-tr-js-template="TranslationFromImageToSelectFrom">
+		<img class='_tr_imageSelectFrom' src="" data-tr-src="{{src}}" />
+	</div>
+	
 	<div class="TR-InvisibleTemplate" data-tr-js-template="TranslationDetailsBody">
 		<div>
 			<div class="TR-BG-Dark TR-NewWordForm-CurrentSelection">
 				<div class="_tr_imageSelectorHandler" style="display: none;">
+					<!-- Move image selector to separate template as highlight doesn't need this part -->
 					<div class="TR-BG-Light TR-Form-ImageSelectorHandler">
 						<div class="_tr_imageSelector TR-Form-ImageSelector">
-							<div class="TR-InvisibleTemplate" data-tr-js-template="TranslationFromImageToSelectFrom">
-								<img class='_tr_imageSelectFrom' src="" data-tr-src="{{src}}" />
-							</div>
+							<!-- template:TranslationFromImageToSelectFrom -->
 						</div>
 						<div class="">
 							<input type='text' class="_tr_selectedImageInput" style='width: 100%;' value='{{selectedImage}}'

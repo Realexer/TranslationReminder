@@ -189,8 +189,10 @@ var UIManager = new function()
 	
 	this.removeEl = function(el) 
 	{
-		el.parentNode.removeChild(el);
-	}
+		if(el.parentNode) {
+			el.parentNode.removeChild(el);
+		}
+	};
 	
 	this.clearEl = function(el) 
 	{

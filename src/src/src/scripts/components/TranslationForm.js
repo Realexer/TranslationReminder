@@ -124,6 +124,8 @@ var TranslationForm = function(handler, data, options)
 					})); 
 			}, AppConfig.translationForm.imagesToShow);
 			
+			Templater.UI.setSrc(_this.imageSelector);
+			
 			performOnElsList(_this.imageSelector.querySelectorAll("._tr_imageSelectFrom"), function(el) {
 				UIManager.addEvent(el, "click", function(e, el) {
 					_this.textImage.src = el.src;
