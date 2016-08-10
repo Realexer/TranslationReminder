@@ -13,11 +13,17 @@ var DBManager = function()
 		{
 			if(!isImported) 
 			{
-				Register.sqlStorage.GetWords(WordsOrder.order.date, WordsOrder.direction.DESC, function(words) 
+				Register.sqlStorage.GetWords(TranslationsOrder.order.date, TranslationsOrder.direction.DESC, function(words) 
 				{
 					performOnElsList(words, function(word, i) 
 					{
-						Register.dictionaryManager.AddTranslation(word.word, word.translation, null, null, function() 
+						Register.indexedStorage.AddTranslation(TranslationAdapter.getFromExisting({
+							text: word.word, 
+							translation: word.translation,
+							date: word.date,
+							hits: word.hits,
+							learned: false
+						}).getData(), function() 
 						{
 							if(i == words.length-1) 
 							{
