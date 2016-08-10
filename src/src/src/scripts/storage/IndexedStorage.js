@@ -27,7 +27,7 @@ var IndexedStorage = function()
 	this.init = function ()
 	{
 		//indexedDB.deleteDatabase("TranslationReminder");
-		var openRequest = indexedDB.open("TranslationReminder", 1);
+		var openRequest = indexedDB.open("TranslationReminder", 2);
 
 		openRequest.onupgradeneeded = function (e) 
 		{

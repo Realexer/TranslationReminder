@@ -180,7 +180,8 @@ Templater.UI =
 {
 	dataAttributes: {
 		checked: "data-checked",
-		selected: "data-selected"
+		selected: "data-selected",
+		src: "data-src"
 	},
 	init: function() 
 	{
@@ -196,28 +197,6 @@ Templater.UI =
 				el.selected = getBool(el.getAttribute(Templater.UI.dataAttributes.selected));
 			});
 		});
-	},
-	userAccountInfo: function(accountName, data) 
-	{
-		if(accountName) 
-		{
-			return Register.templater.formatTemplate("UserPageAccountName", data);
-		}
-		else 
-		{
-			return Register.templater.formatTemplate("UserPageNoAccount", data);
-		}
-	},
-	userOnlineMessage: function(isActive, data) 
-	{
-		if(getBool(isActive)) 
-		{
-			return Register.templater.formatTemplate("UserPageUserOnline", data);
-		}
-		else 
-		{
-			return Register.templater.formatTemplate("UserPageUserOffline", data);
-		}
 	},
 	print: 
 	{
@@ -256,5 +235,12 @@ Templater.UI =
 		{
 			return value ? value : _default;
 		}
+	},
+	setSrc: function(el) 
+	{
+		performOnElsList(el.querySelectorAll("["+Templater.UI.dataAttributes.src+"]"), function(el) 
+		{
+			UIManager.setElAttr(el, "src", UIManager.getElAttr(el, Templater.UI.dataAttributes.src));
+		});
 	}
 };

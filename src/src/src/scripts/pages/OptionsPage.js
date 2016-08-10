@@ -232,6 +232,8 @@ var DictionaryView = function ()
 				UIManager.setHTML(getEl("TR-TransltionsTotal"), Register.templater.formatTemplate("TranslationsAmount", {
 					amount: translations.length
 				}));
+				
+				Templater.UI.setSrc(dictionaryView);
 			}
 			else
 			{

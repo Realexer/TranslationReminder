@@ -43,7 +43,8 @@
 			<tr>
 				<td class="TR-Form-Image">
 					<img class="_tr_textImage" 
-						  src="{{image}}"
+						  src=""
+						  data-tr-src="{{image}}"
 						  data-tr-default-image="{{image}}">
 				</td>
 				<td class="TR-Form-Word">
@@ -64,7 +65,7 @@
 					<div class="TR-BG-Light TR-Form-ImageSelectorHandler">
 						<div class="_tr_imageSelector TR-Form-ImageSelector">
 							<div class="TR-InvisibleTemplate" data-tr-js-template="TranslationFromImageToSelectFrom">
-								<img class='_tr_imageSelectFrom' src="{{src}}" />
+								<img class='_tr_imageSelectFrom' src="" data-tr-src="{{src}}" />
 							</div>
 						</div>
 						<div class="">
@@ -136,7 +137,7 @@
 			<tr class='{{rowClass}}'>
 				<td class='TR-Text-Cell'>
 					<div class="TR-Word-Image">
-						<img src="{{image}}">
+						<img src="" data-tr-src="{{image}}">
 					</div>
 					<div class='TR-WordHandler'><span class='TR-Word'>{{text}}</span></div>
 					<div class='TR-WordData'>{{hits}} times met<br/>{{Templater.UI.print.dateAgo | date}}</div>
@@ -160,7 +161,7 @@
 			<tr class='{{rowClass}}'>
 				<td class='TR-Text-Cell'>
 					<div class="TR-Word-Image">
-						<img src="{{image}}">
+						<img src="" data-tr-src="{{image}}">
 					</div>
 					<div class='TR-WordHandler'><span class='TR-Word'>{{text}}</span></div>
 					<div class='TR-WordData'>{{hits}} times met<br/>{{Templater.UI.print.dateAgo | date}}</div>

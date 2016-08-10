@@ -36,7 +36,8 @@
 				"scripts/components/TranslationsHighlighter.js", 
 				"scripts/components/TranslationForm.js", 
 				"scripts/pages/BrowserPage.js", 
-				"foreground.js"],
+				"foreground.js"
+			],
 			"css": [
 				"css/common.css", 
 				"css/BrowserPage.css"

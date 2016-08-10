@@ -82,7 +82,8 @@ var Events =
 	htmlChanged: "htmlChanged",
 	elementContentChanged: "elementContentChanged",
 	elDisplayed: "elDisplayed",
-	elHidden: "elHidden"
+	elHidden: "elHidden",
+	templateUsed: "templateUsed"
 };
 
 var EventsManager = 

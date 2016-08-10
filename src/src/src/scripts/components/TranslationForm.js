@@ -97,6 +97,8 @@ var TranslationForm = function(handler, data, options)
 		
 		UIManager.autogrowTetarea(_this.selectionInput);
 		UIManager.autogrowTetarea(_this.translationInput);
+		
+		Templater.UI.setSrc(_this.form);
 	};
 
 	this.showLoadingAnimation = function() { UIManager.showEl(this.loadingAnimationImage); };
@@ -228,11 +230,3 @@ var TranslationForm = function(handler, data, options)
 		});
 	};
 };
-
-EventsManager.subscribe(Events.htmlChanged, function(el) 
-{
-	performOnElsList(el.querySelectorAll("[data-tr-src]"), function(el) 
-	{
-		UIManager.setElAttr(el, "src", UIManager.getElData(el, "tr-src"));
-	});
-});

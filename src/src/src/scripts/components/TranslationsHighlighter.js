@@ -214,6 +214,8 @@ var TranslationsHighlighter = function(htmlHandler)
 		UIManager.addEvent(details.querySelector("._tr_markAsLearnedButton"), "click", function(event, el) {
 			markTextAsLearned(UIManager.getElData(el, "tr-text"));
 		});
+		
+		Templater.UI.setSrc(details);
 	};
 
 

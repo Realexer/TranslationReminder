@@ -165,6 +165,7 @@ var TemplatesLoader =
 
 		Templater.UI.dataAttributes.checked = "data-tr-checked";
 		Templater.UI.dataAttributes.selected = "data-tr-selected";
+		Templater.UI.dataAttributes.src = "data-tr-src";
 
 		Templater.UI.init();
 
