@@ -33,13 +33,21 @@ chrome.contextMenus.onClicked.addListener(function (info, tab)
 	}, function() {});
 });
 
-chrome.runtime.onInstalled.addListener(function ()
+chrome.runtime.onInstalled.addListener(function (details)
 {
 	chrome.contextMenus.create({
 		title: "Highlight text...",
 		contexts: ["selection"],
 		id: Messages.FE.DisplayTranslationForm,
 	}, function () { console.log("Couldn't create context menu for 'Add New Translation'"); });
+	
+	
+	if(["install", "update"].indexOf(details.reason) !== -1) 
+	{
+		chrome.tabs.create({url: "options.html?extra"}, function (tab) {
+			console.log("Opening options html.");
+		});
+	}
 });
 
 Register.dbManager.init();

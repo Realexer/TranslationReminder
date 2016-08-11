@@ -63,6 +63,8 @@ var OptionsView = function (htmlHandler)
 				UIManager.setHTML(getEl("TR-SettingsFormBody"), Register.templater.formatTemplate("SettingsForm", settings));
 				
 				UIManager.autogrowTetarea(getEl("TR-HighlightCustomCSS"));
+				UIManager.autogrowTetarea(getEl("TR-SitesBlackList"));
+				UIManager.autogrowTetarea(getEl("TR-RestrictedTags"));
 				
 				highlightExampleText();
 				
@@ -371,6 +373,7 @@ var OptionsPage = function()
 	var sectionsHandler = getEl("TR-SectionsHandler");
 	var dictionarySection = getEl("TR-DictionaryHandler");
 	var optionsSection = getEl("TR-OptionsHandler");
+	var extraSection = getEl("TR-ExtraSection");
 	var loadingAnimation = getEl("TR-LoadingAnimation");
 	
 	this.init = function() 
@@ -383,6 +386,20 @@ var OptionsPage = function()
 				Register.dictionaryView.Init();
 				UIManager.showEl(dictionarySection);
 				UIManager.addClassToEl(getEl("TR-DictionaryLink"), "TR-OptionLinkSelected");
+			}
+			break;
+			
+			case "?extra": {
+				
+				TemplatesLoader.initTemplater();
+				
+				UIManager.setHTML(extraSection.querySelector("._body"), 
+					Register.templater.formatTemplate("OptionsExtraSection", {
+						version: AppConfig.manifest.version
+					}));
+
+				UIManager.showEl(extraSection);
+				UIManager.addClassToEl(getEl("TR-ExtraLink"), "TR-OptionLinkSelected");
 			}
 			break;
 			

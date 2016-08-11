@@ -1,5 +1,6 @@
 var AppConfig = 
 {
+	manifest: chrome.runtime.getManifest(),
 	production: false,
 	
 	initialSettings: 

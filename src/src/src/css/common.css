@@ -15,7 +15,14 @@
 
 .TR-Base a{
 	text-decoration: none;
+	
 }
+
+.TR-Link, .TR-Link:active, .TR-Link:visited
+{
+	color: #4c7fe2;
+}
+
 .TR-Base a:hover{
 	text-decoration: underline;
 }
@@ -54,6 +61,11 @@
 	color: #333;
 }
 
+.TR-TextLight 
+{
+	color: #555;
+}
+
 .TR-TextMuted 
 {
 	color: #777;
@@ -62,6 +74,11 @@
 .TR-Bold 
 {
 	font-weight: bold;
+}
+
+.TR-TextBigger 
+{
+	font-size: 1.2em;
 }
 
 .TR-TextMinor 
@@ -307,4 +324,9 @@
 .TR-BG-Grey-Light 
 {
 	background: #f7f7f7;
+}
+
+.TR-BG-White 
+{
+	background: #fff;
 }

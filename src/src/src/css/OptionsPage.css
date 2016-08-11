@@ -88,6 +88,11 @@ body
 	margin-bottom: 3em;
 }
 
+.TR-SubSection .TR-SubSectionBody 
+{
+	padding: 0.8em;
+}
+
 .TR-OptionItem {
 	margin: 0.5em 1em;
 }
@@ -102,7 +107,7 @@ body
 
 .TR-EmptyDictionaryView 
 {
-	padding: 8em 2em;
+	padding: 11em 2em;
 	text-align: center;
 }
 
@@ -113,7 +118,7 @@ body
 
 .TR-EmptyDictionaryView span
 {
-	font-size: 0.75em;
+	
 }
 
 .TR-DictionaryView {}
@@ -242,6 +247,7 @@ body
 {
 	width: 100%;
 	max-width: 100%;
+	min-height: 4em;
 }
 
 .TR-Settings .SubmitButton 

@@ -36,6 +36,9 @@
 				<li class="">
 					<a id="TR-OptionsLink" href="options.html?options">Settings</a>
 				</li>
+				<li class="">
+					<a id="TR-ExtraLink" href="options.html?extra">Extra</a>
+				</li>
 			</ul>
 		</nav>
 		<div id="TR-SectionsHandler" class="TR-SectionsHandler" style="">
@@ -50,7 +53,7 @@
 				<!-- NO WORDS VIEW  -->
 				<div id="TR-EmptyDictionaryView" class="TR-EmptyDictionaryView TR-BG-Grey-Light" style="display: none;">
 					<h1>Your dictionary is empty</h1>
-					<span>Select the text on the page holding Ctrl/Cmd button to add new.</span>
+					<span class="TR-TextMuted">Select the text on the page holding Ctrl/Cmd button to add new.</span>
 				</div>
 
 				<!-- WORDS LIST  -->
@@ -115,9 +118,9 @@
 						</tbody>
 					</table>
 					
+					<div style="height: 4em;"></div>
+					
 				</div>
-				
-				<div style="height: 4em;"></div>
 				
 			</section>
 			
@@ -222,6 +225,93 @@
 						</div>
 					</div>
 				</div>
+				
+			</section>
+			
+			<section id="TR-ExtraSection" class="TR-BG-Grey-Light TR-Padding10" style="display: none;">
+
+				<div style='height: 3em;'></div>
+				
+				<div class="_body"></div>
+
+				<div class="TR-InvisibleTemplate" data-tr-js-template='OptionsExtraSection'>
+					<div>
+						<div class="TR-SubSection">
+							<h3>Donate</h3>
+							<hr />
+
+							<div class="TR-SubSectionBody TR-BG-Ultralight">
+								<h4>PayPal button</h4>
+								<div>
+									Thank you!
+								</div>
+							</div>
+
+						</div>
+
+						<div class="TR-SubSection">
+							<h3>Change Log</h3>
+							<hr />
+
+							<div class="">
+								<h4>Current Version ({{version}})</h4>
+								<div class="TR-TextLight TR-BG-Ultralight">
+									<ul>
+										<br/>
+										<li>totally redesigned app</li>
+										<br/>
+										<li>dictionary moved to separate page</li>
+										<li>highlighting feature improved (less broken pages)</li>
+										<li>added ability to attach image (using Bing search)</li>
+										<li>added alternative translation using <a class="TR-Link" href='https://glosbe.com/' target="_blank">Glosbe</a></li>
+										<li>learned words stay in dictionary</li>
+										<li>ability to edit translation</li>
+										<li>dicitonary is synchronized across devices</li>
+										<li>export dictionary into CSV file</li>
+										<br/>
+										<li>enabled/disable highlighting on the site from popup</li>
+										<li>change language of the site using popup</li>
+										<br/>
+										<li>options expanded</li>
+										<li>added ability to stylize highlights</li>
+										<li>added ability to specify restricted tags</li>
+										<br/>
+									</ul>
+								</div>
+								
+								<div>Version 3.0.1</div>
+								<div class="TR-TextLight">
+									<ul>
+										<li>minor improvements</li>
+										<li>new versioning system</li>
+									</ul>
+								</div>
+								
+								<div>Version 1.0.3</div>
+								<div class="TR-TextLight">
+									<ul>
+										<li>enter button added to the translation field. 
+											Now you can use both Enter key and the button to add the word.
+										</li>
+									</ul>
+								</div>
+								
+								<div>Version 1.0.0 (initial)</div>
+								<div class="TR-TextLight">
+									<ul>
+										<li>words highlighting</li>
+										<li>word hits counting</li>
+										<li>personal dictionary</li>
+										<li>build in Bing translator</li>
+										<li>options page (change language of translation)</li>
+									</ul>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+
 				
 			</section>
 			
