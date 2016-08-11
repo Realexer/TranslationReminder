@@ -28,12 +28,12 @@ var SynchStorage = function()
 						_this.sync.get(_keys.synchash, function(syncHash) {
 							if(localHash[_keys.synchash] != syncHash[_keys.synchash]) 
 							{
-								Register.indexedStorage.DeleteAllTranslations(function() {
-									_this.getDictionary(function(dic) 
-									{
-										Register.indexedStorage.setTranslations(dic);
+								_this.getDictionary(function(dic) 
+								{
+									Register.indexedStorage.setTranslations(dic, function() {
+										console.log("Dicitonary synched.");
 									});
-								});
+								});	
 							}
 						});
 					});
@@ -65,7 +65,7 @@ var SynchStorage = function()
 			function(dicitonary) 
 			{
 				_this.setDictionary(dicitonary, function() {
-					console.log("Words synched.");
+					console.log("Dictionary in sync storage updated.");
 				});
 			});
 		}, 2000);

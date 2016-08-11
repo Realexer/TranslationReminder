@@ -230,10 +230,14 @@ var IndexedStorage = function()
 		var i = 0;
 		this.runTransaction(DBObjects.Dictionary, DBTransactionTypes.rw, function(tr, store) 
 		{
+			return store.clear();
+		},
+		function() 
+		{
 			
-		}, function() {
-			
-		}, function(e, tr, store) {
+		},
+		function(e, tr, store) 
+		{
 			putNextTranslation();
 
 			function putNextTranslation() 
