@@ -4,30 +4,7 @@ var SettingsManager = function()
 	
 	this.init = function() 
 	{
-		inportOrSetDefaultSettings();
-	};
-	
-	function inportOrSetDefaultSettings() 
-	{
-		Register.synchStorage.getSettings(function(res) 
-		{
-			if(!res || res.length == 0) 
-			{
-				Register.sqlStorage.GetAllSettings(function(settings) // get settings from previous version
-				{
-					var defaultSettings = {
-						SitesBlackList: OR(settings[SettingsKeys.SitesBlackList].split(";").TrimAllElements(), AppConfig.initialSettings.SitesBlackList),
-						AutoTranslatioinEnabled: OR(settings[SettingsKeys.AutoTranslationEnabled], AppConfig.initialSettings.AutoTranslationEnabled),
-						TranslationLanguage: OR(settings[SettingsKeys.TranslationLanguage], AppConfig.initialSettings.TranslationLanguage),
-						HighlightStyling: AppConfig.initialSettings.HighlightStyling,
-						RestrictedTags: AppConfig.initialSettings.RestrictedTags,
-						SiteLanguage: {}
-					};
-					
-					Register.synchStorage.setSettings(defaultSettings);
-				});
-			}
-		});
+		
 	};
 	
 	function getSetting(key, callback) 
