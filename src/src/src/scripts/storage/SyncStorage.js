@@ -55,7 +55,10 @@ var SynchStorage = function()
 		}
 		
 		synchTimer = Timeout.set(function() {
-			Register.dictionaryManager.GetTranslations(function(dicitonary) {
+			Register.indexedStorage.GetTranslations(
+				Register.indexedStorage.ConstructTranslationsRequest(null), 
+			function(dicitonary) 
+			{
 				_this.setDictionary(dicitonary, function() {
 					console.log("Words synched.");
 				});
