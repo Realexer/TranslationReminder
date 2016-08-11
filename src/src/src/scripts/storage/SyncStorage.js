@@ -28,7 +28,12 @@ var SynchStorage = function()
 						_this.sync.get(_keys.synchash, function(syncHash) {
 							if(localHash[_keys.synchash] != syncHash[_keys.synchash]) 
 							{
-								console.log("Dictionary sync required");
+								Register.indexedStorage.DeleteAllTranslations(function() {
+									_this.getDictionary(function(dic) 
+									{
+										Register.indexedStorage.setTranslations(dic);
+									});
+								});
 							}
 						});
 					});
