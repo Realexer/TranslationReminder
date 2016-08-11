@@ -42,14 +42,14 @@
 		<table class="TR-Form-TranslationInfo">
 			<tr>
 				<td class="TR-Form-Image">
-					<img class="_tr_textImage" 
+					<img class="_tr_textImage {{Templater.UI.print.ifTrue | imageEditable, 'TR-Cursor-Pointer'}}" 
 						  src=""
 						  data-tr-src="{{image}}"
 						  data-tr-default-image="{{image}}">
 				</td>
 				<td class="TR-Form-Word">
-					<div class="TR-Word {{Templater.UI.print.ifTrue | editable, 'TR-DisplayNone'}}">{{text}}</div>
-					<textarea class="_tr_textToTranslateInput TR-TranslationForm-TextInput {{Templater.UI.print.ifFalse | editable, 'TR-DisplayNone'}}">{{text}}</textarea>
+					<div class="TR-Word {{Templater.UI.print.ifTrue | translationEditable, 'TR-DisplayNone'}}">{{text}}</div>
+					<textarea class="_tr_textToTranslateInput TR-TranslationForm-TextInput {{Templater.UI.print.ifFalse | translationEditable, 'TR-DisplayNone'}}">{{text}}</textarea>
 					<div class="_tr_textToTranslateDefinition" data-tr-selected-definition="">
 						{{definition}}
 					</div>

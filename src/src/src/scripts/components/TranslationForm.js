@@ -13,7 +13,8 @@ var TranslationForm = function(handler, data, options)
 		image: OR(data.image, AppConfig.images.selectTextImage),
 		selectedImage: OR(data.image, ""),
 		langTo: this.options.langTo.toUpperCase(),
-		editable: this.options.editable,
+		translationEditable: this.options.translationEditable,
+		imageEditable: this.options.imageEditable,
 		config: {
 			bingIcon: AppConfig.images.bingIcon,
 			glosbeIcon: AppConfig.images.glosbeIcon,

@@ -149,6 +149,11 @@
 }
 
 
+.TR-Cursor-Pointer 
+{
+	cursor: pointer;
+}
+
 
 .TR-NewWordForm-TitleHandler
 {
@@ -224,7 +229,6 @@
 {
 	width: 3em; 
 	height: 3em; 
-	cursor: pointer;
 }
 
 .TR-Form-Word 

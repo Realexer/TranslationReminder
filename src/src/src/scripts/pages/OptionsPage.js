@@ -260,7 +260,8 @@ var DictionaryView = function ()
 				langFrom: OR(data.lang, "en"), // temporary as previous records doens't contain lang propoery
 				langTo: langTo,
 				autoTranslate: false, 
-				editable: false
+				translationEditable: false,
+				imageEditable: true
 			});
 
 			form.setup(function(result) 

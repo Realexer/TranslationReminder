@@ -179,7 +179,8 @@ var TranslationFormHandler = function(htmlHandler)
 						langFrom: OR(langFrom, document.documentElement.lang),
 						langTo: langTo,
 						autoTranslate: autoTranslate, 
-						editable: true
+						translationEditable: true,
+						imageEditable: true
 					});
 
 					_this.form.setup(function(result) 
