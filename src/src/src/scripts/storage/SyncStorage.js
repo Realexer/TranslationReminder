@@ -56,7 +56,7 @@ var SynchStorage = function()
 		
 		synchTimer = Timeout.set(function() {
 			Register.indexedStorage.GetTranslations(
-				Register.indexedStorage.ConstructTranslationsRequest(null), 
+				Register.dictionaryManager.ConstructTranslationsRequest(null), 
 			function(dicitonary) 
 			{
 				_this.setDictionary(dicitonary, function() {
