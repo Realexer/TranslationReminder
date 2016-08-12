@@ -54,7 +54,8 @@ var DBManager = function()
 					
 					var defaultSettings = {
 						SitesBlackList: OR(sitesBlankList, AppConfig.initialSettings.SitesBlackList),
-						AutoTranslatioinEnabled: OR(settings[SettingsKeys.AutoTranslationEnabled], AppConfig.initialSettings.AutoTranslationEnabled),
+						AutoTranslationEnabled: OR(settings[SettingsKeys.AutoTranslationEnabled], AppConfig.initialSettings.AutoTranslationEnabled),
+						SourceLanguage: AppConfig.initialSettings.SourceLanguage,
 						TranslationLanguage: OR(settings[SettingsKeys.TranslationLanguage], AppConfig.initialSettings.TranslationLanguage),
 						HighlightStyling: AppConfig.initialSettings.HighlightStyling,
 						RestrictedTags: AppConfig.initialSettings.RestrictedTags,

@@ -153,19 +153,28 @@
 						<hr />
 
 						<div class="TR-OptionItem">
-							<label for="TR-TranslationLanguage">Language of translation</label>
+							<select id="TR-SourceLanguage" name="SourceLanguage">
+								<option value="select" disabled="disabled">select</option>
+								{{SourceLangSelectHTML}}
+							</select>
+							<label for="TR-SourceLanguage">source language</label>
+						</div>
+						
+						<div class="TR-OptionItem">
 							<select id="TR-TranslationLanguage" name="TranslationLanguage">
 								<option value="select" disabled="disabled">select</option>
-								{{AvailableLanguagesHTML}}
+								{{TranslationLangSelectHTML}}
 							</select>
-							<select class="TR-InvisibleTemplate" data-tr-js-template="TranslationLangOption">
-								<option value="{{value}}" data-tr-selected="{{selected}}">{{title}}</option>
-							</select>
+							<label for="TR-TranslationLanguage">translation to language</label>
 						</div>
+						
+						<select class="TR-InvisibleTemplate" data-tr-js-template="TranslationLangOption">
+							<option value="{{value}}" data-tr-selected="{{selected}}">{{title}}</option>
+						</select>
 
 						<div class="TR-OptionItem">
 							<input type="checkbox" name="AutoTranslationEnabled" data-tr-checked="{{AutoTranslationEnabled}}" id="TR-EnableAutoTranslate"/>
-							<label for="TR-EnableAutoTranslate">Automatically translate selection</label>
+							<label for="TR-EnableAutoTranslate">automatically translate selection</label>
 						</div>
 
 					</div>

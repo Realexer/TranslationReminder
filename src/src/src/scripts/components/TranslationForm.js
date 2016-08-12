@@ -170,10 +170,10 @@ var TranslationForm = function(handler, data, options)
 			_this.showLoadingAnimation();
 			Register.settingsManager.GetTranslationLanguage(function(toLang) 
 			{
-				GlosbeClient.Translate(_this.text, _this.options.langFrom, toLang,
+				GlosbeClient.Translate(UIManager.getValue(_this.selectionInput), _this.options.langFrom, toLang,
 				function (translation)
 				{
-					console.log(translation);
+					//console.log(translation);
 					var result = {
 						definitionOrigin: [],
 						definitionTranslated: [],
@@ -201,12 +201,16 @@ var TranslationForm = function(handler, data, options)
 						console.log("Couldn't get translation from Glosbe.")
 					}
 
-					console.log(result);
+					//console.log(result);
+					
+					var definition = "";
 
 					if(result.definitionOrigin.length > 0) {
-						UIManager.setHTML(_this.textDefinition, result.definitionOrigin[0].text);
-						UIManager.setElData(_this.textDefinition, "tr-selected-definition", result.definitionOrigin[0].text);
+						definition = result.definitionOrigin[0].text;
 					}
+					
+					UIManager.setHTML(_this.textDefinition, definition);
+					UIManager.setElData(_this.textDefinition, "tr-selected-definition", definition);
 
 					UIManager.setValue(_this.translationInput, result.translation);
 					UIManager.setHTML(_this.specifiedTranslation, result.translation);

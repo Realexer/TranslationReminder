@@ -258,6 +258,11 @@
 	font-size: 0.65em;
 }
 
+.TR-Form-Word .TR-SelectionHandler 
+{
+	margin-bottom: 0.2em;
+}
+
 .TR-NewWordForm-SpecifiedTranslation 
 {
 	font-weight: normal;
@@ -300,15 +305,15 @@
 	
 }
 
-.TR-NewWordForm-BingButton 
+.TR-NewWordForm-TranslateButton 
 {
-	font-size: 0.85em;
+	
 }
 
-.TR-NewWordForm-BingButton img
+.TR-NewWordForm-TranslateButton img
 {
-	width: 11px;
-	height: 11px;
+	width: 1em;
+	height: 1em;
 }
 
 .TR-NewWordForm-LoadingAnimation 

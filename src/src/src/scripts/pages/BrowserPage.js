@@ -167,48 +167,42 @@ var TranslationFormHandler = function(htmlHandler)
 			return false;
 		}
 		
-		Register.settingsManager.GetTranslationLanguage(function (langTo)
+		Register.settingsManager.getSettings(function(settings) 
 		{
-			Register.settingsManager.IsAutotranslationEnabled(function (autoTranslate)
-			{
-				Register.settingsManager.GetSiteLanguage(document.domain, function(langFrom) 
-				{
-					_this.form = new TranslationForm(_this.formHandlerBody, {
-						text: selectedText 
-					}, {
-						langFrom: OR(langFrom, document.documentElement.lang),
-						langTo: langTo,
-						autoTranslate: autoTranslate, 
-						translationEditable: true,
-						imageEditable: true
-					});
-
-					_this.form.setup(function(result) 
-					{
-						if (result.translation.length > 0)
-						{
-							Register.dictionaryManager.AddTranslation(result.text, result.translation, result.image, result.definition, result.lang,
-							function ()
-							{
-								Register.translationsHighlighter.showHighlightsOnDocuemnt();
-								UIManager.addClassToEl(_this.formHandler, "TR-Successful");
-
-								setTimeout(function ()
-								{
-									_this.dismiss();
-									UIManager.removeClassFromEl(_this.formHandler, "TR-Successful");
-								}, 50);
-							});
-						}
-					},
-					function() {
-						_this.position(selection, event);
-						UIManager.showEl(_this.formHandler);
-					});
-
-					//UIManager.setHTML(_this.formHandler.translationLanguageSpan, "'" + lang.toUpperCase() + "'");
-				});
+			_this.form = new TranslationForm(_this.formHandlerBody, {
+				text: selectedText 
+			}, {
+				langFrom: settings[SettingsKeys.SourceLanguage],
+				langTo: settings[SettingsKeys.TranslationLanguage],
+				autoTranslate: getBool(settings[SettingsKeys.AutoTranslationEnabled]), 
+				translationEditable: true,
+				imageEditable: true
 			});
+
+			_this.form.setup(function(result) 
+			{
+				if (result.translation.length > 0)
+				{
+					Register.dictionaryManager.AddTranslation(result.text, result.translation, result.image, result.definition, result.lang,
+					function ()
+					{
+						Register.translationsHighlighter.showHighlightsOnDocuemnt();
+						UIManager.addClassToEl(_this.formHandler, "TR-Successful");
+
+						setTimeout(function ()
+						{
+							_this.dismiss();
+							UIManager.removeClassFromEl(_this.formHandler, "TR-Successful");
+						}, 50);
+					});
+				}
+			},
+			function() {
+				_this.position(selection, event);
+				UIManager.showEl(_this.formHandler);
+			});
+
+			//UIManager.setHTML(_this.formHandler.translationLanguageSpan, "'" + lang.toUpperCase() + "'");
 		});
 	};
 	

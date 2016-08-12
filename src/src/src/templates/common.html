@@ -48,8 +48,10 @@
 						  data-tr-default-image="{{image}}">
 				</td>
 				<td class="TR-Form-Word">
-					<div class="TR-Word {{Templater.UI.print.ifTrue | translationEditable, 'TR-DisplayNone'}}">{{text}}</div>
-					<textarea class="_tr_textToTranslateInput TR-TranslationForm-TextInput {{Templater.UI.print.ifFalse | translationEditable, 'TR-DisplayNone'}}">{{text}}</textarea>
+					<div class="TR-SelectionHandler">
+						<div class="TR-Word {{Templater.UI.print.ifTrue | translationEditable, 'TR-DisplayNone'}}">{{text}}</div>
+						<textarea class="_tr_textToTranslateInput TR-TranslationForm-TextInput {{Templater.UI.print.ifFalse | translationEditable, 'TR-DisplayNone'}}">{{text}}</textarea>
+					</div>
 					<div class="_tr_textToTranslateDefinition" data-tr-selected-definition="">
 						{{definition}}
 					</div>
@@ -95,12 +97,12 @@
 		<div class="TR-TranslationForm">
 			<div class="" data-tr-js-use-template="TranslationDetailsBody"></div>
 			<div class="TR-NewWordForm-ButtonsPanel">
-				<button class="_tr_globseButton TR-Action TR-NewWordForm-GlobseButton">
+				<button class="_tr_globseButton TR-Action TR-NewWordForm-TranslateButton">
 					Definition + Translate to '{{langTo}}' using Glosbe 
 					<img src="" data-tr-src="{{config.glosbeIcon}}">
 				</button>
-				<div> </div>
-				<button class="_tr_bingButton TR-Action TR-NewWordForm-BingButton">
+				<div style="height: 0.5em;"> </div>
+				<button class="_tr_bingButton TR-Action TR-NewWordForm-TranslateButton">
 					Translate to '{{langTo}}' using Bing 
 					<img src="" data-tr-src="{{config.bingIcon}}">
 				</button>

@@ -103,7 +103,7 @@ var SettingsManager = function()
 
 	this.IsAutotranslationEnabled = function (callback)
 	{
-		getSetting(SettingsKeys.AutoTranslatioinEnabled, 
+		getSetting(SettingsKeys.AutoTranslationEnabled, 
 		function(value) {
 			return callback(getBool(value));
 		});
@@ -111,7 +111,7 @@ var SettingsManager = function()
 	
 	this.setAutoTranslationEnabled = function(value, callback) 
 	{
-		saveSetting(SettingsKeys.AutoTranslatioinEnabled, getBool(value), callback);
+		saveSetting(SettingsKeys.AutoTranslationEnabled, getBool(value), callback);
 	};
 
 	this.GetTranslationLanguage = function (callback)
@@ -171,7 +171,8 @@ Register.settingsManager.init();
 var SettingsKeys =
 {
 	SitesBlackList: "SitesBlackList",
-	AutoTranslatioinEnabled: "AutoTranslationEnabled",
+	AutoTranslationEnabled: "AutoTranslationEnabled",
+	SourceLanguage: "SourceLanguage",
 	TranslationLanguage: "TranslationLanguage",
 	HighlightStyling: "HighlightStyling",
 	RestrictedTags: "RestrictedTags",

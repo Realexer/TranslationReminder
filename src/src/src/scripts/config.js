@@ -6,6 +6,7 @@ var AppConfig =
 	initialSettings: 
 	{
 		SitesBlackList: [],
+		SourceLanguage: "en",
 		TranslationLanguage: "en",
 		AutoTranslationEnabled: true,
 		HighlightStyling: {

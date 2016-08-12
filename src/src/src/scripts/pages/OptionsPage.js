@@ -18,8 +18,9 @@ var OptionsView = function (htmlHandler)
 				settings[SettingsKeys.SitesBlackList] = formData.get(SettingsKeys.SitesBlackList).split(";").TrimAllElements().RemoveDuplicates().filter(function(item) {
 					return !UIFormat.isEmptyString(item);
 				});
+				settings[SettingsKeys.SourceLanguage] = formData.get(SettingsKeys.SourceLanguage);
 				settings[SettingsKeys.TranslationLanguage] = formData.get(SettingsKeys.TranslationLanguage);
-				settings[SettingsKeys.AutoTranslatioinEnabled] = getBool(formData.get(SettingsKeys.AutoTranslatioinEnabled));
+				settings[SettingsKeys.AutoTranslationEnabled] = getBool(formData.get(SettingsKeys.AutoTranslationEnabled));
 				settings[SettingsKeys.HighlightStyling] = {};
 				settings[SettingsKeys.HighlightStyling][HighlightStylingKeys.addBackgroundColor] = getBool(formData.get(SettingsKeys.HighlightStyling+"."+HighlightStylingKeys.addBackgroundColor));
 				settings[SettingsKeys.HighlightStyling][HighlightStylingKeys.backgroundColor] = formData.get(SettingsKeys.HighlightStyling+"."+HighlightStylingKeys.backgroundColor);
@@ -51,9 +52,15 @@ var OptionsView = function (htmlHandler)
 				settings.restrictedTagsDefault = AppConfig.restrictedTags.join("; ");
 				
 				langs.sort();
-				settings.AvailableLanguagesHTML = "";
+				settings.SourceLangSelectHTML = "";
+				settings.TranslationLangSelectHTML = "";
 				performOnElsList(langs, function(val, i) {
-					settings.AvailableLanguagesHTML += Register.templater.formatTemplate("TranslationLangOption", {
+					settings.SourceLangSelectHTML += Register.templater.formatTemplate("TranslationLangOption", {
+						value: val,
+						title: val,
+						selected: settings[SettingsKeys.SourceLanguage] === langs[i]
+					});
+					settings.TranslationLangSelectHTML += Register.templater.formatTemplate("TranslationLangOption", {
 						value: val,
 						title: val,
 						selected: settings[SettingsKeys.TranslationLanguage] === langs[i]
@@ -262,12 +269,12 @@ var DictionaryView = function ()
 	
 	function editTranslation(data) 
 	{
-		Register.settingsManager.GetTranslationLanguage(function (langTo)
+		Register.settingsManager.getSettings(function(settings) 
 		{
 			var form = new TranslationForm(translationEditingForm.querySelector("._tr_body"), data, 
 			{
-				langFrom: OR(data.lang, "en"), // temporary as previous records doens't contain lang propoery
-				langTo: langTo,
+				langFrom: OR(data.lang, settings[SettingsKeys.SourceLanguage]), // temporary as previous records doens't contain lang propoery
+				langTo: settings[SettingsKeys.TranslationLanguage],
 				autoTranslate: false, 
 				translationEditable: false,
 				imageEditable: true
