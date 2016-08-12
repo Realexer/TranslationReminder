@@ -257,3 +257,27 @@ body
 	border: 0;
 	cursor: pointer;
 }
+
+.TR-ImportDictionaryForm 
+{
+	padding: 1em;
+}
+
+.TR-ImportDictionaryForm h3 
+{
+	font-size: 1em;
+	font-weight: normal;
+	margin-bottom: 0.8em;
+}
+
+.TR-ImportDictionaryForm input[type="file"] {
+	
+}
+
+.TR-ImportButton 
+{
+	color: #fff;
+	padding: 0.5em 1em;
+	border: 0;
+	cursor: pointer;
+}

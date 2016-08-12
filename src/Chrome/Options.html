@@ -53,7 +53,15 @@
 				<!-- NO WORDS VIEW  -->
 				<div id="TR-EmptyDictionaryView" class="TR-EmptyDictionaryView TR-BG-Grey-Light" style="display: none;">
 					<h1>Your dictionary is empty</h1>
-					<span class="TR-TextMuted">Select the text on the page holding Ctrl/Cmd button to add new.</span>
+					<div class="TR-TextMuted">Select a text on web page holding Ctrl/Cmd button to add new.</div>
+					<div style="height: 3em;"></div>
+					<div class="TR-ImportDictionaryForm TR-TextMuted TR-BG-White">
+						<h3>Or import previously exported dictionary: </h3>
+						<form id="TR-ImportWordsForm">
+							<input type="file" name="csv">
+							<input class="TR-ImportButton TR-BG-Green" type="submit" value="import"/>
+						</form>
+					</div>
 				</div>
 
 				<!-- WORDS LIST  -->
@@ -258,23 +266,23 @@
 								<div class="TR-TextLight TR-BG-Ultralight">
 									<ul>
 										<br/>
-										<li>totally redesigned app</li>
+										<li>totally redesigned and significantly improved app</li>
 										<br/>
 										<li>dictionary moved to separate page</li>
-										<li>highlighting feature improved (less broken pages)</li>
+										<li>highlighting feature improved (lesser chance to break layout of the sites)</li>
 										<li>added ability to attach image (using Bing search)</li>
 										<li>added alternative translation using <a class="TR-Link" href='https://glosbe.com/' target="_blank">Glosbe</a></li>
 										<li>learned words stay in dictionary</li>
 										<li>ability to edit translation</li>
-										<li>dicitonary is synchronized across devices</li>
+										<li>dicitonary is synchronized across Chrome browsers on your devices</li>
 										<li>export dictionary into CSV file</li>
 										<br/>
-										<li>enabled/disable highlighting on the site from popup</li>
-										<li>change language of the site using popup</li>
+										<li>enable/disable highlighting on any site from popup</li>
+										<li>set language of the site using popup (as no language detection is available for now)</li>
 										<br/>
 										<li>options expanded</li>
-										<li>added ability to stylize highlights</li>
-										<li>added ability to specify restricted tags</li>
+										<li>stylize highlights</li>
+										<li>specify restricted tags (to prevent broken layouts)</li>
 										<br/>
 									</ul>
 								</div>

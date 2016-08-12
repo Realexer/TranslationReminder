@@ -149,6 +149,13 @@ var DictionaryView = function ()
 		UIManager.addEventNoDefault(getEl("TR-ExportDictionaryLink"), "click", function() {
 			DictionaryExporter.export(); 
 		});
+		
+		UIManager.addEventNoDefault(getEl("TR-ImportWordsForm"), "submit", function(e, form) {
+			var file = new FormData(form).get("csv");
+			if(file.size > 0) {
+				DictionaryExporter.import(file); 
+			}
+		});
 
 		TemplatesLoader.loadTemplates("templates/common.html", document.body, function() 
 		{
@@ -361,8 +368,51 @@ var DictionaryExporter =
 			});
 			
 			var encodedUri = encodeURI(csvContent);
-			window.open(encodedUri);
+			
+			var downloadLink = document.createElement("a");
+			downloadLink.href = encodedUri;
+			downloadLink.download = "translation-reminder-dictionary.csv";
+
+			document.body.appendChild(downloadLink);
+			downloadLink.click();
+			document.body.removeChild(downloadLink);
+			
+//			window.open(encodedUri);
 		});
+	},
+	import: function(file) 
+	{
+		var reder = new FileReader();
+      reder.onload = function(e) 
+		{ 
+			var contents = e.target.result;
+			
+			var lines = contents.split("\n");
+			var header = lines.shift().split(",");
+			
+			var dictionary = [];
+			
+			performOnElsList(lines, function(line) 
+			{
+				var translationParts = line.split(",");
+				
+				var translation = [];
+				
+				performOnElsList(header, function(key, i) {
+					translation[key] = translationParts[i];
+				});
+				
+				dictionary.push(TranslationAdapter.getFromExisting(translation).getData());
+			});
+			
+			//console.log(dictionary);
+			
+			Register.indexedStorage.setTranslations(dictionary, function() {
+				window.location.reload();
+			});
+      };
+		
+      reder.readAsText(file);
 	}
 };
 

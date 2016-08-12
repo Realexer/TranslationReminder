@@ -196,6 +196,18 @@ var TranslationAdapter =
 		var tr = new Translation();
 		
 		performOnEveryKey(data, function(key, val) {
+			switch(key) 
+			{
+				case "date":
+				case "hits":
+				case "learnedAt":
+					val = val ? parseInt(val) : null;
+					break;
+				
+				case "learned":
+					val = getBool(val)
+					break;
+			}
 			tr[key] = val;
 		});
 		
