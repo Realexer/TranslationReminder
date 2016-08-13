@@ -84,7 +84,7 @@ var SynchStorage = function()
 		var syncHash = generateRundomString(10);
 		this.local.set(setData(_keys.synchash, syncHash), function() {
 			_this.sync.set(setData(_keys.synchash, syncHash), function() {
-				_this.sync.set(setData(_keys.dicitonary, JSON.stringify(dictionary)), function() 
+				_this.sync.set(setData(_keys.dicitonary, dictionary), function() 
 				{
 					callback();
 				});
@@ -95,7 +95,7 @@ var SynchStorage = function()
 	this.getDictionary = function(callback) 
 	{
 		return this.sync.get(_keys.dicitonary, function(result) {
-			callback(JSON.parse(result[_keys.dicitonary]));
+			callback(result[_keys.dicitonary]);
 		});
 	};
 	
