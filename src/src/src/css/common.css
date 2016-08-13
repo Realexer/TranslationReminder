@@ -81,6 +81,11 @@
 	font-size: 1.2em;
 }
 
+.TR-TextSmaller
+{
+	font-size: 0.8em;
+}
+
 .TR-TextMinor 
 {
 	color: #999;
