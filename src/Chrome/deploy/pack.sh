@@ -1,0 +1,1 @@
+/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --pack-extension="/Users/alexeyskrypnik/Projects/TranslationReminder/deploy/chrome" --pack-extension-key="/Users/alexeyskrypnik/Projects/TranslationReminder/other/deploy/chrome.pem"
