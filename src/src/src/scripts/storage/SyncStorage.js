@@ -52,7 +52,7 @@ var SynchStorage = function()
 	
 	var synchTimer = null;
 	
-	this.synchDictionary = function() 
+	this.synchDictionary = function(callback) 
 	{
 		// Scheduling synch to prevent excessive number of writes
 		if(synchTimer) {
@@ -66,6 +66,9 @@ var SynchStorage = function()
 			{
 				_this.setDictionary(dicitonary, function() {
 					console.log("Dictionary in sync storage updated.");
+					if(callback) {
+						callback();
+					}
 				});
 			});
 		}, 2000);

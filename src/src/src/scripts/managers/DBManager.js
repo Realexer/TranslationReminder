@@ -29,6 +29,7 @@ var DBManager = function()
 							if(i == words.length-1) 
 							{
 								Register.synchStorage.setSqlDataImported(true);
+								Register.synchStorage.synchDictionary();
 							}
 						});
 					});

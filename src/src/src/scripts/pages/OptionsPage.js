@@ -415,7 +415,10 @@ var DictionaryExporter =
 			//console.log(dictionary);
 			
 			Register.indexedStorage.setTranslations(dictionary, function() {
-				window.location.reload();
+				Register.synchStorage.synchDictionary(function() 
+				{
+					window.location.reload();
+				});
 			});
       };
 		
