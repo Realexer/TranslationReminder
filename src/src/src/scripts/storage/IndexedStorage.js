@@ -24,6 +24,8 @@ var IndexedStorage = function()
 	var _this = this;
 	this.db = null;
 	
+	this.ready = false;
+	
 	this.init = function ()
 	{
 		//indexedDB.deleteDatabase("TranslationReminder");
@@ -46,8 +48,12 @@ var IndexedStorage = function()
 			_this.updateIndex(objectStore, "hits", "hits", { unique: false });
 		};
 
-		openRequest.onsuccess = function (e) {
+		openRequest.onsuccess = function (e) 
+		{
 			_this.db = e.target.result;
+			_this.ready = true;
+			
+			console.log("db opened");
 		};
 
 		openRequest.onerror = function (e) {

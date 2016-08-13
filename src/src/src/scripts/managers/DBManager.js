@@ -10,32 +10,41 @@ var DBManager = function()
 	
 	function importSQLdataToIndexedDB() 
 	{
-		Register.synchStorage.isSqlDataImported(function(isImported) 
+		Initer.whenTrue(function() {
+			return Register.indexedStorage.ready;
+		}, function() 
 		{
-			if(!isImported) 
+			Register.synchStorage.isSqlDataImported(function(isImported) 
 			{
-				Register.sqlStorage.GetWords(TranslationsOrder.order.date, TranslationsOrder.direction.DESC, function(words) 
+				if(!isImported) 
 				{
-					performOnElsList(words, function(word, i) 
+					Register.sqlStorage.GetWords(TranslationsOrder.order.date, TranslationsOrder.direction.DESC, function(words) 
 					{
-						Register.indexedStorage.AddTranslation(TranslationAdapter.getFromExisting({
-							text: word.word, 
-							translation: word.translation,
-							date: word.date,
-							hits: word.hits,
-							learned: false
-						}).getData(), function() 
+						performOnElsList(words, function(word, i) 
 						{
-							if(i == words.length-1) 
+							Register.indexedStorage.AddTranslation(TranslationAdapter.getFromExisting({
+								text: word.word, 
+								translation: word.translation,
+								date: word.date,
+								hits: word.hits,
+								learned: false
+							}).getData(), function() 
 							{
-								Register.synchStorage.setSqlDataImported(true);
-								Register.synchStorage.synchDictionary();
-							}
+								if(i == words.length-1) 
+								{
+									Register.synchStorage.setSqlDataImported(true);
+									Register.synchStorage.synchDictionary();
+								}
+							});
 						});
 					});
-				});
-			}
-		});
+				}
+				else 
+				{
+					Register.synchStorage.copyDictionaryToDB();
+				}
+			});
+		}, 1000);
 	};
 	
 	function inportOrSetDefaultSettings() 

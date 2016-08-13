@@ -491,4 +491,6 @@ window.onload = function ()
 {
 	Register.optionsPage = new OptionsPage();
 	Register.optionsPage.init();
+	
+	Register.dbManager.init();
 };
