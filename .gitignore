@@ -1,7 +1,7 @@
 
 /buildsolutions
 /build
-/deploy
+/deploy/chrome
 /package
 TempDeploy/
 TemporaryFolderForPackages/
