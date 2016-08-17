@@ -4,8 +4,8 @@
 	"manifest_version": 2,
 
 	"name": "Translate - Highlight - Remember",
-	"description": "Translation Reminder helps you to learn new words or terms. Translates and highlights texts from your dictionary on every web page.",
-	"version": "4.1.6",
+	"description": "Translation Reminder helps you to learn new language or subject. Translates selection and highlights texts from your dictionary.",
+	"version": "4.1.7",
 
 	"permissions": [
 		"storage",
