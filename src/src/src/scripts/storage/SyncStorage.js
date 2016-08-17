@@ -28,7 +28,7 @@ var SynchStorage = function()
 						_this.sync.get(_keys.synchash, function(syncHash) {
 							if(localHash[_keys.synchash] != syncHash[_keys.synchash]) 
 							{
-								//_this.copyDictionaryToDB();
+								_this.copyDictionaryToDB();
 							}
 						});
 					});
@@ -47,6 +47,9 @@ var SynchStorage = function()
 	
 	this.copyDictionaryToDB = function() 
 	{
+		// do not copy dictionary for now
+		return;
+		
 		_this.getDictionary(function(dic) 
 		{
 			Register.indexedStorage.setTranslations(dic, function() {
