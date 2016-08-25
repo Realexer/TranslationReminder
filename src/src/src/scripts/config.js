@@ -85,7 +85,9 @@ var Messages =
 		GetSiteInfo: "FE.GetSiteInfo",
 		SetSiteLang: "FE.SetSiteLang",
 		ShowHighlights: "FE.ShowHighlights",
-		RemoveHighlights: "FE.RemoveHighlights"
+		RemoveHighlights: "FE.RemoveHighlights",
+		ReplaceHighlightsWithTranslations: "ReplaceHighlightsWithTranslations",
+		ReplaceHighlightsWithOriginalText: "ReplaceHighlightsWithOriginalText",
 	},
 	BE: {
 		DB: 

@@ -7,6 +7,7 @@ var TranslationsHighlighter = function(htmlHandler)
 	var textsHits = {};
 	
 	this.settings = null;
+	this.isReplacedWithTranslation = false;
 	
 	this.init = function(callback) 
 	{
@@ -243,6 +244,25 @@ var TranslationsHighlighter = function(htmlHandler)
 	};
 
 	
+	this.replaceAllHighlightsWithTranslation = function() 
+	{
+		performOnElsList(document.querySelectorAll(".TR-HighlightedText"), function(highlightEl) 
+		{
+			UIManager.setText(highlightEl, UIManager.getElData(highlightEl, "tr-translation"));
+		});
+		
+		this.isReplacedWithTranslation = true;
+	};
+	
+	this.replaceAllHighlightsWithOriginalText = function() 
+	{
+		performOnElsList(document.querySelectorAll(".TR-HighlightedText"), function(highlightEl) 
+		{
+			UIManager.setText(highlightEl, UIManager.getElData(highlightEl, "tr-original"));
+		});
+		
+		this.isReplacedWithTranslation = false;
+	};
 
 	
 	/**

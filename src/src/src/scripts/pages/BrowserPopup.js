@@ -21,6 +21,7 @@ var BrowserPopup = function ()
 		}));
 		
 		var switchHighlightingCheckbox = popupBody.querySelector(".SwitchHilightingCheckbox");
+		var replaceHighlightsWithTranslationsCheckbox = popupBody.querySelector(".ReplaceHighlightsWithTranslationsCheckbox");
 		var siteLanguageSelect = popupBody.querySelector(".SiteLanguageSelect");
 		
 		
@@ -29,18 +30,18 @@ var BrowserPopup = function ()
 			var currentTab = tabs[0];
 			console.log(currentTab);
 			
-			Messanger.sendMessageToTab(currentTab.id, Messages.FE.GetSiteInfo, null, function(data) 
+			Messanger.sendMessageToTab(currentTab.id, Messages.FE.GetSiteInfo, null, function(siteInfo) 
 			{
-				UIManager.setValue(siteLanguageSelect, data.lang);
+				UIManager.setValue(siteLanguageSelect, siteInfo.lang);
 				
 				UIManager.addEvent(siteLanguageSelect, "change", function() {
 					// save lang to settings for permanent use
-					Register.settingsManager.SetSiteLanguage(data.domain, UIManager.getValue(siteLanguageSelect), function() {
+					Register.settingsManager.SetSiteLanguage(siteInfo.domain, UIManager.getValue(siteLanguageSelect), function() {
 						
 					});
 				});
 				
-				Register.settingsManager.isSiteBlacklisted(data.domain, function(isBlacklisted) {
+				Register.settingsManager.isSiteBlacklisted(siteInfo.domain, function(isBlacklisted) {
 					UIManager.setChecked(switchHighlightingCheckbox, !isBlacklisted);
 				});
 				
@@ -48,7 +49,7 @@ var BrowserPopup = function ()
 				{
 					if(UIManager.isChecked(switchHighlightingCheckbox)) 
 					{
-						Register.settingsManager.RemoveSiteToBlackList(data.domain, function() {
+						Register.settingsManager.RemoveSiteToBlackList(siteInfo.domain, function() {
 							Messanger.sendMessageToTab(currentTab.id, Messages.FE.ShowHighlights, null, function() {
 								
 							});
@@ -56,12 +57,25 @@ var BrowserPopup = function ()
 					}
 					else 
 					{
-						Register.settingsManager.AddSiteToBlackList(data.domain, function() {
+						Register.settingsManager.AddSiteToBlackList(siteInfo.domain, function() {
 							Messanger.sendMessageToTab(currentTab.id, Messages.FE.RemoveHighlights, null, function() {
 								
 							});
 						});
 					}
+				});
+				
+				UIManager.setChecked(replaceHighlightsWithTranslationsCheckbox, siteInfo.isReplacedWithTranslations);
+				
+				UIManager.addEventNoDefault(replaceHighlightsWithTranslationsCheckbox, "change", function() 
+				{
+					var message = UIManager.isChecked(replaceHighlightsWithTranslationsCheckbox) 
+									? Messages.FE.ReplaceHighlightsWithTranslations 
+									: Messages.FE.ReplaceHighlightsWithOriginalText;
+					
+					Messanger.sendMessageToTab(currentTab.id, message, null, function() {
+
+					});
 				});
 				
 			});
