@@ -148,6 +148,19 @@ var SettingsManager = function()
 		});
 	};
 	
+	this.setReplacingHighlightsWithTranslationEnabled = function(value, callback) 
+	{
+		saveSetting(SettingsKeys.ReplacingHighlightsWithTranslationEnabled, getBool(value), callback);
+	};
+	
+	this.isReplacingHighlightsWithTranslationEnabled = function (callback)
+	{
+		getSetting(SettingsKeys.ReplacingHighlightsWithTranslationEnabled, 
+		function(value) {
+			return callback(getBool(value));
+		});
+	};
+	
 	this.SetSiteLanguage = function(domain, lang, callback) 
 	{
 		getSetting(SettingsKeys.SiteLanguage, function(sites) 
@@ -176,6 +189,7 @@ var SettingsKeys =
 	TranslationLanguage: "TranslationLanguage",
 	HighlightStyling: "HighlightStyling",
 	RestrictedTags: "RestrictedTags",
+	ReplacingHighlightsWithTranslationEnabled: "ReplacingHighlightsWithTranslationEnabled",
 	SiteLanguage: "SiteLanguage"
 };
 

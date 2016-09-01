@@ -20,16 +20,16 @@ var TranslationsHighlighter = function(htmlHandler)
 		});
 	};
 	
-	this.showHighlightsOnDocuemnt = function() 
+	this.showHighlightsOnDocuemnt = function(callback) 
 	{
-		this.showHighlightsOnTextNodes(this.getTextNodes(document.body));
+		this.showHighlightsOnTextNodes(this.getTextNodes(document.body), callback);
 	};
 	
-	this.showHighlightsOnTextNodes = function(textNodes) 
+	this.showHighlightsOnTextNodes = function(textNodes, callback) 
 	{
 		Register.dictionaryManager.GetTranslations(function(translations) 
 		{
-			_this.showTranslationsHighlightsOnTextNodes(textNodes, translations);
+			_this.showTranslationsHighlightsOnTextNodes(textNodes, translations, callback);
 		}, {
 			condition: {
 				learned: false
@@ -37,12 +37,12 @@ var TranslationsHighlighter = function(htmlHandler)
 		});
 	};
 	
-	this.showTranslationsHighlights = function(el, translations)
+	this.showTranslationsHighlights = function(el, translations, callback)
 	{
-		this.showTranslationsHighlightsOnTextNodes(this.getTextNodes(el), translations);
+		this.showTranslationsHighlightsOnTextNodes(this.getTextNodes(el), translations, callback);
 	};
 	
-	this.showTranslationsHighlightsOnTextNodes = function(textNodes, translations) 
+	this.showTranslationsHighlightsOnTextNodes = function(textNodes, translations, callback) 
 	{
 		textsHits = {};
 		
@@ -76,6 +76,10 @@ var TranslationsHighlighter = function(htmlHandler)
 				UIManager.setElData(highlight, "tr-event-set", true);
 			}
 		});
+		
+		if(callback) {
+			callback();
+		}
 	};
 	
 	this.highlightTextsInNode = function(textNode, translations, styling)
@@ -172,7 +176,6 @@ var TranslationsHighlighter = function(htmlHandler)
 			translationItem.styling = styling;
 			translationItem.styling.backgroundColorFormatted = translationItem.styling.addBackgroundColor ? "background-color: "+translationItem.styling.backgroundColor : "";
 			
-			
 			return Register.templater.formatTemplate("TranslationHighlight", translationItem).replaceAll("\"", "'").trim();
 		});
 
@@ -243,6 +246,19 @@ var TranslationsHighlighter = function(htmlHandler)
 		});
 	};
 
+	this.switchReplacingHighlightsWithTranslation = function() 
+	{
+		Register.settingsManager.isReplacingHighlightsWithTranslationEnabled(function(isEnabled) {
+			if(isEnabled) 
+			{
+				_this.replaceAllHighlightsWithTranslation();
+			} 
+			else 
+			{
+				_this.replaceAllHighlightsWithOriginalText();
+			}
+		});
+	};
 	
 	this.replaceAllHighlightsWithTranslation = function() 
 	{
@@ -250,8 +266,6 @@ var TranslationsHighlighter = function(htmlHandler)
 		{
 			UIManager.setText(highlightEl, UIManager.getElData(highlightEl, "tr-translation"));
 		});
-		
-		this.isReplacedWithTranslation = true;
 	};
 	
 	this.replaceAllHighlightsWithOriginalText = function() 
@@ -260,8 +274,6 @@ var TranslationsHighlighter = function(htmlHandler)
 		{
 			UIManager.setText(highlightEl, UIManager.getElData(highlightEl, "tr-original"));
 		});
-		
-		this.isReplacedWithTranslation = false;
 	};
 
 	

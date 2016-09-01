@@ -37,14 +37,9 @@ FEMessageHandlers[Messages.FE.RemoveHighlights] = function(message, data, callba
 	callback();
 };
 
-FEMessageHandlers[Messages.FE.ReplaceHighlightsWithTranslations] = function(message, data, callback, sender) 
+FEMessageHandlers[Messages.FE.SwitchReplacingHighlightsWithTranslations] = function(message, data, callback, sender) 
 {
-	Register.translationsHighlighter.replaceAllHighlightsWithTranslation();
-	callback();
-};
-FEMessageHandlers[Messages.FE.ReplaceHighlightsWithOriginalText] = function(message, data, callback, sender) 
-{
-	Register.translationsHighlighter.replaceAllHighlightsWithOriginalText();
+	Register.translationsHighlighter.switchReplacingHighlightsWithTranslation();
 	callback();
 };
 

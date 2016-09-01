@@ -24,7 +24,9 @@ var BrowserPage = function ()
 
 						Register.translationsHighlighter = new TranslationsHighlighter(htmlHandler);
 						Register.translationsHighlighter.init(function() {
-							Register.translationsHighlighter.showHighlightsOnDocuemnt();
+							Register.translationsHighlighter.showHighlightsOnDocuemnt(function() {
+								Register.translationsHighlighter.switchReplacingHighlightsWithTranslation();
+							});
 						});
 
 						Register.translationFormHandler = new TranslationFormHandler(htmlHandler);

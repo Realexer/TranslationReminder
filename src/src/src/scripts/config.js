@@ -18,7 +18,8 @@ var AppConfig =
 		},
 		RestrictedTags: [
 			
-		]
+		],
+		ReplacingHighlightsWithTranslationEnabled: false
 	},
 	
 	restrictedTags: [
@@ -86,8 +87,7 @@ var Messages =
 		SetSiteLang: "FE.SetSiteLang",
 		ShowHighlights: "FE.ShowHighlights",
 		RemoveHighlights: "FE.RemoveHighlights",
-		ReplaceHighlightsWithTranslations: "ReplaceHighlightsWithTranslations",
-		ReplaceHighlightsWithOriginalText: "ReplaceHighlightsWithOriginalText",
+		SwitchReplacingHighlightsWithTranslations: "SwitchReplacingHighlightsWithTranslations",
 	},
 	BE: {
 		DB: 
