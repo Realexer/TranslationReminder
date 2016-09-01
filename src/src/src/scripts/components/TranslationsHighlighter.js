@@ -7,7 +7,6 @@ var TranslationsHighlighter = function(htmlHandler)
 	var textsHits = {};
 	
 	this.settings = null;
-	this.isReplacedWithTranslation = false;
 	
 	this.init = function(callback) 
 	{

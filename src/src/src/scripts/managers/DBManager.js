@@ -69,6 +69,7 @@ var DBManager = function()
 						TranslationLanguage: OR(settings[SettingsKeys.TranslationLanguage], AppConfig.initialSettings.TranslationLanguage),
 						HighlightStyling: AppConfig.initialSettings.HighlightStyling,
 						RestrictedTags: AppConfig.initialSettings.RestrictedTags,
+						ReplacingHighlightsWithTranslationEnabled: AppConfig.initialSettings.ReplacingHighlightsWithTranslationEnabled,
 						SiteLanguage: {}
 					};
 					

@@ -20,7 +20,6 @@ FEMessageHandlers[Messages.FE.GetSiteInfo] = function(message, data, callback, s
 		callback({
 			domain: document.domain,
 			lang: OR(lang, document.documentElement.lang),
-			isReplacedWithTranslations: Register.translationsHighlighter.isReplacedWithTranslation
 		});
 	});
 };
@@ -39,8 +38,11 @@ FEMessageHandlers[Messages.FE.RemoveHighlights] = function(message, data, callba
 
 FEMessageHandlers[Messages.FE.SwitchReplacingHighlightsWithTranslations] = function(message, data, callback, sender) 
 {
-	Register.translationsHighlighter.switchReplacingHighlightsWithTranslation();
-	callback();
+	if(Register.translationsHighlighter) 
+	{
+		Register.translationsHighlighter.switchReplacingHighlightsWithTranslation();
+		callback();
+	}
 };
 
 Messanger.onMessage(function (message, data, callback, sender)
